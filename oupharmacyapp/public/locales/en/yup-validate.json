@@ -1,0 +1,67 @@
+{
+    "yupEmailRequired":"Email was required",
+    "yupEmailMaxLenght":"Email exceeds the allowed length",
+    "yupEmailInvalid": "Invalid email",
+    "yupEmailExist": "Email already exist",
+
+    "yupPasswordRequired":"Password was required",
+    "yupPasswordMaxLength": "Password exceeds the allowed length",
+
+    "yupConfirmPasswordRequire":"Confirm password was required",
+    "yupConfirmPasswordMatch":"Confirm password didn't match with password",
+
+
+    "yupFirstNameRequired":"First name was required",
+    "yupFirstNameMaxLenght":"First name exceeds the allowed length",
+    "yupFirstNameInvalid":"Invalid first name",
+    
+    "yupLastNameRequired":"Last name was required",
+    "yupLastNameMaxLenght":"Last name exceeds the allowed length",
+    "yupLastNameInvalid":"Invalid last name",
+    
+    "yupPhoneNumberRequired":"Phone number was required",
+    "yupPhoneNumberInvalid":"Invalid phone number",
+    "yupPhoneNumberExist":"Phone number already exist",
+
+    "yupAddressRequired":"Address was required",
+    "yupAddressInvalid":"Invalid address",
+
+    "yupDOBRequired":"Date of birth was required",
+
+    "yupGenderRequired":"Gender was required",
+
+    "yupDescriptionRequired":"Description was required",
+    "yupDescriptionMaxLenght":"Description exceeds the allowed length",
+    "yupDescriptionInvalid":"Invalid description",
+
+    "yupCreatedDateRequired":"Created date was required",
+
+    "yupCreatedTimeRequired":"Time was required",
+    "yupCreatedTimeInvalid": "Invalid Time",
+    "yupTimeDivisibleBy20":"The minutes of the time divisible by 20 (00; 20; 40)",
+
+    "yupSignRequired": "Sign was required",
+    "yupSignMaxLenght":"Sign exceeds the allowed length",
+    "yupSignInvalid":"Invalid sign",
+
+    "yupDiagnosedRequired": "Diagnosis was required",
+    "yupDiagnosedMaxLenght":"Diagnosis exceeds the allowed length",
+    "yupDiagnosedInvalid":"Invalid Diagnosis",
+
+    "yupUsesRequired": "Uses was required",
+    "yupUsesMaxLenght":"Uses exceeds the allowed length",
+    "yupUsesInvalid":"Invalid uses",
+
+    "yupQuantityNumber": "Quantity must be a number",
+    "yupQuantityRequired": "Quantity was required",
+    "yupQuantityMax": "Quantity does not accept",
+    "yupQuantityInvalid":"Invalid quantity",
+
+    "yupCityRequired": "City was required",
+    "yupCityNumber": "City must be selected",
+
+    "yupDistrictRequired": "District was required",
+    "yupDistrictNumber": "District must be selected",
+
+    "yupAddressMustBeSelected": "You must choose one option address"
+}

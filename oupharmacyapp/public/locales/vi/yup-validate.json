@@ -1,0 +1,66 @@
+{
+    "yupEmailRequired":"Email không được để trống",
+    "yupEmailMaxLenght":"Email vượt quá độ dài cho phép",
+    "yupEmailInvalid": "Email không hợp lệ",
+    "yupEmailExist": "Email đã tồn tại",
+    
+    "yupPasswordRequired":"Mât khẩu không được để trống",
+    "yupPasswordMaxLength": "Mât khẩu vượt quá độ dài cho phép",
+
+    "yupConfirmPasswordRequire":"Xác nhận mật khẩu không được để trống",
+    "yupConfirmPasswordMatch":"Xác nhận mật khẩu không khớp",
+
+    "yupFirstNameRequired":"Họ không được để trống",
+    "yupFirstNameMaxLenght":"Họ vượt quá độ dài cho phép",
+    "yupFirstNameInvalid":"Họ không hợp lệ",
+    
+    "yupLastNameRequired":"Tên không được để trống",
+    "yupLastNameMaxLenght":"Tên vượt quá độ dài cho phép",
+    "yupLastNameInvalid":"Tên không hợp lệ",
+
+    "yupPhoneNumberRequired":"Số điện thoại không được để trống",
+    "yupPhoneNumberInvalid":"Số điện thoại không hợp lệ",
+    "yupPhoneNumberExist":"Số điện thoại đã tồn tại",
+    
+    "yupAddressRequired":"Địa chỉ không được để trống",
+    "yupAddressInvalid":"Địa chỉ không hợp lệ",
+    "yupAddressMustBeSelected": "Địa chỉ phải được chọn",
+    
+    "yupDOBRequired":"Ngày sinh không được để trống",
+    
+    "yupGenderRequired":"Giới tính không được để trống",
+    
+    "yupDescriptionRequired":"Mô tả không được phép để trống",
+    "yupDescriptionMaxLenght":"Mô tả vượt quá độ dài cho phép",
+    "yupDescriptionInvalid":"Mô tả không hợp lệ",
+
+    "yupCreatedDateRequired":"Ngày tạo không được phép để trống",
+
+    "yupCreatedTimeRequired":"Thời gian không được để trống",
+    "yupCreatedTimeInvalid": "Thời gian không hợp lệ",
+    "yupTimeDivisibleBy20":"Số phút phải chia hết cho 20 (00; 20; 40)",
+
+    "yupSignRequired": "Triệu chứng không được để trống",
+    "yupSignMaxLenght":"Triệu chứng vượt quá độ dài cho phép",
+    "yupSignInvalid":"Triệu chứng không hợp lệ",
+
+    "yupDiagnosedRequired": "Chẩn đoán không được để trống",
+    "yupDiagnosedMaxLenght": "Chẩn đoán vượt quá độ dài cho phép",
+    "yupDiagnosedInvalid":"Chẩn đoán không hợp lệ",
+
+    "yupUsesRequired": "Lần sử dụng không được để trống",
+    "yupUsesMaxLenght":"Lần sử dụng vượt quá độ dài cho phép",
+    "yupUsesInvalid":"Lần sử dụng không hợp lệ",
+
+    "yupQuantityNumber": "Số lượng phải là số",
+    "yupQuantityRequired": "Số lượng không được để trống",
+    "yupQuantityMax": "Số lượng phải vượt quá số lượng cho phép",
+    "yupQuantityInvalid":"Số lượng không hợp lệ ",
+
+    "yupCityRequired": "Tỉnh/Thành phố không được để trống",
+    "yupCityNumber": "Tỉnh/Thành phố phải được chọn",
+
+    "yupDistrictRequired": "Quận/Huyện không được để trống",
+    "yupDistrictNumber": "Quận/Huyện phải được chọn"
+
+}

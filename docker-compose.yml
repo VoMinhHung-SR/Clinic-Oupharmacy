@@ -1,0 +1,59 @@
+version: '3.8'
+
+networks:
+  oupharmacy_network:
+    driver: bridge
+
+services:
+  frontend:
+    build:
+      context: ./oupharmacyapp
+    networks: 
+      - oupharmacy_network
+    ports: # Vite port: 5173 => 3000:80 Nginx
+      - "3000:80" 
+    expose: 
+      - 5173
+
+  backend:
+    build:
+      context: ./OUPharmacyManagementApp
+    networks:
+      - oupharmacy_network
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DEBUG: "True"
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - ./OUPharmacyManagementApp/.env 
+    expose: 
+      - 8000
+
+  db:
+    image: mysql:8.0
+    networks: 
+      - oupharmacy_network
+    env_file: 
+      ./OUPharmacyManagementApp/.env
+    container_name: mysql_container
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Hung@123456
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    expose: 
+      - 3306
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
