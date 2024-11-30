@@ -6,12 +6,12 @@ import DiagnosisCard from "../../DiagnosisCard"
 import useListItemButton from "../hooks/useListItemButton"
 import ListItemButton from "../ListItemButton"
 
-const MiniDiagnosisCard = ({diagnosis,isLoaing}) => {
+const MiniDiagnosisCard = ({diagnosis,isLoading}) => {
     const {t, ready} = useTranslation(['diagnosis'])
     const { isOpen , handleIsOpen } = useListItemButton()
     const {id, sign, diagnosed} = diagnosis
 
-    if(!ready && isLoaing)
+    if(!ready && isLoading)
         return <Box sx={{ height: "300px" }}>
         <Box className='ou-p-5'>
             <Loading/>

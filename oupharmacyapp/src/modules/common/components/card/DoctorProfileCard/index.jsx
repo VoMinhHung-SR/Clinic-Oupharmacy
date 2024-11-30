@@ -20,9 +20,9 @@ const DoctorProfileCard = ({doctorInfo}) => {
         <>  
             {!doctor && <></>}
             {doctor &&
-                <Container className="!ou-py-6">
+                <Container className="!ou-py-4">
                     <Box className="ou-flex ou-py-4" component={Paper} elevation={4} >
-                        <div className="ou-w-[30%]">
+                        {/* <div className="ou-w-[50%]">
                         <Box className="ou-p-5">
                             <div className="ou-text-center">
                             <Avatar
@@ -34,9 +34,9 @@ const DoctorProfileCard = ({doctorInfo}) => {
                             </div>
                         </Box>
                         </div>
-                        
-                       
-                        <div className="ou-w-[70%] ">
+                         */}
+                    
+                        <div className="ou-w-[100%]">
                             <BookingForm doctorInfo={doctor}/>
                         </div>
                     </Box>

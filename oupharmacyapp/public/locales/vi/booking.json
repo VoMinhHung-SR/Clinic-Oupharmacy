@@ -6,6 +6,7 @@
     "patientInfo": "Thông tin bệnh nhân",
     "description": "Mô tả",
     "createdDate": "Ngày khám",
+    "fullName": "Họ và tên",
     "firstName": "Họ",
     "lastName": "Tên",
     "email": "Email",

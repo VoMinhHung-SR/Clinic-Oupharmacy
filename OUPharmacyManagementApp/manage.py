@@ -6,7 +6,9 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    # env_file = '.env.local' if os.path.exists('.env.local') else '.env'
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'OUPharmacyManagementApp.settings')
+    # os.environ['DJANGO_ENV_FILE'] = env_file
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

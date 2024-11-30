@@ -17,7 +17,7 @@ import cloudinary.uploader
 import cloudinary.api
 import os
 
-
+from decouple import config, Csv, Config, RepositoryEnv
 from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials
@@ -33,8 +33,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG MODE ; SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+# DEBUG=True
+
+# env_file = os.environ.get('DJANGO_ENV_FILE', '.env')
+# config = Config(RepositoryEnv(env_file))
 
 # Application definition
 
@@ -76,11 +80,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-# Area for cron-job
-# CRONJOBS = [
-#     ('*/15 * * * *', 'myapp.cron.my_scheduled_job'),
-# ]
-
 ROOT_URLCONF = 'OUPharmacyManagementApp.urls'
 
 TEMPLATES = [
@@ -121,12 +120,12 @@ pymysql.install_as_MySQLdb()
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT')
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT')
     }
 }
 
@@ -175,7 +174,7 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'mainApp.User'
 MEDIA_ROOT = '%s/mainApp/static/' % BASE_DIR
 CKEDITOR_UPLOAD_PATH = 'post/'
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 INTERNAL_IPS = [
     '127.0.0.1'
 ]

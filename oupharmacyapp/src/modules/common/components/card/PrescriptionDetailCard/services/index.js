@@ -6,7 +6,7 @@ export const fetchMedicinesUnit = async (query) =>{
     const res = await authApi().get(`${endpoints['medicine-units']}?${query}`)
     return res;
 }
-// To: create prescbring before create create prescriptionDetail
+// To: create prescribing before create create prescriptionDetail
 export const fetchCreatePrescribing = async (prescribingData) =>{
     const res = await authApi().post(endpoints['prescribing'],prescribingData)
     return res
