@@ -4,7 +4,7 @@ import { fetchPrescrriptionDetailBillCard } from "../../BillCard/services"
 
 const useExaminationDetailCard = (examinationID) => {
    const [diagnosis , setDiagnosis] = useState([])
-   const [prescbring, setPrescribing] = useState([])
+   const [prescribing, setPrescribing] = useState([])
    const [bill, setBill] = useState([])
    const [isLoading, setIsLoading] = useState(true)
    useEffect(()=> {
@@ -41,9 +41,9 @@ const useExaminationDetailCard = (examinationID) => {
         }
     }
 
-    const loadBill = async (prescbringID) => {
+    const loadBill = async (prescribingID) => {
         try{
-            const res = await fetchPrescrriptionDetailBillCard(prescbringID)
+            const res = await fetchPrescrriptionDetailBillCard(prescribingID)
             if(res.status === 200){
                 setBill(res.data)
             }
@@ -63,7 +63,7 @@ const useExaminationDetailCard = (examinationID) => {
     return {
         isLoading,
         diagnosis, bill, 
-        prescbring
+        prescribing
     }
 }
 

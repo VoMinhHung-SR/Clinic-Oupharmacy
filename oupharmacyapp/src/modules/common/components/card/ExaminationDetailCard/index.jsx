@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 
 const ExaminationDetailCard = ({examinationData}) => {
     const { t, tReady } = useTranslation(["examination-detail"]);
-    const { diagnosis, isLoading, bill, prescbring} = useExaminationDetailCard(examinationData?.id)
+    const { diagnosis, isLoading, bill, prescribing} = useExaminationDetailCard(examinationData?.id)
  
 
     if (tReady)
@@ -137,12 +137,12 @@ const ExaminationDetailCard = ({examinationData}) => {
                 </h5>
                 <CustomCollapseListItemButton title={t("diagnose")} loading={isLoading}
                   content={
-                    <MiniDiagnosisCard diagnosis={diagnosis} isLoaing={isLoading}/>
+                    <MiniDiagnosisCard diagnosis={diagnosis} isLoading={isLoading}/>
                   }
                 />
                 <CustomCollapseListItemButton title={t("prescribing")}
                    content={
-                    <MiniPrescribingCard prescribing={prescbring} isLoaing={isLoading} receipt={bill}/>
+                    <MiniPrescribingCard prescribing={prescribing} isLoading={isLoading} receipt={bill}/>
                   }
                 />
               </Box>

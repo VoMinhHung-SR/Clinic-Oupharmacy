@@ -206,7 +206,11 @@ const Booking = () => {
     }
     // Step 3
     const renderThirdState = () => {
-        return (<div>xin chao day la state 3</div>)
+        if (state===3)
+        return (<Box>
+            {allConfig && allConfig.doctors ? allConfig.doctors.map((d)=> 
+                <DoctorProfileCard doctorInfo={d} key={d.id}/>) : <></>}
+        </Box>)
     }
     
 
@@ -221,7 +225,7 @@ const Booking = () => {
                             ou-m-auto ou-flex ou-items-center ou-justify-center" 
                             component={Paper} elevation={6}>        
 
-                    <div className="ou-text-center ou-py-5">           
+                    <div className="ou-text-center ou-py-5 ou-w-[80%]">           
                         {state === 1 && renderSelectionBookingMethod()}
                         {state === 2 && renderSecondState()}
                         {state === 3 && renderThirdState()}
@@ -233,9 +237,6 @@ const Booking = () => {
                 </Box>
             </Box>
             
-          
-            {/* {allConfig && allConfig.doctors ? allConfig.doctors.map((d)=> 
-                <DoctorProfileCard doctorInfo={d} key={d.id}/>) : <></>} */}
             
             {openBackdrop === true ?
                 (<BackdropLoading />)

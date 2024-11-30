@@ -13,7 +13,6 @@ import NotifyMessage from '../../../pages/NotificationComponents/NotifyMessage';
 import Loading from '../Loading';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
-import CustomCollapseListItemButton from '../collapse/ListItemButton';
 
 export default function NotificationButton({ length, isLoading, items, updateNotifications }) {
   const {t} = useTranslation(['common'])
