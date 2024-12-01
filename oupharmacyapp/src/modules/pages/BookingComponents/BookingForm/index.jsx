@@ -8,14 +8,15 @@ import useDoctorAvailability from "../DoctorAvailabilityTime/hooks/useDoctorAvai
 import clsx from "clsx"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import CustomCollapseListItemButton from "../../../common/components/collapse/ListItemButton"
+import BookingContext from "../../../../lib/context/BookingContext"
 
-const BookingForm = ({doctorInfo, patientInfo}) => {
+const BookingForm = ({doctorInfo}) => {
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal'])
 
     const doctor = doctorInfo;
-    const patient = patientInfo
+    const {patientSelected} = useContext(BookingContext)
     const {timeNotAvailable, isLoading, setDate, slideRight, handleSlideChange, setDoctorID,
         formAddExaminationSchema, onSubmit} = useDoctorAvailability();
 
@@ -160,6 +161,7 @@ const BookingForm = ({doctorInfo, patientInfo}) => {
                         name="firstName"
                         type="text"
                         label={t('firstName')}
+                        value={patientSelected.first_name}
                         error={methods.formState.errors.firstName}
                         {...methods.register("firstName")}
                     />
@@ -173,6 +175,7 @@ const BookingForm = ({doctorInfo, patientInfo}) => {
                         name="lastName"
                         type="text"
                         label={t('lastName')}
+                        value={patientSelected.last_name}
                         error={methods.formState.errors.lastName}
                         {...methods.register("lastName")}
                     />
@@ -189,6 +192,7 @@ const BookingForm = ({doctorInfo, patientInfo}) => {
                         name="email"
                         type="text"
                         label={t('email')}
+                        value={patientSelected.email}
                         error={methods.formState.errors.email}
                         {...methods.register("email")}
                       
@@ -205,6 +209,7 @@ const BookingForm = ({doctorInfo, patientInfo}) => {
                         name="phoneNumber"
                         type="text"
                         label={t('phoneNumber')}
+                        value={patientSelected.phone_number}
                         error={methods.formState.errors.phoneNumber}
                         {...methods.register("phoneNumber")}
                         />
@@ -221,6 +226,7 @@ const BookingForm = ({doctorInfo, patientInfo}) => {
                         name="address"
                         type="text"
                         label={t('address')}
+                        value={patientSelected.address}
                         error={methods.formState.errors.address}
                         {...methods.register("address")}                             
                         />
@@ -238,6 +244,7 @@ const BookingForm = ({doctorInfo, patientInfo}) => {
                             label={t('dateOfBirth')}
                             type="date"
                             name="dateOfBirth"
+                            value={patientSelected.date_of_birth}
                             error={methods.formState.errors.dateOfBirth}
                             sx={{ width: 220 }}
                             InputLabelProps={{
@@ -257,6 +264,7 @@ const BookingForm = ({doctorInfo, patientInfo}) => {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             name="gender"
+                            value={patientSelected.gender}
                             error={methods.formState.errors.gender}
                             label={t('gender')}
                             defaultValue={0}
