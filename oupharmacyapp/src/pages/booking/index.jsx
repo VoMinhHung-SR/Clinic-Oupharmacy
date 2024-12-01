@@ -28,7 +28,7 @@ const Booking = () => {
 
     const { allConfig } = useSelector((state) => state.config);
 
-    const {state, actionUpState, actionDownState} = useContext(BookingContext)
+    const {state, actionUpState, actionDownState, patientSelected, setPatientSelected} = useContext(BookingContext)
 
     const {checkEmail, checkPatientExist, openBackdrop, 
         checkPatientExistSchema, patientList, isLoading,
@@ -36,7 +36,6 @@ const Booking = () => {
 
     const [isAddNewPatient, setIsAddNewPatient] =  useState(true)
     const [IsPatientCreated, setPatientCreated] = useState(false)
-    const [patientID, setPatientID] = useState(-1)
 
     const methods = useForm({
         mode:"onSubmit",
@@ -56,6 +55,9 @@ const Booking = () => {
             </Box>
     </Box>;
     
+    const onCallbackPatientCardOnClick = (patientData) => {
+        setPatientSelected(patientData)
+    }
 
     const checkUpStateTwoToThree = () => {
         // option 1: create a new patient
@@ -65,13 +67,14 @@ const Booking = () => {
             if (state === 2 && IsPatientCreated)
                 return actionUpState()
         // option 2: not create patient => select an exist patient
-        if (state === 2 && !patientID === -1 )
+        if (state === 2 && !patientSelected )
             return createToastMessage({type: TOAST_ERROR ,message:t('booking:errPatientNeedToSelect')})
         
         return actionUpState()
     }
 
-    const createPatientSuccess = () => {
+    const createPatientSuccess = (patientData) => {
+        setPatientSelected(patientData)
         setPatientCreated(true)
         actionUpState()
     }
@@ -198,7 +201,7 @@ const Booking = () => {
                 ou-text-blue-700 ou-font-bold">{t('booking:patientProfileList')}</span>
                 <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     {patientList && patientList.map(p => <PatientCard patientData={p} 
-                    callBackOnClickCard={setPatientID} key={"pa"+p.id} isSelected={patientID === p.id}/>)}
+                    callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} isSelected={patientSelected.id === p.id}/>)}
                 </Grid>
             </div>
         )

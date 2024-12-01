@@ -8,6 +8,8 @@ export const BookingContext = createContext();
 export const BookingProvider = ({ children }) => {
   const [state, setState] = useState(1)
 
+  const [patientSelected, setPatientSelected] = useState({})
+
   useEffect(()=> {}, [state]) 
 
   const actionUpState = () => {
@@ -18,7 +20,9 @@ export const BookingProvider = ({ children }) => {
   }
 
   return (
-    <BookingContext.Provider value={{ state, actionUpState, actionDownState }}>
+    <BookingContext.Provider value={{ 
+    state, patientSelected, setPatientSelected,
+    actionUpState, actionDownState }}>
       {children}
     </BookingContext.Provider>
   );
