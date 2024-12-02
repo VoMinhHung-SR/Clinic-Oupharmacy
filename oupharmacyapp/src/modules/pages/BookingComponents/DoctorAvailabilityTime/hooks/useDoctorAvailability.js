@@ -28,35 +28,6 @@ const useDoctorAvailability = () => {
     const [slideRight, setSlideRight] = useState(false)    
 
     const formAddExaminationSchema = Yup.object().shape({
-        firstName: Yup.string().trim()
-            .required(t('yupFirstNameRequired'))
-            .max(150, t('yupFirstNameMaxLenght'))
-            .matches(REGEX_NAME, t('yupFirstNameInvalid')),
-
-        lastName: Yup.string().trim()
-            .required(t('yupLastNameRequired'))
-            .max(150, t('yupLastNameMaxLenght'))
-            .matches(REGEX_NAME, t('yupLastNameInvalid')),
-
-        email: Yup.string().trim()
-            .required(t('yupEmailRequired'))
-            .max(254, t('yupEmailMaxLenght'))
-            .matches(REGEX_EMAIL, t('yupEmailInvalid')),
-
-        phoneNumber: Yup.string().trim()
-            .required(t('yupPhoneNumberRequired'))
-            .matches(REGEX_PHONE_NUMBER, t('yupPhoneNumberInvalid')),
-            
-        address: Yup.string().trim()
-            .required(t('yupAddressRequired'))
-            .matches(REGEX_ADDRESS, t('yupAddressInvalid')),
-
-        dateOfBirth: Yup.string()
-            .required(t('yupDOBRequired')),
-
-        gender: Yup.string()
-        .required(t('yupGenderRequired')),
-    
         description: Yup.string().trim()
             .required(t('yupDescriptionRequired'))
             .max(254, t('yupDescriptionMaxLenght'))
@@ -139,21 +110,15 @@ const useDoctorAvailability = () => {
 
 
     
-    const onSubmit = async (data, callbackSuccess, callbackFail) => {
+    const onSubmit = async (data, patientData ,callbackSuccess, callbackFail) => {
         if(data === undefined)
             return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
-    
+        
+        if(!patientData)
+            return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
+            
     
         // const createdDate = handleTimeChange(data.selectedDate, data.selectedTime);
-        const patientData = {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            email: data.email,
-            phone_number: data.phoneNumber,
-            date_of_birth: data.dateOfBirth,
-            address: data.address,
-            gender: data.gender
-        }
 
         const checkingPatientEmail = async () => {
             const res = await fetchPatientExist({email:data.email})
@@ -181,7 +146,7 @@ const useDoctorAvailability = () => {
                 const res = await fetchCreateDoctorWorkingTime(requestData)
                 
                 if(res.status === 201){
-                    handleOnSubmit(patientID, res.data.id)
+                    handleOnSubmit(res.data.id)
                     // return createToastMessage({message:"OKE",type:TOAST_SUCCESS})
                 }
             }catch(err){
@@ -190,10 +155,10 @@ const useDoctorAvailability = () => {
 
         }
 
-        const handleOnSubmit = async (patientID, doctorWorkingTime) => {
+        const handleOnSubmit = async (doctorWorkingTime) => {
             // setOpenBackdrop(true)
             // Update done or created patient info
-            const res = await fetchCreateOrUpdatePatient(patientID, patientData);
+            const res = await fetchCreateOrUpdatePatient(patientData.id, patientData);
             
 
             const selectedStartTime = data.selectedTime.split(' - ')[0]; // Extract the first start time

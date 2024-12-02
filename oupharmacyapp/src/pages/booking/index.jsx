@@ -197,7 +197,7 @@ const Booking = () => {
         
         return (
             <div> 
-                <span className="ou-absolute ou-translate-x-[-50%] ou-top-[15%] ou-text-xl
+                <span className="ou-absolute ou-translate-x-[-50%] ou-top-[5%] ou-text-xl
                 ou-text-blue-700 ou-font-bold">{t('booking:patientProfileList')}</span>
                 <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     {patientList && patientList.map(p => <PatientCard patientData={p} 
@@ -223,12 +223,12 @@ const Booking = () => {
                 <title>Booking</title>
             </Helmet>
 
-            <Box className="ou-py-8 ou-h-[100vh]">
-                <Box className=" ou-min-h-[400px] ou-h-[90%] ou-relative
+            <Box className="ou-py-8 ou-min-h-[80vh] ou-flex">
+                <Box className="ou-relative ou-w-full
                             ou-m-auto ou-flex ou-items-center ou-justify-center" 
                             component={Paper} elevation={6}>        
 
-                    <div className="ou-text-center ou-py-5 ou-w-[80%]">           
+                    <div className="ou-text-center ou-py-20 ou-w-[80%]">           
                         {state === 1 && renderSelectionBookingMethod()}
                         {state === 2 && renderSecondState()}
                         {state === 3 && renderThirdState()}
