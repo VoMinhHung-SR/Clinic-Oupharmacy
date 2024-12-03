@@ -16,7 +16,7 @@ const BookingForm = ({doctorInfo}) => {
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal', 'home'])
 
     const doctor = doctorInfo;
-    const {patientSelected} = useContext(BookingContext)
+    const {patientSelected, actionUpState} = useContext(BookingContext)
     const {timeNotAvailable, isLoading, setDate, slideRight, handleSlideChange, setDoctorID,
         formAddExaminationSchema, onSubmit} = useDoctorAvailability();
 
@@ -154,13 +154,13 @@ const BookingForm = ({doctorInfo}) => {
     return (
         <>
         <Box> 
-            <form onSubmit={methods.handleSubmit((data)=> onSubmit(data, patientSelected,() => methods.reset(), methods.setError()))}
-                className="ou-m-auto  ou-px-5"> 
-                
+            <form onSubmit={methods.handleSubmit((data)=> onSubmit(data, patientSelected,() => {
+                methods.reset(); actionUpState();},
+                methods.setError()))} className="ou-m-auto ou-px-5"> 
                 {/* Patient Form required */}
                 {renderPatientInformationForm(slideRight)}
                 {/* Area button */}
-                
+    
                 <Grid item className="ou-flex !ou-mb-3">
                     {!slideRight ?  disableButton(): <>
                         <Button variant="contained" 

@@ -136,4 +136,45 @@
       opacity: 100%;
     }
     /* Style --- Base Form */
+
+
+    /* Progress Bar */
+    ul.ou-booking-progress-bar{
+      display: flex;
+      text-align: center;
+      align-self: center;
+      justify-content: center;
+    }
+    ul.ou-booking-progress-bar > li {
+      margin: 0 20px;
+    }
+    .ou-booking-progress-object{
+      border-radius: 12px;
+      padding: 8px;
+      background-color:  #1976d2;
+     
+      color: white;
+      position: relative;
+      opacity: 0.3;
+    }
+    .ou-booking-progress-object__active {
+      background-color: #1D4ED8;
+      opacity: 1;
+    }
+    .ou-booking-progress-object::after{
+      content: " ";
+      position: absolute;
+      width: 40px;
+      height: 4px;
+      top: 50%;
+      right: 0;
+      background-color: #1D4ED8;
+      transform: translate(100%, -50%);                       
+    }
+    ul.ou-booking-progress-bar > li:last-child p.ou-booking-progress-object::after {
+      content: " ";
+      width: 0px;
+      height: 0px;
+    }
+    /* Progress Bar */
   }
