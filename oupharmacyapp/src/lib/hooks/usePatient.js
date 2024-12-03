@@ -20,7 +20,7 @@ const usePatient = () => {
             const res = await fetchCreateOrUpdatePatient(-1,dataSubmit)
     
             if(res.status === 201){
-                callbackSuccess()
+                callbackSuccess(res.data)
                 return createToastMessage({message:t('booking:patientCreatedSuccess'), type:TOAST_SUCCESS})
             }
         } catch (err) {

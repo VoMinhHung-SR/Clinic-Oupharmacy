@@ -29,9 +29,9 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
         }
     })
 
-    const handleOnCallbackSuccess = () => {
+    const handleOnCallbackSuccess = (patientData) => {
         try {
-            onCallbackSuccess()
+            onCallbackSuccess(patientData)
         } catch (err) {
             console.log(err)
         }
@@ -42,10 +42,8 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
         <div className="ou-base-form-outline">
             <h5 className="ou-text-center ou-text-2xl">{t('patientInfo')}</h5>
             <form onSubmit={methods.handleSubmit((data)=> 
-                createPatient(user.id, data, methods.setError, handleOnCallbackSuccess))}
-                
-            >
-                 
+                createPatient(user.id, data, methods.setError, handleOnCallbackSuccess(data))
+            )}>
                 <Grid container justifyContent="flex"  id={1}>
                     <Grid item xs={6}  className="!ou-mt-6 ou-pr-2" >
                         <TextField

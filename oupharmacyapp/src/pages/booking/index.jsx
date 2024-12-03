@@ -21,6 +21,7 @@ import BookingContext from "../../lib/context/BookingContext";
 import createToastMessage from "../../lib/utils/createToastMessage";
 import { TOAST_ERROR } from "../../lib/constants";
 import PatientCard from "../../modules/common/components/card/PatientCard";
+import BookingProcess from "../../modules/pages/BookingComponents/BookingProcess";
 
 const Booking = () => {
     const {user} = useContext(UserContext)
@@ -28,7 +29,7 @@ const Booking = () => {
 
     const { allConfig } = useSelector((state) => state.config);
 
-    const {state, actionUpState, actionDownState} = useContext(BookingContext)
+    const {state, actionUpState, actionDownState, patientSelected, setPatientSelected} = useContext(BookingContext)
 
     const {checkEmail, checkPatientExist, openBackdrop, 
         checkPatientExistSchema, patientList, isLoading,
@@ -36,7 +37,6 @@ const Booking = () => {
 
     const [isAddNewPatient, setIsAddNewPatient] =  useState(true)
     const [IsPatientCreated, setPatientCreated] = useState(false)
-    const [patientID, setPatientID] = useState(-1)
 
     const methods = useForm({
         mode:"onSubmit",
@@ -56,6 +56,9 @@ const Booking = () => {
             </Box>
     </Box>;
     
+    const onCallbackPatientCardOnClick = (patientData) => {
+        setPatientSelected(patientData)
+    }
 
     const checkUpStateTwoToThree = () => {
         // option 1: create a new patient
@@ -65,56 +68,21 @@ const Booking = () => {
             if (state === 2 && IsPatientCreated)
                 return actionUpState()
         // option 2: not create patient => select an exist patient
-        if (state === 2 && !patientID === -1 )
+        if (state === 2 && !patientSelected )
             return createToastMessage({type: TOAST_ERROR ,message:t('booking:errPatientNeedToSelect')})
         
         return actionUpState()
     }
 
-    const createPatientSuccess = () => {
+    const createPatientSuccess = (patientData) => {
+        setPatientSelected(patientData)
         setPatientCreated(true)
         actionUpState()
     }
-
-    // const renderIsOpenEmailForm = (isFormEmailOpen) => {
-    //     if(isFormEmailOpen)
-    //     return (
-    //         <Container>
-    //             <Box className="ou-w-[60%] ou-max-w-[600px] 
-    //             ou-absolute ou-top-[40%] ou-left-[50%] -ou-translate-y-1/2 -ou-translate-x-1/2 ou-m-auto" component={Paper} elevation={6}>        
-    //                 <div>
-    //                     <form className="mb-5 p-4 " onSubmit={methods.handleSubmit(checkEmail)} style={{"margin": "auto",
-    //                     "padding": "20px 20px", "borderRadius": "5px" }}>
-    //                         <FormControl fullWidth >
-    //                             <InputLabel htmlFor="email">{t('enterEmail')}</InputLabel>
-    //                             <OutlinedInput
-    //                                 autoComplete="given-name"
-    //                                 id="email"
-    //                                 name="email"
-    //                                 label={t('enterEmail')}
-    //                                 endAdornment={
-    //                                     <IconButton position="start" type='submit' >
-    //                                         <SendIcon />
-    //                                     </IconButton>
-    //                                 }
-    //                                 error={methods.formState.errors.email}
-    //                                 {...methods.register("email")}
-    //                                 />
-    //                             {methods.formState.errors ? (<span className="ou-text-xs ou-text-red-600 ou-mt-1">{methods.formState.errors.email?.message}</span>) : <></>}
-    //                         </FormControl>
-    //                     </form>                   
-                    
-    //                 </div>
-    //             </Box>
-    //         </Container>
-    //     )
-    // }
-
-
     // === Base step ===
-    
     const renderStep = () => {
-
+        if (state ===  4)
+            return;
         if (state === 1)
             return <button
                     className={clsx("ou-btn-base ou-min-w-[120px]" ,{})
@@ -194,11 +162,9 @@ const Booking = () => {
         
         return (
             <div> 
-                <span className="ou-absolute ou-translate-x-[-50%] ou-top-[15%] ou-text-xl
-                ou-text-blue-700 ou-font-bold">{t('booking:patientProfileList')}</span>
-                <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent={"center"}>
                     {patientList && patientList.map(p => <PatientCard patientData={p} 
-                    callBackOnClickCard={setPatientID} key={"pa"+p.id} isSelected={patientID === p.id}/>)}
+                    callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} isSelected={patientSelected.id === p.id}/>)}
                 </Grid>
             </div>
         )
@@ -212,7 +178,12 @@ const Booking = () => {
                 <DoctorProfileCard doctorInfo={d} key={d.id}/>) : <></>}
         </Box>)
     }
-    
+    // Step 4 
+    const renderLastState = () => {
+        return(
+            <Box>Cam on ban da dat lich kham cua chung toi</Box>
+        )
+    }
 
     return (
         <>
@@ -220,21 +191,29 @@ const Booking = () => {
                 <title>Booking</title>
             </Helmet>
 
-            <Box className="ou-py-8 ou-h-[100vh]">
-                <Box className=" ou-min-h-[400px] ou-h-[90%] ou-relative
+            <Box className="ou-relative ou-py-8 ou-min-h-[80vh] ou-flex">
+                <Box className="ou-relative ou-w-full
                             ou-m-auto ou-flex ou-items-center ou-justify-center" 
                             component={Paper} elevation={6}>        
 
-                    <div className="ou-text-center ou-py-5 ou-w-[80%]">           
+                    {/* Progression area */}
+                    <div className="ou-absolute ou-top-[5%]">
+                        <BookingProcess/>
+                    </div>
+
+                    <div className="ou-text-center ou-py-20 ou-w-[80%] ou-mt-8">           
                         {state === 1 && renderSelectionBookingMethod()}
                         {state === 2 && renderSecondState()}
                         {state === 3 && renderThirdState()}
+                        {state === 4 && renderLastState()}
                     </div>
 
                     <div className="ou-bottom-0 ou-absolute ou-right-0 ou-m-3">
                         {renderStep()}
                     </div>
                 </Box>
+
+               
             </Box>
             
             
@@ -242,20 +221,6 @@ const Booking = () => {
                 (<BackdropLoading />)
                 : <></>
             } 
-            
-            {/* {renderIsOpenEmailForm(isFormEmailOpen)}
-            {!isFormEmailOpen && 
-            <> 
-                {(!methods.formState.errors.email && methods.getValues('email') !== '' && !isFormEmailOpen) ?
-                        <FormAddExamination 
-                        checkPatientExist={checkPatientExist} 
-                        patientID={patientID}
-                        email={formEmail.email}
-                        handleOpenFormEmail={handleOpenFormEmail}
-                    />
-                     : <></>
-                }   
-            </>} */}
         </>
     )
     
