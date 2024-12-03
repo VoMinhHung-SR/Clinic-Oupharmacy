@@ -21,21 +21,7 @@ const DoctorProfileCard = ({doctorInfo}) => {
             {!doctor && <></>}
             {doctor &&
                 <Container className="!ou-py-4">
-                    <Box className="ou-flex ou-py-4" component={Paper} elevation={4} >
-                        {/* <div className="ou-w-[50%]">
-                        <Box className="ou-p-5">
-                            <div className="ou-text-center">
-                            <Avatar
-                                variant="rounded" className="ou-m-auto"
-                                src={doctor.avatar === ERROR_CLOUDINARY ? AVATAR_DEFAULT : doctor.avatar}
-                                alt={doctor.first_name + doctor.last_name}   
-                                sx={{ width: 240, height: 240, '& > img': { objectFit: 'contain' } }}
-                            />  
-                            </div>
-                        </Box>
-                        </div>
-                         */}
-                    
+                    <Box className="ou-flex ou-py-4" component={Paper} elevation={4} >           
                         <div className="ou-w-[100%]">
                             <BookingForm doctorInfo={doctor}/>
                         </div>
