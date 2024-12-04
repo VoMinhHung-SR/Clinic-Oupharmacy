@@ -11,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useContext, useEffect } from "react"
 import CustomCollapseListItemButton from "../../../common/components/collapse/ListItemButton"
 import BookingContext from "../../../../lib/context/BookingContext"
+import StethoscopeIcon from "../../../../lib/icon/StethoscopeIcon"
 
 const BookingForm = ({doctorInfo}) => {
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal', 'home'])
@@ -73,7 +74,9 @@ const BookingForm = ({doctorInfo}) => {
                     <CustomCollapseListItemButton isOpen={true} title={
                         <div className="ou-flex ou-justify-center ou-items-center">
                             <div className="ou-mr-2">
-                                <Avatar></Avatar>
+                                <Avatar>
+                                    <StethoscopeIcon size={20}/>
+                                </Avatar>
                             </div>
                         <p className="ou-w-full ou-text-blue-700 ou-font-bold">{doctor.first_name} {doctor.last_name}</p>
                         </div>} 

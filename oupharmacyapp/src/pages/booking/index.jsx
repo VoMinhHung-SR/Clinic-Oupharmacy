@@ -29,22 +29,14 @@ const Booking = () => {
 
     const { allConfig } = useSelector((state) => state.config);
 
-    const {state, actionUpState, actionDownState, patientSelected, setPatientSelected} = useContext(BookingContext)
+    const { isAddNewPatient, setIsAddNewPatient,
+        state, actionUpState, actionDownState, clearStage,
+        patientSelected, setPatientSelected} = useContext(BookingContext)
 
-    const {checkEmail, checkPatientExist, openBackdrop, 
-        checkPatientExistSchema, patientList, isLoading,
-        formEmail, isFormEmailOpen, handleOpenFormEmail} = useBooking()
+    const {openBackdrop,patientList, isLoading} = useBooking()
 
-    const [isAddNewPatient, setIsAddNewPatient] =  useState(true)
-    const [IsPatientCreated, setPatientCreated] = useState(false)
-
-    const methods = useForm({
-        mode:"onSubmit",
-        resolver: yupResolver(checkPatientExistSchema),
-        defaultValues:{
-            email:""
-        }
-    })
+    // const [isAddNewPatient, setIsAddNewPatient] =  useState(true)
+    
     // TODO: adding skeletons here
     if (!ready)
         return <Box sx={{ minHeight: "300px" }}>
@@ -56,6 +48,7 @@ const Booking = () => {
             </Box>
     </Box>;
     
+
     const onCallbackPatientCardOnClick = (patientData) => {
         setPatientSelected(patientData)
     }
@@ -63,26 +56,29 @@ const Booking = () => {
     const checkUpStateTwoToThree = () => {
         // option 1: create a new patient
         if(isAddNewPatient)
-            if (state === 2 && !IsPatientCreated)
+            if (state === 2 && Object.keys(patientSelected).length <= 0)
                 return createToastMessage({type: TOAST_ERROR ,message:t('booking:errPatientNeedToCreate')})
-            if (state === 2 && IsPatientCreated)
+            if (state === 2 && Object.keys(patientSelected).length > 0)
                 return actionUpState()
         // option 2: not create patient => select an exist patient
-        if (state === 2 && !patientSelected )
+        if (state === 2 && Object.keys(patientSelected).length <= 0)
             return createToastMessage({type: TOAST_ERROR ,message:t('booking:errPatientNeedToSelect')})
-        
         return actionUpState()
     }
 
     const createPatientSuccess = (patientData) => {
         setPatientSelected(patientData)
-        setPatientCreated(true)
         actionUpState()
     }
     // === Base step ===
     const renderStep = () => {
         if (state ===  4)
-            return;
+            return(
+                <>
+                    <button className="ou-mr-3 ou-btn-base ou-min-w-[120px]" onClick={()=> clearStage()}>Add Another</button>
+                    <button className="ou-btn-base__success ou-min-w-[120px] " onClick={()=> clearStage()}>See Booking</button>
+                </>)
+        ;
         if (state === 1)
             return <button
                     className={clsx("ou-btn-base ou-min-w-[120px]" ,{})
@@ -164,7 +160,7 @@ const Booking = () => {
             <div> 
                 <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent={"center"}>
                     {patientList && patientList.map(p => <PatientCard patientData={p} 
-                    callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} isSelected={patientSelected.id === p.id}/>)}
+                    callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} isSelected={patientSelected && patientSelected.id === p.id}/>)}
                 </Grid>
             </div>
         )

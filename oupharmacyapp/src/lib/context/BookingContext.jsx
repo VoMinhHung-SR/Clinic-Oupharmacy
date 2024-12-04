@@ -10,7 +10,13 @@ export const BookingProvider = ({ children }) => {
 
   const [patientSelected, setPatientSelected] = useState({})
 
-  useEffect(()=> {}, [state]) 
+  const [isAddNewPatient, setIsAddNewPatient] =  useState(true)
+
+  useEffect(()=> {
+    if(state === 1){
+      setPatientSelected({})
+    }
+  }, [state]) 
 
   const actionUpState = () => {
     setState(state + 1)
@@ -19,10 +25,18 @@ export const BookingProvider = ({ children }) => {
     setState(state - 1)
   }
 
+
+  const clearStage = () => {
+    setState(1)
+    setIsAddNewPatient(true)
+    setPatientSelected({})
+  }
+
   return (
     <BookingContext.Provider value={{ 
+    isAddNewPatient, setIsAddNewPatient,
     state, patientSelected, setPatientSelected,
-    actionUpState, actionDownState }}>
+    actionUpState, actionDownState, clearStage }}>
       {children}
     </BookingContext.Provider>
   );
