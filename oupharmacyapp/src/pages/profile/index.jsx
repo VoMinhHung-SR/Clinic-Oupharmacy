@@ -65,15 +65,12 @@ const Profile = () => {
 
 
            <Box className="ou-w-[70%] ou-ml-3" component={Paper} elevation={4}>
-               { removeSymbol('/',location.pathname) === 'profile' || 'dashboard/profile' ? 
+               { removeSymbol('/',location.pathname) === 'profile' || removeSymbol('/',location.pathname) === 'dashboard/profile' ? 
                    <Box>
                         <Box>
-
                             <UpdateProfile userID={user.id} dob={user.date_of_birth} gender={parseInt(user.gender)} email={user.email}
                             firstName={user.first_name} lastName={user.last_name} phoneNumber={user.phone_number} handleOnSuccess={handleChangeFlag}/>
-                        
                         </Box>
-                    
                     </Box>
                 : <Outlet/>
                 }
