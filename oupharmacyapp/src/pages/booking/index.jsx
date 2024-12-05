@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControl, Grid, IconButton, InputLabel, OutlinedInput, Paper } from "@mui/material"
+import { Avatar, Box, Button, Container, FormControl, Grid, IconButton, InputLabel, OutlinedInput, Paper } from "@mui/material"
 
 import SendIcon from '@mui/icons-material/Send';
 import { useForm } from "react-hook-form";
@@ -22,6 +22,8 @@ import createToastMessage from "../../lib/utils/createToastMessage";
 import { TOAST_ERROR } from "../../lib/constants";
 import PatientCard from "../../modules/common/components/card/PatientCard";
 import BookingProcess from "../../modules/pages/BookingComponents/BookingProcess";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
 
 const Booking = () => {
     const {user} = useContext(UserContext)
@@ -34,8 +36,6 @@ const Booking = () => {
         patientSelected, setPatientSelected} = useContext(BookingContext)
 
     const {openBackdrop,patientList, isLoading} = useBooking()
-
-    // const [isAddNewPatient, setIsAddNewPatient] =  useState(true)
     
     // TODO: adding skeletons here
     if (!ready)
@@ -76,7 +76,6 @@ const Booking = () => {
             return(
                 <>
                     <button className="ou-mr-3 ou-btn-base ou-min-w-[120px]" onClick={()=> clearStage()}>Add Another</button>
-                    <button className="ou-btn-base__success ou-min-w-[120px] " onClick={()=> clearStage()}>See Booking</button>
                 </>)
         ;
         if (state === 1)
@@ -168,17 +167,21 @@ const Booking = () => {
     }
     // Step 3
     const renderThirdState = () => {
-        if (state===3)
         return (<Box>
             {allConfig && allConfig.doctors ? allConfig.doctors.map((d)=> 
                 <DoctorProfileCard doctorInfo={d} key={d.id}/>) : <></>}
         </Box>)
     }
+
     // Step 4 
     const renderLastState = () => {
         return(
-            <Box>Cam on ban da dat lich kham cua chung toi</Box>
-        )
+            <>
+                <Box className="ou-text-xl ou-font-bold">Cam on ban da dat lich kham cua chung toi</Box>
+                <CheckCircleIcon className="!ou-text-[200px] ou-text-green-700 ou-opacity-80"/>    
+                <Box>Xem lich dat lich kham cua ban <span className="ou-text-blue-700">tai day</span></Box>
+            </>
+            )
     }
 
     return (
@@ -196,14 +199,14 @@ const Booking = () => {
                     <div className="ou-absolute ou-top-[5%]">
                         <BookingProcess/>
                     </div>
-
+                    {/* Main content */}
                     <div className="ou-text-center ou-py-20 ou-w-[80%] ou-mt-8">           
                         {state === 1 && renderSelectionBookingMethod()}
                         {state === 2 && renderSecondState()}
                         {state === 3 && renderThirdState()}
                         {state === 4 && renderLastState()}
                     </div>
-
+                    {/* Button area */}
                     <div className="ou-bottom-0 ou-absolute ou-right-0 ou-m-3">
                         {renderStep()}
                     </div>

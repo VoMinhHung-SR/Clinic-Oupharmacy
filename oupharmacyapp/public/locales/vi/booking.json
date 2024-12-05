@@ -28,6 +28,7 @@
     "goBack": "Quay lại",
     "next": "Tiếp tục",
     "previous": "Quay lại",
+    "createNewPatientProfile": "",
 
     "errPatientNeedToCreate": "Bạn cần tạo hồ sơ bệnh nhân",
     "errPatientNeedToSelect": "Bạn cần chọn hồ sơ bệnh nhân",  
