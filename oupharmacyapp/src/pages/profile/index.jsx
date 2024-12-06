@@ -13,7 +13,6 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import UserContext from "../../lib/context/UserContext"
 import AvatarProfile from "../../modules/pages/ProfileComponents/AvatarProfile"
 const Profile = () => {
-    // const [user] = useContext(userContext)
     const {user} = useContext(UserContext);
 
     const location = useLocation()
