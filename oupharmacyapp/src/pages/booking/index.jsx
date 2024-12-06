@@ -12,7 +12,6 @@ import { Helmet } from "react-helmet";
 import DoctorProfileCard from "../../modules/common/components/card/DoctorProfileCard";
 import { useSelector } from "react-redux";
 import { useContext, useState } from "react";
-import UserContext from "../../lib/context/UserContext";
 import AddIcon from '@mui/icons-material/Add';
 import PersonIcon from '@mui/icons-material/Person';
 import clsx from "clsx";
@@ -23,10 +22,10 @@ import { TOAST_ERROR } from "../../lib/constants";
 import PatientCard from "../../modules/common/components/card/PatientCard";
 import BookingProcess from "../../modules/pages/BookingComponents/BookingProcess";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useNavigate } from "react-router";
 
 
 const Booking = () => {
-    const {user} = useContext(UserContext)
     const { t, ready } = useTranslation(['booking','common'])
 
     const { allConfig } = useSelector((state) => state.config);
@@ -36,7 +35,7 @@ const Booking = () => {
         patientSelected, setPatientSelected} = useContext(BookingContext)
 
     const {openBackdrop,patientList, isLoading} = useBooking()
-    
+    const router = useNavigate();
     // TODO: adding skeletons here
     if (!ready)
         return <Box sx={{ minHeight: "300px" }}>
@@ -54,13 +53,13 @@ const Booking = () => {
     }
 
     const checkUpStateTwoToThree = () => {
-        // option 1: create a new patient
+        // Add new patient profile
         if(isAddNewPatient)
             if (state === 2 && Object.keys(patientSelected).length <= 0)
                 return createToastMessage({type: TOAST_ERROR ,message:t('booking:errPatientNeedToCreate')})
             if (state === 2 && Object.keys(patientSelected).length > 0)
                 return actionUpState()
-        // option 2: not create patient => select an exist patient
+        // Using exist patient profile
         if (state === 2 && Object.keys(patientSelected).length <= 0)
             return createToastMessage({type: TOAST_ERROR ,message:t('booking:errPatientNeedToSelect')})
         return actionUpState()
@@ -75,7 +74,8 @@ const Booking = () => {
         if (state ===  4)
             return(
                 <>
-                    <button className="ou-mr-3 ou-btn-base ou-min-w-[120px]" onClick={()=> clearStage()}>Add Another</button>
+                    <button className="ou-mr-3 ou-btn-base ou-min-w-[120px]" 
+                    onClick={()=> clearStage()}>{t("booking:addingNewPatient")}</button>
                 </>)
         ;
         if (state === 1)
@@ -97,56 +97,53 @@ const Booking = () => {
     const renderSelectionBookingMethod = () => {
         if (isLoading)
             return <BackdropLoading/>
-        if(user)
-            if(patientList.length !== 0)
-                return (
-                    <>
-                        <div className="ou-flex ou-justify-center ou-space-x-10 ">
-                            <button onClick={()=>{setIsAddNewPatient(true)}} 
-                                className={
+        if(patientList.length !== 0)
+            return (
+                <>
+                    <div className="ou-flex ou-justify-center ou-space-x-10 ">
+                        <button onClick={()=>{setIsAddNewPatient(true)}} 
+                            className={
+                                clsx("ou-btn-booking ou-border-opacity-60",{
+                                    "ou-btn-booking__focus": isAddNewPatient === true,
+                                })
+                            }>  
+                            <div className="ou-flex ou-flex-col ou-justify-center ou-items-center">
+                                <AddIcon className="!ou-text-[120px] ou-mb-3 "/>
+                                <span className="ou-pt-5 ou-font-bold">{t("booking:addingNewPatient")}</span>
+                            </div>
+                        </button>
+                        
+                        <div>
+                            <button onClick={()=>{setIsAddNewPatient(false)}} className={
+                                clsx("ou-btn-booking ou-border-opacity-60",{
+                                    "ou-btn-booking__focus": isAddNewPatient === false,
+                                })
+                            }
+                            >  
+                                <div className="ou-flex ou-flex-col ou-justify-center ou-items-center">
+                                    <PersonIcon  className="!ou-text-[120px] ou-mb-3 "/>
+                                    <span className="ou-pt-5 ou-font-bold">{t("booking:existingPatient")}</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )
+        else
+            return (
+                <div className="ou-flex ou-justify-center">
+                    <button onClick={()=>{setIsAddNewPatient(true)}}  className={
                                     clsx("ou-btn-booking ou-border-opacity-60",{
                                         "ou-btn-booking__focus": isAddNewPatient === true,
                                     })
                                 }>  
-                                <div className="ou-flex ou-flex-col ou-justify-center ou-items-center">
-                                    <AddIcon className="!ou-text-[120px] ou-mb-3 "/>
-                                    <span className="ou-pt-5 ou-font-bold">Adding new Patient</span>
-                                </div>
-                            </button>
-                            
-                            <div>
-                                <button onClick={()=>{setIsAddNewPatient(false)}} className={
-                                    clsx("ou-btn-booking ou-border-opacity-60",{
-                                        "ou-btn-booking__focus": isAddNewPatient === false,
-                                    })
-                                }
-                                >  
-                                    <div className="ou-flex ou-flex-col ou-justify-center ou-items-center">
-                                        <PersonIcon  className="!ou-text-[120px] ou-mb-3 "/>
-                                        <span className="ou-pt-5 ou-font-bold">Using exist Patient</span>
-                                    </div>
-                                </button>
-                            </div>
+                        <div className="ou-flex ou-flex-col ou-justify-center ou-items-center">
+                            <AddIcon className="!ou-text-[120px] ou-mb-3 "/>
+                            <span className="ou-pt-5 ou-font-bold">{t("booking:addingNewPatient")}</span>
                         </div>
-                    </>
-                )
-            else
-                return (
-                    <div className="ou-flex ou-justify-center">
-                        <button onClick={()=>{setIsAddNewPatient(true)}}  className={
-                                        clsx("ou-btn-booking ou-border-opacity-60",{
-                                            "ou-btn-booking__focus": isAddNewPatient === true,
-                                        })
-                                    }>  
-                            <div className="ou-flex ou-flex-col ou-justify-center ou-items-center">
-                                <AddIcon className="!ou-text-[120px] ou-mb-3 "/>
-                                <span className="ou-pt-5 ou-font-bold">Adding new Patient</span>
-                            </div>
-                        </button>
-                    </div>
-            )
-        else
-            return <Box>Ban nen thuc hien dang nhap</Box>
+                    </button>
+                </div>
+        )
     }
 
     // Step 2 : State 2: when user choosing create with new patient
@@ -159,7 +156,8 @@ const Booking = () => {
             <div> 
                 <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent={"center"}>
                     {patientList && patientList.map(p => <PatientCard patientData={p} 
-                    callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} isSelected={patientSelected && patientSelected.id === p.id}/>)}
+                    callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} 
+                    isSelected={patientSelected && patientSelected.id === p.id}/>)}
                 </Grid>
             </div>
         )
@@ -177,9 +175,15 @@ const Booking = () => {
     const renderLastState = () => {
         return(
             <>
-                <Box className="ou-text-xl ou-font-bold">Cam on ban da dat lich kham cua chung toi</Box>
-                <CheckCircleIcon className="!ou-text-[200px] ou-text-green-700 ou-opacity-80"/>    
-                <Box>Xem lich dat lich kham cua ban <span className="ou-text-blue-700">tai day</span></Box>
+                <Box className="ou-text-xl ou-font-bold ou-mb-3">{t('booking:thanksBooking')}</Box>
+                <Box>{t('booking:noteBooking')}</Box>
+                <Box className="ou-mb-3">{t('booking:bestWishes')}</Box>
+                <CheckCircleIcon className="!ou-text-[200px] ou-text-green-700 ou-opacity-80 ou-mb-3"/>    
+                <Box>{t('booking:viewAppointment')} 
+                    <span className="ou-text-blue-700 hover:ou-cursor-pointer ou-underline" onClick={()=> router('/profile/examinations')}>
+                        {t('common:here')}
+                    </span>
+                </Box>
             </>
             )
     }
@@ -187,14 +191,16 @@ const Booking = () => {
     return (
         <>
             <Helmet>
-                <title>Booking</title>
+                <title>{t('common:booking')}</title>
             </Helmet>
-
+            {openBackdrop === true ?
+                (<BackdropLoading />)
+                : <></>
+            } 
             <Box className="ou-relative ou-py-8 ou-min-h-[80vh] ou-flex">
                 <Box className="ou-relative ou-w-full
                             ou-m-auto ou-flex ou-items-center ou-justify-center" 
                             component={Paper} elevation={6}>        
-
                     {/* Progression area */}
                     <div className="ou-absolute ou-top-[5%]">
                         <BookingProcess/>
@@ -211,15 +217,8 @@ const Booking = () => {
                         {renderStep()}
                     </div>
                 </Box>
-
-               
             </Box>
-            
-            
-            {openBackdrop === true ?
-                (<BackdropLoading />)
-                : <></>
-            } 
+
         </>
     )
     

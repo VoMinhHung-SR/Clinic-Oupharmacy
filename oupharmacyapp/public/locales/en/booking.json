@@ -29,10 +29,17 @@
     "next": "Next",
     "previous": "Previous",
 
+    "addingNewPatient": "New Patient Profile",
+    "existingPatient": "Existing Patient Profile",
+    "addAnother": "Add another",
     "errPatientNeedToCreate": "You need to create a patient profile",
     "errPatientNeedToSelect": "You need to select a patient profile",    
     "patientCreatedSuccess": "Patient's profile created success",
     "yearsOld": "y/o",
     "seeDetail": "See detail",
-    "patientProfileList": "Patient profile list"
+    "patientProfileList": "Patient profile list",
+    "viewAppointment": "View your appointment schedule ",
+    "thanksBooking":"Thank you for scheduling an appointment with us.",
+    "noteBooking": "Please keep an eye on your email notifications to receive the appointment confirmation from our nurse.",
+    "bestWishes":"Wishing you great health!"
 }
