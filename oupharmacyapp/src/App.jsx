@@ -48,6 +48,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { PrescribingProvider } from './lib/context/PrescribingContext'
 import { BookingProvider } from './lib/context/BookingContext'
+import DashboardProfile from './pages/dashboard/profile'
 
 export const userContext = createContext()
 const queryClient = new QueryClient()
@@ -106,23 +107,6 @@ function App() {
                                   <Route path='/profile/examinations' element={<ExaminationList />} />
                                 </Route>
 
-                                {/* Accepted user.role = (ROLE_NURSE || ROLE_DOCTOR) */}
-                                {/* <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR, ROLE_NURSE]} />}>
-                                  <Route path='/examinations' element={<Examinations/>}/> 
-                                </Route> */}
-
-                                {/* Accepted user.role = ROLE_DOCTOR */}
-                                {/* <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR]} />}>
-                                  <Route path='/examinations/:examinationId/diagnosis' element={<Diagnosis />} />
-                                  <Route path='/prescribing' element={<PrescriptionList/>} />
-                                  <Route path='/prescribing/:prescribingId' element={<PrescriptionDetail/>} />
-                                </Route> */}
-
-                                {/* Accepted user.role = ROLE_NURSE */}
-                                {/* <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_NURSE]}/>}>
-                                  <Route path='/examinations/:examinationId/payments' element={<Payments />} />
-                                </Route> */}
-
                                 <Route path='/conversations'  element={<ConversationList/>} >
                                   <Route path='/conversations/:conversationId/:recipientId/message' element={<ChatWindow/>} />
                                 </Route>
@@ -157,7 +141,7 @@ function App() {
                                   <Route path='/dashboard/payments/examinations/:examinationId' element={<Payments />} />
                                 </Route>
 
-                                <Route path='/dashboard/profile' element={<Profile />} >
+                                <Route path='/dashboard/profile' element={<DashboardProfile />} >
                                   <Route path='/dashboard/profile/address-info' element={<ProfileAddressInfo />} />
                                   <Route path='/dashboard/profile/examinations' element={<ExaminationList />} />
                                 </Route>

@@ -36,7 +36,7 @@ const PrescriptionList = () => {
             <Helmet>
                 <title>Prescribing</title>
             </Helmet>
-            <Box className='ou-py-8 ou-m-auto ou-max-w-[1536px] ou-w-[100%]'>
+            <Box className='ou-py-8 ou-m-auto ou-mx-8'>
                 <TableContainer component={Paper} elevation={4}>
                 <div className="ou-flex ou-items-center ou-justify-between">
                     <div className="ou-flex ou-items-end">
