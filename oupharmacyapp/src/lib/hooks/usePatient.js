@@ -39,7 +39,6 @@ const usePatient = () => {
     }
 
     return{
-
         createPatient
     }
 }

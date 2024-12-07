@@ -35,24 +35,24 @@ const Nav = () => {
       name:t('products'),
       link: '/products'
     },
-    {  
-      // Only user-doctor and nurse
-      id: 'examinations',
-      name:t('examinations'),
-      link: '/examinations'
-    },
-    {  
-      // Only user-Doctor
-      id: 'prescribing',
-      name:t('prescribing'),
-      link: '/prescribing'
-    },
+    // {  
+    //   // Only user-doctor and nurse
+    //   id: 'examinations',
+    //   name:t('examinations'),
+    //   link: '/examinations'
+    // },
+    // {  
+    //   // Only user-Doctor
+    //   id: 'prescribing',
+    //   name:t('prescribing'),
+    //   link: '/prescribing'
+    // },
    
-    // {
-    //   id: 'waiting-room',
-    //   name: t('waitingRoom'),
-    //   link: '/waiting-room'
-    // }
+    {
+      id: 'waiting-room',
+      name: t('waitingRoom'),
+      link: '/waiting-room'
+    }
   ];
   // State trigger menu open
   const {isLoading, notifyListContent, updateNotifications} = useNotification();
@@ -127,13 +127,13 @@ const Nav = () => {
                 </MenuItem>
             </Link>
             <Divider className="!ou-m-[0px]" />
-            {/* <MenuItem style={{ "color": "#333" }} className="!ou-py-2" onClick={handleOpenModal}>
+            <MenuItem style={{ "color": "#333" }} className="!ou-py-2" onClick={handleOpenModal}>
                    <AccountCircleIcon fontSize="small" />
                     <Typography marginLeft={2}>
                       change password
                     </Typography>
             </MenuItem>
-            <Divider className="!ou-m-[0px]"/> */}
+            <Divider className="!ou-m-[0px]"/>
             <MenuItem onClick={handleLogout} >
                 <Logout fontSize="small" />
                 <Typography marginLeft={2}>
@@ -173,7 +173,6 @@ const Nav = () => {
           </Tooltip>
          
         </ul>
-        
         {/* End nav menu */}
     </>
   }
@@ -257,7 +256,6 @@ const Nav = () => {
     <AppBar position="fixed" className="!ou-bg-blue-600" >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <HomeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
             <Link to="/" className="ou-flex ou-items-center" >
                 <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}>
                     <Logo width={50} height={50} className="ou-text-white ou-mr-2" color={'white'}/>
@@ -324,19 +322,6 @@ const Nav = () => {
                
             </Link>
           </Box>
-          {/* <Typography variant="h5" noWrap component="a" href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            OUPHARMACY
-          </Typography> */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => renderElementNav(page.id, page.link, page.name, false, page.id+"-dek"))}
           </Box>
