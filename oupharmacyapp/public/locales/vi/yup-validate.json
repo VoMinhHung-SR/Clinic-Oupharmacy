@@ -1,6 +1,6 @@
 {
     "yupEmailRequired":"Email không được để trống",
-    "yupEmailMaxLenght":"Email vượt quá độ dài cho phép",
+    "yupEmailMaxLength":"Email vượt quá độ dài cho phép",
     "yupEmailInvalid": "Email không hợp lệ",
     "yupEmailExist": "Email đã tồn tại",
     
@@ -10,12 +10,16 @@
     "yupConfirmPasswordRequire":"Xác nhận mật khẩu không được để trống",
     "yupConfirmPasswordMatch":"Xác nhận mật khẩu không khớp",
 
+    "yupNewPasswordRequired":"Mật khẩu mới không đuơc để trống",
+    "yupNewPasswordMinLength": "Mật khẩu phải chứa ít nhất 8 ký tự",
+    "yupNewPasswordRegex": "Mật khẩu phải bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt",
+
     "yupFirstNameRequired":"Họ không được để trống",
-    "yupFirstNameMaxLenght":"Họ vượt quá độ dài cho phép",
+    "yupFirstNameMaxLength":"Họ vượt quá độ dài cho phép",
     "yupFirstNameInvalid":"Họ không hợp lệ",
     
     "yupLastNameRequired":"Tên không được để trống",
-    "yupLastNameMaxLenght":"Tên vượt quá độ dài cho phép",
+    "yupLastNameMaxLength":"Tên vượt quá độ dài cho phép",
     "yupLastNameInvalid":"Tên không hợp lệ",
 
     "yupPhoneNumberRequired":"Số điện thoại không được để trống",
@@ -31,7 +35,7 @@
     "yupGenderRequired":"Giới tính không được để trống",
     
     "yupDescriptionRequired":"Mô tả không được phép để trống",
-    "yupDescriptionMaxLenght":"Mô tả vượt quá độ dài cho phép",
+    "yupDescriptionMaxLength":"Mô tả vượt quá độ dài cho phép",
     "yupDescriptionInvalid":"Mô tả không hợp lệ",
 
     "yupCreatedDateRequired":"Ngày tạo không được phép để trống",
@@ -41,15 +45,15 @@
     "yupTimeDivisibleBy20":"Số phút phải chia hết cho 20 (00; 20; 40)",
 
     "yupSignRequired": "Triệu chứng không được để trống",
-    "yupSignMaxLenght":"Triệu chứng vượt quá độ dài cho phép",
+    "yupSignMaxLength":"Triệu chứng vượt quá độ dài cho phép",
     "yupSignInvalid":"Triệu chứng không hợp lệ",
 
     "yupDiagnosedRequired": "Chẩn đoán không được để trống",
-    "yupDiagnosedMaxLenght": "Chẩn đoán vượt quá độ dài cho phép",
+    "yupDiagnosedMaxLength": "Chẩn đoán vượt quá độ dài cho phép",
     "yupDiagnosedInvalid":"Chẩn đoán không hợp lệ",
 
     "yupUsesRequired": "Lần sử dụng không được để trống",
-    "yupUsesMaxLenght":"Lần sử dụng vượt quá độ dài cho phép",
+    "yupUsesMaxLength":"Lần sử dụng vượt quá độ dài cho phép",
     "yupUsesInvalid":"Lần sử dụng không hợp lệ",
 
     "yupQuantityNumber": "Số lượng phải là số",

@@ -87,9 +87,9 @@ class UserViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAPI
     def get_permissions(self):
         if self.action in ['get_current_user']:
             return [permissions.IsAuthenticated()]
-        if self.action in ['update', 'partial_update', 'get_patients']:
+        if self.action in ['update', 'partial_update', 'get_patients', 'change_password']:
             return [UserPermission()]
-        if self.action in ['get_examinations','change_password']:
+        if self.action in ['get_examinations']:
             return [OwnerExaminationPermission()]
         return [permissions.AllowAny()]
 

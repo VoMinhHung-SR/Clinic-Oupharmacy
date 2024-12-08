@@ -45,7 +45,7 @@ const useBooking = () => {
     const checkPatientExistSchema = Yup.object().shape({
         email: Yup.string()
             .required(t('yupEmailRequired'))
-            .max(254, t('yupEmailMaxLenght'))
+            .max(254, t('yupEmailMaxLength'))
             .matches(REGEX_EMAIL, t('yupEmailInvalid'))
             .trim()
     });

@@ -28,7 +28,7 @@ const usePrescriptionDetailCard = () => {
     const prescriptionDetailSchema = Yup.object().shape({
         uses: Yup.string().trim()
             .required(t('yupUsesRequired'))
-            .max(100, t('yupUsesMaxLenght'))
+            .max(100, t('yupUsesMaxLength'))
             .matches(REGEX_ADDRESS,t('yupUsesInvalid')),
         quantity: Yup.string(t('yupQuantityNumber')).trim()
             .max(3, t('yupQuantityMax'))

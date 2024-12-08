@@ -14,7 +14,7 @@
     "update": "Cập nhật",
     "edit": "Chỉnh sửa",
     "undefined":"Chưa xác định",
-
+    "profile": "Trang cá nhân",
     "home": "Trang chủ",
     "waitingRoom":"Phòng chờ",
     "booking": "Đặt lịch",
@@ -25,6 +25,9 @@
     "login": "Đăng nhập",
     "register":"Đăng ký",
     "logout": "Đăng xuất",
+    "changePassword": "Đổi mật khẩu",
+    "newPassword": "Mật khẩu mới",
+    "reEnterNewPassword": "Xác nhận mật khẩu mới",
 
     "haveAnCount": "Bạn đã có tài khoản? Đăng nhập",
     "bookingList": "Danh sách đặt lịch",

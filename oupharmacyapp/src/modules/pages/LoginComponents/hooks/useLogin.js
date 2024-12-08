@@ -62,7 +62,7 @@ const useLogin = () => {
     const loginSchema = Yup.object().shape({
         username: Yup.string()
         .required(t('yupEmailRequired'))
-        .max(150, t('yupEmailMaxLenght')),
+        .max(150, t('yupEmailMaxLength')),
         password: Yup.string()
         .required(t('yupPasswordRequired'))
         .max(128,   t('yupPasswordMaxLength')),
