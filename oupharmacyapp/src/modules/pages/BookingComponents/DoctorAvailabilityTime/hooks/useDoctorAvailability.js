@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { fetchCreateDoctorWorkingTime, fetchGetDoctorAvailability, fetchPatientExist } from "../../services";
 import useDebounce from "../../../../../lib/hooks/useDebounce";
 import moment from "moment";
-import { featchCreateExamination, fetchCreateOrUpdatePatient, fetchExamDateData } from "../../FormAddExamination/services";
+import { fetchCreateExamination, fetchCreateOrUpdatePatient, fetchExamDateData } from "../../FormAddExamination/services";
 import * as Yup from 'yup';
 import { REGEX_ADDRESS, REGEX_EMAIL, REGEX_NAME, REGEX_NOTE, REGEX_PHONE_NUMBER, TOAST_SUCCESS } from "../../../../../lib/constants";
 import { useTranslation } from "react-i18next";
@@ -30,7 +30,7 @@ const useDoctorAvailability = () => {
     const formAddExaminationSchema = Yup.object().shape({
         description: Yup.string().trim()
             .required(t('yupDescriptionRequired'))
-            .max(254, t('yupDescriptionMaxLenght'))
+            .max(254, t('yupDescriptionMaxLength'))
             .matches(REGEX_NOTE, t('yupDescriptionInvalid')),
 
         // doctor: Yup.string().required(t('required')),
@@ -174,7 +174,7 @@ const useDoctorAvailability = () => {
                     created_date: new Date(formattedDateTime),
                     doctor_availability: doctorWorkingTime
                 }
-                const resExamination = await featchCreateExamination(examinationData);
+                const resExamination = await fetchCreateExamination(examinationData);
                 if(resExamination.status === 201){
                     createToastMessage({message:t('modal:createSuccessed'), type:TOAST_SUCCESS})
                     callbackSuccess();

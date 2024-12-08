@@ -12,7 +12,7 @@ export const fetchCreateOrUpdatePatient = async (patientId = -1, patientData) =>
     return res;
 }
 // To: create examination by examination data was declared in formAddExaminationSchema
-export const featchCreateExamination = async (examinationData) => {
+export const fetchCreateExamination = async (examinationData) => {
     const res = await authApi().post(endpoints['examination'], examinationData)
     return res;
 }

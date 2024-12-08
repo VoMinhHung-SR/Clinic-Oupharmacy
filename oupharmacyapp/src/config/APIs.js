@@ -26,6 +26,7 @@ export let endpoints = {
     'user-detail':(userId) => `/users/${userId}/`,
     'get-user-location':(userId) => `/users/${userId}/location-info/`,
     'booking-list':(userId) => `/users/${userId}/booking-list/`,
+    'change-password': (userId) => `/users/${userId}/change-password/`,
     // Doctor 
     'get-doctor-availability': '/doctor-availability/get-doctor-availability/',
     'doctor-availability': "/doctor-availability/",

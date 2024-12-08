@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import SuccessfulAlert, { ConfirmAlert, ErrorAlert } from '../../../../../config/sweetAlert2';
 import { REGEX_ADDRESS, REGEX_EMAIL, REGEX_NAME, REGEX_NOTE, REGEX_PHONE_NUMBER, TOAST_ERROR, TOAST_SUCCESS } from '../../../../../lib/constants';
-import { featchCreateExamination, fetchCreateOrUpdatePatient, fetchDeleteDoctorAvailabilityTime, fetchExamDateData, fetchUpdateExamination } from '../services';
+import { fetchCreateExamination, fetchCreateOrUpdatePatient, fetchDeleteDoctorAvailabilityTime, fetchExamDateData, fetchUpdateExamination } from '../services';
 import moment from 'moment';
 import useDebounce from '../../../../../lib/hooks/useDebounce';
 import { fetchCreateDoctorWorkingTime, fetchGetDoctorAvailability } from '../../services';
@@ -25,17 +25,17 @@ const useFormAddExamination = () => {
     const formAddExaminationSchema = Yup.object().shape({
         firstName: Yup.string().trim()
             .required(t('yupFirstNameRequired'))
-            .max(150, t('yupFirstNameMaxLenght'))
+            .max(150, t('yupFirstNameMaxLength'))
             .matches(REGEX_NAME, t('yupFirstNameInvalid')),
 
         lastName: Yup.string().trim()
             .required(t('yupLastNameRequired'))
-            .max(150, t('yupLastNameMaxLenght'))
+            .max(150, t('yupLastNameMaxLength'))
             .matches(REGEX_NAME, t('yupLastNameInvalid')),
 
         email: Yup.string().trim()
             .required(t('yupEmailRequired'))
-            .max(254, t('yupEmailMaxLenght'))
+            .max(254, t('yupEmailMaxLength'))
             .matches(REGEX_EMAIL, t('yupEmailInvalid')),
 
         phoneNumber: Yup.string().trim()
@@ -54,7 +54,7 @@ const useFormAddExamination = () => {
     
         description: Yup.string().trim()
             .required(t('yupDescriptionRequired'))
-            .max(254, t('yupDescriptionMaxLenght'))
+            .max(254, t('yupDescriptionMaxLength'))
             .matches(REGEX_NOTE, t('yupDescriptionInvalid')),
 
         doctor: Yup.string().required(t('required')),
@@ -197,7 +197,7 @@ const useFormAddExamination = () => {
                     created_date: new Date(formattedDateTime),
                     doctor_availability: doctorWorkingTime
                 }
-                const resExamination = await featchCreateExamination(examinationData);
+                const resExamination = await fetchCreateExamination(examinationData);
                 if(resExamination.status === 201){
                     createToastMessage({message:t('modal:createSuccessed'), type:TOAST_SUCCESS})
                     callback();

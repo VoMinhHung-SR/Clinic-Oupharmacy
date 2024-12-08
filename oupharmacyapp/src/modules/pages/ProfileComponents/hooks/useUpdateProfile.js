@@ -21,15 +21,15 @@ const useUpdateProfile = () =>{
     const updateSchema = Yup.object().shape({
         firstName: Yup.string().trim()
             .required(t('yupFirstNameRequired'))
-            .max(254, t('yupFirstNameMaxLenght'))
+            .max(254, t('yupFirstNameMaxLength'))
             .matches(REGEX_NAME, t('yupFirstNameInvalid')),
         lastName: Yup.string().trim()
             .required((t('yupLastNameRequired')))
-            .max(254,  t('yupLastNameMaxLenght'))
+            .max(254,  t('yupLastNameMaxLength'))
             .matches(REGEX_NAME, t('yupLastNameInvalid')),
         email: Yup.string().trim()
             .required(t('yupEmailRequired'))
-            .max(254, t('yupEmailMaxLenght'))
+            .max(254, t('yupEmailMaxLength'))
             .matches(REGEX_EMAIL, t('yupEmailInvalid')),
         dob:  Yup.string().trim()
         .required(t('yupDOBRequired')), 

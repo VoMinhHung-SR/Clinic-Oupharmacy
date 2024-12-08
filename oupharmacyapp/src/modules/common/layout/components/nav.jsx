@@ -18,36 +18,23 @@ import useNotification from "../../../../lib/hooks/useNotification";
 import NotificationButton from "../../components/button/Notification";
 import CustomModal from "../../components/Modal";
 import useCustomModal from "../../../../lib/hooks/useCustomModal";
+import KeyIcon from '@mui/icons-material/Key';
+import FormChangePassword from "../../../pages/HomeComponents/FormChangePassword";
 const Nav = () => {
   
   const { t, i18n } = useTranslation(['common', 'modal']);
   // Page nav 
   const pages = [
     {
-      // Accept all user
       id: 'booking',
       name:t('booking'),
       link: '/booking'
     },
     {
-      // Accept all user
       id: 'products',
       name:t('products'),
       link: '/products'
     },
-    // {  
-    //   // Only user-doctor and nurse
-    //   id: 'examinations',
-    //   name:t('examinations'),
-    //   link: '/examinations'
-    // },
-    // {  
-    //   // Only user-Doctor
-    //   id: 'prescribing',
-    //   name:t('prescribing'),
-    //   link: '/prescribing'
-    // },
-   
     {
       id: 'waiting-room',
       name: t('waitingRoom'),
@@ -122,15 +109,15 @@ const Nav = () => {
                 <MenuItem style={{ "color": "#333" }}>
                    <AccountCircleIcon fontSize="small" />
                     <Typography marginLeft={2}>
-                    Trang cá nhân
+                      {t("common:profile")}
                     </Typography>
                 </MenuItem>
             </Link>
             <Divider className="!ou-m-[0px]" />
             <MenuItem style={{ "color": "#333" }} className="!ou-py-2" onClick={handleOpenModal}>
-                   <AccountCircleIcon fontSize="small" />
+                   <KeyIcon fontSize="small" />
                     <Typography marginLeft={2}>
-                      change password
+                    {t("common:changePassword")}
                     </Typography>
             </MenuItem>
             <Divider className="!ou-m-[0px]"/>
@@ -198,27 +185,6 @@ const Nav = () => {
               </Link>
           )
         else return 
-      // Render for nurse
-      // if(pageID === 'payments'|| pageID === 'payments-mb')
-      //   if(user && user.is_nurse)
-      //     return(
-      //       <Link to={pageLink}>
-      //         <Button 
-      //           key={pageID}
-      //           onClick={handleCloseNavMenu}
-      //           className={clsx('',{
-      //             '!ou-text-black': isMobile,
-      //             "!ou-text-white": !isMobile})
-  //           }
-      //           sx={{mx: 1, my: 1, display: 'block' }}
-                
-      //         >
-      //           {pageName}
-      //         </Button>
-      //         </Link>
-      //     )
-      //   else return 
-    // Render for both doctor and nurse
       if(pageID === 'examinations' || pageID === 'examinations-mb')
         if(user && (user.role === ROLE_DOCTOR || user.role === ROLE_NURSE))
           return(
@@ -344,6 +310,13 @@ const Nav = () => {
           </Box>
         </Toolbar>
       </Container>
+
+      <CustomModal
+          className="ou-w-[900px]"
+          open={isOpen}
+          onClose={handleCloseModal}
+          content={<FormChangePassword callBack={handleCloseModal}/>}
+        />
     </AppBar>
   )
 }

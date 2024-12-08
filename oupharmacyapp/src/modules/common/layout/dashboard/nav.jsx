@@ -25,6 +25,10 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import CategoryIcon from '@mui/icons-material/Category';
 import HomeIcon from '@mui/icons-material/Home';
+import KeyIcon from '@mui/icons-material/Key';
+import useCustomModal from '../../../../lib/hooks/useCustomModal';
+import CustomModal from '../../components/Modal';
+import FormChangePassword from '../../../pages/HomeComponents/FormChangePassword';
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -87,7 +91,7 @@ const NavDashboard = () => {
     };
     
     const location = useLocation()
-    
+    const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
     const [open, setOpen] = useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -96,19 +100,12 @@ const NavDashboard = () => {
 
 
     const pages = [
-        // Accept all user doctor and nurse
         {
           id: 'dashboard',
           name:t('home'),
           icon: <HomeIcon  className='ou-text-white'/>,
           link: '/dashboard'
         },
-        // {
-        //   id: 'products',
-        //   name:t('products'),
-        //   icon: <CategoryIcon  className='ou-text-white'/>,
-        //   link: '/dashboard/products'
-        // },
         {  
           id: 'examinations',
           name:t('examinations'),
@@ -205,18 +202,18 @@ const NavDashboard = () => {
                     <MenuItem style={{ "color": "#333" }}>
                         <AccountCircleIcon fontSize="small" />
                         <Typography marginLeft={2}>
-                        Trang cá nhân
+                        {t("common:profile")}
                         </Typography>
                     </MenuItem>
                 </Link>
                 <Divider className="!ou-m-[0px]" />
-                {/* <MenuItem style={{ "color": "#333" }} className="!ou-py-2" onClick={handleOpenModal}>
-                        <AccountCircleIcon fontSize="small" />
-                        <Typography marginLeft={2}>
-                          change password
-                        </Typography>
+                <MenuItem style={{ "color": "#333" }} className="!ou-py-2" onClick={handleOpenModal}>
+                    <KeyIcon fontSize="small" />
+                      <Typography marginLeft={2}>
+                        {t("common:changePassword")}
+                      </Typography>
                 </MenuItem>
-                <Divider className="!ou-m-[0px]"/> */}
+                <Divider className="!ou-m-[0px]"/>
                 <MenuItem onClick={handleLogout} >
                     <Logout fontSize="small" />
                     <Typography marginLeft={2}>
@@ -245,7 +242,7 @@ const NavDashboard = () => {
         </>
     }
     return (
-        <>
+      <>
         <AppBar position="absolute" open={open}>
             <Toolbar >
                 <IconButton
@@ -286,8 +283,7 @@ const NavDashboard = () => {
                 </Box>
             </Toolbar>
         </AppBar>
-
-
+        
         <Drawer variant="permanent" open={open} >
             <Toolbar
             sx={{
@@ -318,7 +314,14 @@ const NavDashboard = () => {
             </List>
 
         </Drawer>
-        </>
+
+        <CustomModal
+          className="ou-w-[900px]"
+          open={isOpen}
+          onClose={handleCloseModal}
+          content={<FormChangePassword callBack={handleCloseModal}/>}
+        />
+      </>
         
     )
 }

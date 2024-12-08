@@ -8,12 +8,13 @@
     "backToHomepage": "Back to homepage",
     "here": "Here",
     "send": "Send",
+
     "delete": "Delete",
     "update": "Update",
     "edit": "Edit",
     "undefined": "Undefined",
     "refresh" : "Please refresh page to get new versions",
-
+    "profile": "Profile",
     "home": "Dashboard",
     "waitingRoom":"Waiting Room",
     "booking": "Booking",
@@ -24,6 +25,9 @@
     "login": "Login",
     "register":"Register",
     "logout": "Logout",
+    "changePassword": "Change Password",
+    "newPassword": "New password",
+    "reEnterNewPassword": "Confirm new password",
 
     "haveAnCount": "Do you have an account? Login here.",
     "bookingList": "Booking list",
