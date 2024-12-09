@@ -20,7 +20,7 @@ const DiagnosisCard = ({id, sign, diagnosed, isLoading}) => {
          <Box className="ou-mt-5" component={Paper} elevation={4}>
                 <form className="ou-pt-4" >
                     <h1 className="ou-text-center ou-text-lg ">
-                        {t('prescriptionInfomation')}
+                        {t('prescriptionInformation')}
                         </h1>
                     <Grid container justifyContent="flex" style={{ "margin": "0 auto" }} spacing={3}>
                         <Grid item xs={11} >

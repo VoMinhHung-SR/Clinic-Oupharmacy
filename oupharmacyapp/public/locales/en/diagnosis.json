@@ -5,7 +5,7 @@
     "description": "Description",
     "errNullExamination": "The exam sheet does not exist or has not been verified by the nurse",
     "createPrescription": "Create prescription",
-    "prescriptionInfomation": "The prescription info",
+    "prescriptionInformation": "The prescription info",
     "sign": "Sign",
     "diagnosed": "Diagnosed",
     "prescribing": "Prescribing",
