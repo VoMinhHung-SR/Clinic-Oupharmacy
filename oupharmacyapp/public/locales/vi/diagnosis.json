@@ -5,7 +5,7 @@
     "description": "Mô tả",
     "errNullExamination": "Phiếu khám không tồn tại hoặc chưa được y tá duyệt đơn",
     "createPrescription": "Tạo phiếu chẩn đoán",
-    "prescriptionInfomation": "Thông tin phiếu chẩn đoán",
+    "prescriptionInformation": "Thông tin phiếu chẩn đoán",
     "sign": "Triệu chứng",
     "diagnosed": "Chẩn đoán",
     "prescribing": "Kê toa",

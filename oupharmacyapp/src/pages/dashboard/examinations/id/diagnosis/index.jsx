@@ -5,13 +5,13 @@ import { useNavigate } from "react-router"
 import { Helmet } from "react-helmet"
 import Loading from "../../../../../modules/common/components/Loading"
 import DiagnosisForm from "../../../../../modules/pages/DiagnosisComponents/DiagnosisForm"
-import useDiagnosisForm from "../../../../../modules/pages/DiagnosisComponents/hooks/useDiagnosisForm"
 import PatientInfoModal from "../../../../../modules/pages/PrescriptionDetailComponents/PatientInfoModal"
 import MedicalRecordsModal from "../../../../../modules/pages/PrescriptionDetailComponents/MedicalRecordsModal"
+import useDiagnosis from "../../../../../modules/pages/DiagnosisComponents/hooks/useDiagnosis"
 
 const Diagnosis = () => {
     const { examinationDetail, isLoadingExamination, diagnosis,
-        prescriptionId, examinationId, user, handleChangeFlag } = useDiagnosisForm()
+        prescriptionId, examinationId, user, handleChangeFlag } = useDiagnosis()
     const router = useNavigate()
     const {t , ready} = useTranslation(['diagnosis','common'])
 
@@ -30,13 +30,13 @@ const Diagnosis = () => {
            <Helmet>
                 <title>Diagnosis</title>
             </Helmet>
-            {isLoadingExamination && examinationDetail.length === 0 ?
+            {isLoadingExamination && !examinationDetail && examinationDetail.length === 0 ?
                 (<Box sx={{ height: "300px" }}>
                     <Box className='ou-p-5'>
                         <Loading></Loading>
                     </Box>
                 </Box>)
-                : examinationDetail.length === 0 ?
+                : examinationDetail && examinationDetail.length === 0 ?
                     (
                     <Box className="ou-relative ou-items-center " sx={{ minHeight: "550px" }}>
                         <Box className='ou-absolute ou-p-5 ou-text-center 

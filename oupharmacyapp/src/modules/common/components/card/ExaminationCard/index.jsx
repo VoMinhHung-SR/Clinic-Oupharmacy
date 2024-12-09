@@ -88,7 +88,7 @@ const ExaminationCard = ({examinationData, user, callback, disableOtherCards, lo
             <Typography>
               {mail_status === true ? (
                 <>
-                  {/* {user && user.role === ROLE_DOCTOR && (
+                  {user && user.role === ROLE_DOCTOR && (
                     <>
                       <Link
                         style={{ textDecoration: "none" }}
@@ -109,7 +109,7 @@ const ExaminationCard = ({examinationData, user, callback, disableOtherCards, lo
                         </Tooltip>
                       </Link>
                     </>
-                  )} */}
+                  )}
                   {user && user.role === ROLE_NURSE ? (
                     <>
                       <Tooltip followCursor title={t("pay")}>
