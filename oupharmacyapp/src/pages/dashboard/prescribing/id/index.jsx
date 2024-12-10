@@ -1,8 +1,7 @@
 import { Button, Container, FormControl, Grid, Paper, TextField, Tooltip, Typography } from "@mui/material"
 import { Box } from "@mui/system"
-import moment from "moment"
 import { useTranslation } from "react-i18next"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import PrescriptionDetailCard from "../../../../modules/common/components/card/PrescriptionDetailCard"
 import Loading from "../../../../modules/common/components/Loading"
 import usePrescriptionDetail from "../../../../modules/pages/PrescriptionDetailComponents/hooks/usePrescriptionDetail"
@@ -12,32 +11,19 @@ import MedicalRecordsModal from "../../../../modules/pages/PrescriptionDetailCom
 import { useContext, useState } from "react"
 import PrescribingContext from "../../../../lib/context/PrescribingContext"
 import UserContext from "../../../../lib/context/UserContext"
-// import { SchemaModels } from "../../../../lib/schema"
-import useCustomModal from "../../../../lib/hooks/useCustomModal"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import CustomModal from "../../../../modules/common/components/Modal"
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import EditPrescriptionModal from "../../../../modules/pages/PrescriptionDetailComponents/EditPrescriptionModal"
 
 const PrescriptionDetail = () => {
     const {user} = useContext(UserContext)
-    const {medicinesSubmit, handleAddPrescriptionDetail, handleUpdateMedicinesSubmit } = useContext(PrescribingContext)
+    const {medicinesSubmit, handleAddPrescriptionDetail, handleUpdateMedicinesSubmit,
+        resetMedicineStore
+     } = useContext(PrescribingContext)
     
     const {isLoadingPrescriptionDetail, prescriptionDetail} = usePrescriptionDetail()
     const router = useNavigate()
 
-    const [flag, setFlag] = useState(false);
-
-    // Define trigger function
-    const triggerFunction = () => {
-        setFlag(prevFlag => !prevFlag);
-    };
-
     const handleOnEdit = (medicineUpdate, deletedArrayItems) => {
         const dataWithoutNull = medicineUpdate.filter(item => item !== null);
-        console.log("ON submit", dataWithoutNull)
-        console.log("Array deleted", deletedArrayItems)
         handleUpdateMedicinesSubmit(dataWithoutNull, deletedArrayItems)
     }
     const { prescribingId } = useParams();
@@ -141,23 +127,30 @@ const PrescriptionDetail = () => {
                                                         <Grid item xs={2} className="ou-text-center !ou-mb-2">{t('prescription-detail:quantity')}</Grid>
                                                         
                                                         {medicinesSubmit.map((item, index) => renderMedicinesSubmit(item, index))}
-                                                        
+                                                 
                                                         <Grid container spacing={2} className="p-3 ou-w-full !ou-mt-5" >
 
                                                             <Grid item xs={6}>
                                                                 <EditPrescriptionModal medicinesSubmitData={medicinesSubmit} 
-                                                                handleOnEdit={handleOnEdit} triggerRender={triggerFunction} 
+                                                                handleOnEdit={handleOnEdit} handleClearAll={resetMedicineStore}
                                                                 />
                                                             </Grid>
 
                                                             <Grid item xs={6}>
+                                                                <Button className="ou-w-full" variant="contained" color="error"
+                                                                        onClick={resetMedicineStore} 
+                                                                    >
+                                                                        {t('common:deleteAll')}
+                                                                </Button>
+                                                            </Grid>
+
+                                                            <Grid item xs={12}>
                                                                 <Button className="ou-w-full" variant="contained" color="success"
                                                                         onClick={() =>handleAddPrescriptionDetail(user.id, prescribingId)} 
                                                                     >
                                                                         {t('prescribing')}
                                                                 </Button>
                                                             </Grid>
-                                                        
                                                         </Grid>
                                                         </> 
                                                     }

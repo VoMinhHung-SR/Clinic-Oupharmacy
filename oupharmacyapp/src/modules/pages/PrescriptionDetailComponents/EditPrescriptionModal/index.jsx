@@ -12,14 +12,14 @@ import createToastMessage from "../../../../lib/utils/createToastMessage";
 import BackdropLoading from "../../../common/components/BackdropLoading";
 import SchemaModels from "../../../../lib/schema";
 
-const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender}) => {
+const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAll}) => {
     
     const [medicinesSubmitDataDraft, setMedicinesSubmitDataDraft] = useState(medicinesSubmitData);
     const [flag, setFlag] = useState(false)
     const [loading, setLoading] = useState(false)
     const { medicineSubmitUpdateSchema } = SchemaModels()
     const { t } = useTranslation(["prescription-detail", "common", "modal"]);
-    const { handleCloseModal, isOpen, handleOpenModal, isClosingDropOutside } = useCustomModal();
+    const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
 
     const [deletedArray, setDeletedArray] = useState([])
 
@@ -33,9 +33,9 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
     // Update local state when prop changes
     useEffect(() => {
       setMedicinesSubmitDataDraft(prevData => medicinesSubmitData);
-    }, [medicinesSubmitData, deletedArray ,triggerRender]);
+    }, [medicinesSubmitData, deletedArray]);
 
-    const { register, watch ,control, handleSubmit, formState: { errors }, 
+    const { register, handleSubmit, formState: { errors }, 
     reset, unregister, setError, getValues, setValue } = useForm({
         resolver: yupResolver(medicineSubmitUpdateSchema), mode:"onChange"
     });
@@ -53,7 +53,6 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
             const { inStock } = medicinesSubmitData[index];
 
             if (parseInt(quantity) > inStock) {
-              console.log('err roi')
               err = true
               setError(`medicineSubmit[${index}].quantity`, {
                 type: 'custom',
@@ -66,27 +65,18 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
       }catch(err){
           console.error(err)
       }finally{
-        console.log("data-Submit", data.medicineSubmit)
         if (!err){
 
-          handleOnEdit(data.medicineSubmit, deletedArray) // call function from parent -> action update
-          
+          handleOnEdit(data.medicineSubmit, deletedArray) // call function from parent -> action update    
           handleCloseModal()
           reset()
           setDeletedArray([])
-          createToastMessage({message:t('OKAY'), type:TOAST_SUCCESS})
+          createToastMessage({message:t('common:updateSuccess'), type:TOAST_SUCCESS})
           setLoading(false)
         }
       }
     }
     
-    const handleClearAll = () => {
-      setFlag(true)
-      setDeletedArray([])
-      setMedicinesSubmitDataDraft([])
-      reset()
-    }
-
     const swapValue = (curIndex, nextIndex) => {
       try{
         setValue(`medicineSubmit[${curIndex}].quantity`, getValues(`medicineSubmit[${nextIndex}].quantity`))
@@ -123,7 +113,25 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
 
     }
   
-
+    const handleRemoveAllLineItems = () => {
+      // try {
+      //   // Get all IDs from the current draft
+      //   const allItemIDs = medicinesSubmitDataDraft.map((medicine) => medicine.id);
+    
+      //   // Update the draft to be empty
+      //   setMedicinesSubmitDataDraft([]);
+    
+      //   // Add all IDs to the deletedArray
+      //   setDeletedArray((prev) => [...prev, ...allItemIDs]);
+      // } catch (err) {
+      //   console.error("Error removing all line items:", err);
+      // } finally {  
+      //   allItemIDs(item => handleDeleteLineItem(item))
+      // }
+      handleClearAll()
+    };
+    if(errors)
+      console.log(errors)
     const handleDeleteLineItem = (itemID) => {
       const removedIndex = medicinesSubmitDataDraft.findIndex(medicine => medicine.id === itemID);
     
@@ -136,9 +144,6 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
         console.log(err);
       }
     };  
-  
-    if(errors)
-      console.log("error" ,errors)
 
     const addItemDeleted = (itemID) => {
       try{
@@ -154,7 +159,7 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
       }catch(err){
         console.log(err)
       } finally {
-        handleDeleteLineItem(itemID); 
+        handleDeleteLineItem(itemID);
       }
     }
 
@@ -223,7 +228,6 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
                 <Grid item xs={1} className="ou-pl-2 ou-flex">
                   <Button
                     type="button"
-                    // onClick={() => handleDeleteLineItem(medicine.id)}
                     onClick={() => addItemDeleted(medicine.id)}
                     className="ou-text-red-700"
                     sx={{ color: "red", width: '100%', height: '100%' }}>
@@ -252,7 +256,7 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
 
         <CustomModal
             className="ou-w-[900px] ou-text-center"
-            title={t('Chinh sua phieu ke toa')}
+            title={t('prescription-detail:editPrescriptionDetail')}
             open={isOpen}
             onClose={handleUnSaveChange}
             isClosingDropOutside={false}
@@ -273,6 +277,7 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
                                     </Typography>
                                 </Grid>
                             }
+                            
                             {handleRenderLineItems(medicinesSubmitDataDraft)}
                             
                             <Box className="ou-text-right ou-w-full ou-mb-2 ou-mt-6">
@@ -280,14 +285,27 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, triggerRender
                                     {setMedicinesSubmitDataDraft(medicinesSubmitData); setFlag(false)}}>
                                     Hoan tac
                                 </Button>}
-                                <Tooltip title="update" followCursor>
+                                <span >
+                                  <Tooltip title="clear" followCursor>
+                                      <span>
+                                      <Button type="button" color="error" variant="contained"
+                                        onClick={handleRemoveAllLineItems}
+                                      >
+                                          {t("common:deleteAll")}
+                                      </Button>
+                                      </span>
+                                  </Tooltip>
+                                </span>
+                              
+                              <span className="ou-ml-3">
+                                <Tooltip title={t("common:update")} followCursor>
                                     <span>
-
-                                    <Button type="submit" color="success" variant="contained">
-                                        {t("common:update")}
-                                    </Button>
+                                      <Button className="" type="submit" color="success" variant="contained">
+                                          {t("common:update")}
+                                      </Button>
                                     </span>
                                 </Tooltip>
+                              </span>
                             </Box>
                         </form>
                         </Grid>

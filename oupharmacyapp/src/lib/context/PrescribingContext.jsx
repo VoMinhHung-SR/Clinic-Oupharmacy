@@ -3,13 +3,15 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import SuccessfulAlert, { ConfirmAlert, ErrorAlert } from "../../config/sweetAlert2";
 import { fetchAddPrescriptionDetail, fetchCreatePrescribing } from "../../modules/common/components/card/PrescriptionDetailCard/services";
+import createToastMessage from "../utils/createToastMessage";
+import { TOAST_SUCCESS } from "../constants";
 
 const PrescribingContext = createContext();
 
 export default PrescribingContext;
 
 export const PrescribingProvider = ({children}) => {
-    const {t} = useTranslation(['yup-validate', 'modal', 'prescription-detail']);
+    const {t} = useTranslation(['yup-validate', 'modal', 'prescription-detail', 'common']);
 
     const [medicinesSubmit, setMedicinesSubmit] = useState([]);
     const router = useNavigate();
@@ -31,7 +33,11 @@ export const PrescribingProvider = ({children}) => {
     };
 
     const resetMedicineStore = () => {
-        setMedicinesSubmit([]);
+        return ConfirmAlert(t('prescription-detail:deletedPrescription'), t('modal:noThrowBack'), t('modal:ok'),t('modal:cancel'), 
+            ()=> {
+                createToastMessage({type:TOAST_SUCCESS,message: t('common:updateSuccess')});
+                setMedicinesSubmit([]);
+            }, ()=>{})
     };
 
     const handleUpdateMedicinesSubmit = (updatedData) => {
@@ -109,7 +115,7 @@ export const PrescribingProvider = ({children}) => {
                             await fetchAddPrescriptionDetail(formData);
                         })
                     );
-                    resetMedicineStore();
+                    setMedicinesSubmit([]);
                     SuccessfulAlert(t('modal:createSuccessed'), t('modal:ok'), () => router('/dashboard/prescribing'));
                 } else {
                     ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
@@ -134,8 +140,8 @@ export const PrescribingProvider = ({children}) => {
         <PrescribingContext.Provider
             value={{
                 isLoadingButton: isLoadingButton,
-                medicinesSubmit: medicinesSubmit,
-                addMedicine: handleAddMedicineSubmit,
+                medicinesSubmit: medicinesSubmit, setMedicinesSubmit,
+                addMedicine: handleAddMedicineSubmit, resetMedicineStore,
                 handleUpdateMedicinesSubmit: handleUpdateMedicinesSubmit,
                 handleAddPrescriptionDetail: handleAddPrescriptionDetail
             }}
