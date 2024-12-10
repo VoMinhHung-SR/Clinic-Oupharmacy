@@ -1,5 +1,7 @@
 
 {
+    "deletedPrescription": "Delete prescription",
+    "editPrescriptionDetail": "Edit prescription detail",
     "prescribingExist":"The list prescribing ID of this exam sheet",
     "errNullPrescribing":"There is no prescribing exist",
     "errNullPrescription":"There is no prescription exist",
