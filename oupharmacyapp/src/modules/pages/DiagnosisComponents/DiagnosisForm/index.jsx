@@ -106,7 +106,7 @@ const DiagnosisForm = (props) => {
             <Box  sx={{ minHeight: "300px" }} component={Paper} elevation={5} className="ou-py-5 ou-w-[100%]  ou-m-auto ou-max-w-[1536px]">
                 <form  >
                     <h1 className="ou-text-center  ou-text-xl ">
-                        {t('prescriptionInfomation')}
+                        {t('prescriptionInformation')}
                         </h1>
                     <Grid container justifyContent="flex" className="ou-m-auto ou-justify-center ou-items-center ou-px-8">
                         <Grid item xs={12} className="!ou-mt-4" >

@@ -17,7 +17,6 @@ import useExaminationConfirm from "../../../modules/pages/ExaminationListCompone
 import { useTranslation } from "react-i18next";
 import ExaminationCard from "../../../modules/common/components/card/ExaminationCard";
 import ExaminationFilter from "../../../modules/common/components/FIlterBar/ExaminationFilter";
-import useExaminationFilter from "../../../modules/pages/ExaminationListComponents/hooks/useExaminationFIlter";
 import { Helmet } from "react-helmet";
 const Examinations = () => {
   const {

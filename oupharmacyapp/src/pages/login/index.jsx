@@ -137,7 +137,6 @@ const Login = () =>{
                                             <IconButton
                                             aria-label="toggle password visibility"
                                             onClick={handleTogglePassword}
-                                        
                                             edge="end"
                                             >
                                             {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -187,11 +186,6 @@ const Login = () =>{
                         </form>
                     </Container>
                 </Box>
- 
-
-
-
-
     </>
     )
 }

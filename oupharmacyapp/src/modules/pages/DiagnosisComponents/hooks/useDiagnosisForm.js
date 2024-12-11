@@ -11,11 +11,11 @@ const useDiagnosisForm = () => {
     const diagnosisSchema = Yup.object().shape({
         sign: Yup.string().trim()
             .required(t('yupSignRequired'))
-            .max(254,t('yupSignMaxLenght'))
+            .max(254,t('yupSignMaxLength'))
             .matches(REGEX_NOTE, t('yupSignInvalid')),
         diagnosed: Yup.string().trim()
             .required(t('yupDiagnosedRequired'))
-            .max(254, t('yupDiagnosedMaxLenght'))
+            .max(254, t('yupDiagnosedMaxLength'))
             .matches(REGEX_NOTE, t('yupDiagnosedInvalid')),
     
     });

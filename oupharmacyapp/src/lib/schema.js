@@ -11,7 +11,7 @@ const SchemaModels = () => {
     //     Yup.object().shape({
     //         uses: Yup.string().trim()
     //             .required(t('yupUsesRequired'))
-    //             .max(100, t('yupUsesMaxLenght'))
+    //             .max(100, t('yupUsesMaxLength'))
     //             .matches(REGEX_ADDRESS, t('yupUsesInvalid')),
     //         quantity: Yup.string(t('yupQuantityNumber')).trim()
     //             .max(3, t('yupQuantityMax'))
@@ -24,7 +24,7 @@ const SchemaModels = () => {
             Yup.object().shape({
                 uses: Yup.string().trim()
                     .required(t('yupUsesRequired'))
-                    .max(100, t('yupUsesMaxLenght'))
+                    .max(100, t('yupUsesMaxLength'))
                     .matches(REGEX_ADDRESS, t('yupUsesInvalid')),
                 quantity: Yup.string(t('yupQuantityNumber')).trim()
                     .max(3, t('yupQuantityMax'))
@@ -37,17 +37,17 @@ const SchemaModels = () => {
     const addingPatientSchema = Yup.object().shape({
         firstName: Yup.string().trim()
             .required(t('yupFirstNameRequired'))
-            .max(150, t('yupFirstNameMaxLenght'))
+            .max(150, t('yupFirstNameMaxLength'))
             .matches(REGEX_NAME, t('yupFirstNameInvalid')),
 
         lastName: Yup.string().trim()
             .required(t('yupLastNameRequired'))
-            .max(150, t('yupLastNameMaxLenght'))
+            .max(150, t('yupLastNameMaxLength'))
             .matches(REGEX_NAME, t('yupLastNameInvalid')),
 
         email: Yup.string().trim()
             .required(t('yupEmailRequired'))
-            .max(254, t('yupEmailMaxLenght'))
+            .max(254, t('yupEmailMaxLength'))
             .matches(REGEX_EMAIL, t('yupEmailInvalid')),
 
         phoneNumber: Yup.string().trim()
