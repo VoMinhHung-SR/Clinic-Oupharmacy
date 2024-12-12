@@ -45,7 +45,6 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
       try{
 
         if(data){
-          console.log("medicine-update", data)
           const medicineArray = data.medicineSubmit
   
           medicineArray.forEach((medicine, index) => {
@@ -86,8 +85,7 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
       } catch (err){
         console.log(err)
       } finally {
-        const lastIndex = medicinesSubmitData.length - 1
-
+        const lastIndex = medicinesSubmitData.length - deletedArray.length - 1
         // clear the draft data statement
         // [0.1,2,3,4] ; L = 5
         // cur = 0 ; next = 1
@@ -113,30 +111,10 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
 
     }
   
-    const handleRemoveAllLineItems = () => {
-      // try {
-      //   // Get all IDs from the current draft
-      //   const allItemIDs = medicinesSubmitDataDraft.map((medicine) => medicine.id);
-    
-      //   // Update the draft to be empty
-      //   setMedicinesSubmitDataDraft([]);
-    
-      //   // Add all IDs to the deletedArray
-      //   setDeletedArray((prev) => [...prev, ...allItemIDs]);
-      // } catch (err) {
-      //   console.error("Error removing all line items:", err);
-      // } finally {  
-      //   allItemIDs(item => handleDeleteLineItem(item))
-      // }
-      handleClearAll()
-    };
-    if(errors)
-      console.log(errors)
     const handleDeleteLineItem = (itemID) => {
       const removedIndex = medicinesSubmitDataDraft.findIndex(medicine => medicine.id === itemID);
-    
       try {
-        for (let i = removedIndex; i < medicinesSubmitData.length - 1; i++) {
+        for (let i = removedIndex; i < medicinesSubmitData.length - deletedArray.length - 1; i++) {
           swapValue(i, i + 1);
         }
 
@@ -280,23 +258,7 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
                             
                             {handleRenderLineItems(medicinesSubmitDataDraft)}
                             
-                            <Box className="ou-text-right ou-w-full ou-mb-2 ou-mt-6">
-                                {medicinesSubmitDataDraft.length === 0 && flag &&  <Button onClick={()=> 
-                                    {setMedicinesSubmitDataDraft(medicinesSubmitData); setFlag(false)}}>
-                                    Hoan tac
-                                </Button>}
-                                <span >
-                                  <Tooltip title="clear" followCursor>
-                                      <span>
-                                      <Button type="button" color="error" variant="contained"
-                                        onClick={handleRemoveAllLineItems}
-                                      >
-                                          {t("common:deleteAll")}
-                                      </Button>
-                                      </span>
-                                  </Tooltip>
-                                </span>
-                              
+                            <Box className="ou-text-right ou-w-full ou-mb-2 ou-mt-6">                             
                               <span className="ou-ml-3">
                                 <Tooltip title={t("common:update")} followCursor>
                                     <span>
