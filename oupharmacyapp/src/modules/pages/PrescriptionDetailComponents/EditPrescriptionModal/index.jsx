@@ -3,8 +3,7 @@ import { useTranslation } from "react-i18next";
 import useCustomModal from "../../../../lib/hooks/useCustomModal";
 import { Button, Grid, Box, Paper, Typography, Tooltip, TextField, FormControl } from "@mui/material";
 import CustomModal from "../../../common/components/Modal";
-import { ConfirmAlert } from "../../../../config/sweetAlert2";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { TOAST_SUCCESS } from "../../../../lib/constants";
@@ -12,13 +11,12 @@ import createToastMessage from "../../../../lib/utils/createToastMessage";
 import BackdropLoading from "../../../common/components/BackdropLoading";
 import SchemaModels from "../../../../lib/schema";
 
-const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAll}) => {
+const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit}) => {
     
     const [medicinesSubmitDataDraft, setMedicinesSubmitDataDraft] = useState(medicinesSubmitData);
-    const [flag, setFlag] = useState(false)
     const [loading, setLoading] = useState(false)
     const { medicineSubmitUpdateSchema } = SchemaModels()
-    const { t } = useTranslation(["prescription-detail", "common", "modal"]);
+    const { t } = useTranslation(["prescription-detail", "common", "modal" , 'yup-validate']);
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
 
     const [deletedArray, setDeletedArray] = useState([])
@@ -27,7 +25,6 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
         reset()
         setDeletedArray([])
         setMedicinesSubmitDataDraft(medicinesSubmitData)
-        setFlag(false)
         handleCloseModal()
     }
     // Update local state when prop changes
@@ -40,13 +37,29 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
         resolver: yupResolver(medicineSubmitUpdateSchema), mode:"onChange"
     });
 
+    const handleUnregisterLastIndex = (index) => {
+
+        const value = getValues(`medicineSubmit[${index}]`)
+        const isNullable = value.quantity === '' || value.uses === ''
+
+        if(isNullable){
+          setValue(`medicineSubmit[${index}].quantity`, -1)
+          setValue(`medicineSubmit[${index}].uses`, -1)
+        }
+
+        unregister(`medicineSubmit[${index}].quantity`)
+        unregister(`medicineSubmit[${index}].uses`)
+        unregister(`medicineSubmit[${index}].medicineName`)
+      
+    }
+  
     const handleOnSubmit = (data, callBackError) =>{
       let err = false
       try{
-
         if(data){
           const medicineArray = data.medicineSubmit
-  
+          if (!medicineArray)
+            return;
           medicineArray.forEach((medicine, index) => {
             const { quantity } = medicine;
             const { inStock } = medicinesSubmitData[index];
@@ -55,18 +68,16 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
               err = true
               setError(`medicineSubmit[${index}].quantity`, {
                 type: 'custom',
-                message: 'over raw quantity'
+                message: t('yup-validate:yupQuantityOverRaw')
               });
             }
           });
         }
-
       }catch(err){
           console.error(err)
       }finally{
         if (!err){
-
-          handleOnEdit(data.medicineSubmit, deletedArray) // call function from parent -> action update    
+          handleOnEdit(data.medicineSubmit, deletedArray)
           handleCloseModal()
           reset()
           setDeletedArray([])
@@ -81,41 +92,19 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
         setValue(`medicineSubmit[${curIndex}].quantity`, getValues(`medicineSubmit[${nextIndex}].quantity`))
         setValue(`medicineSubmit[${curIndex}].uses`, getValues(`medicineSubmit[${nextIndex}].uses`))
         setValue(`medicineSubmit[${curIndex}].medicineName`, getValues(`medicineSubmit[${nextIndex}].medicineName`))
-     
       } catch (err){
         console.log(err)
-      } finally {
-        const lastIndex = medicinesSubmitData.length - deletedArray.length - 1
-        // clear the draft data statement
-        // [0.1,2,3,4] ; L = 5
-        // cur = 0 ; next = 1
-        // .... last loop: cur = 3 ; next = 4   
-        if(curIndex === lastIndex - 1){
-  
-          const lastItem = getValues(`medicineSubmit[${lastIndex}]`)
-          const isNullable = lastItem.quantity === '' || lastItem.uses === ''
-
-          if(isNullable){
-            setValue(`medicineSubmit[${lastIndex}].quantity`, -1)
-            setValue(`medicineSubmit[${lastIndex}].uses`, -1)
-            setValue(`medicineSubmit[${lastIndex}].medicineName`, getValues(`medicineSubmit[${nextIndex}].medicineName`))
-          }
-
-          unregister(`medicineSubmit[${lastIndex}].quantity`)
-          unregister(`medicineSubmit[${lastIndex}].uses`)
-          unregister(`medicineSubmit[${lastIndex}].medicineName`)
-        
-        }
-        
-      }
-
+      } 
     }
   
     const handleDeleteLineItem = (itemID) => {
-      const removedIndex = medicinesSubmitDataDraft.findIndex(medicine => medicine.id === itemID);
+      const removedIndex = medicinesSubmitDataDraft.findIndex(medicine => medicine.id === itemID) - deletedArray.length;
       try {
-        for (let i = removedIndex; i < medicinesSubmitData.length - deletedArray.length - 1; i++) {
-          swapValue(i, i + 1);
+        for (let i = removedIndex; i <= medicinesSubmitData.length - deletedArray.length - 1; i++) {
+          if(i === medicinesSubmitData.length - deletedArray.length - 1)
+            handleUnregisterLastIndex(i)
+          else
+            swapValue(i, i + 1);
         }
 
       } catch (err) {
@@ -248,14 +237,14 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
                         <form className="ou-w-full" onSubmit={handleSubmit(data =>{ 
                             handleOnSubmit(data);
                           })}>
-
-                            {medicinesSubmitDataDraft.length === 0 && flag &&
+                            
+                            {deletedArray.length === medicinesSubmitData.length &&
                                 <Grid item xs={12}>
                                     <Typography className="ou-text-center !ou-mt-3 ou-text-red-600">{t('nullMedicine')}
                                     </Typography>
                                 </Grid>
                             }
-                            
+
                             {handleRenderLineItems(medicinesSubmitDataDraft)}
                             
                             <Box className="ou-text-right ou-w-full ou-mb-2 ou-mt-6">                             
@@ -272,7 +261,7 @@ const EditPrescriptionModal = ({medicinesSubmitData, handleOnEdit, handleClearAl
                         </form>
                         </Grid>
                     </> 
-                   
+    
             }            
             actions={[
             <Button key="cancel" onClick={() => {handleUnSaveChange()}}>
