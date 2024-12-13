@@ -23,8 +23,11 @@ const PrescriptionDetail = () => {
     const router = useNavigate()
 
     const handleOnEdit = (medicineUpdate, deletedArrayItems) => {
+        if (deletedArrayItems.length === medicinesSubmit.length)
+            return handleUpdateMedicinesSubmit([])
+
         const dataWithoutNull = medicineUpdate.filter(item => item !== null);
-        handleUpdateMedicinesSubmit(dataWithoutNull, deletedArrayItems)
+        handleUpdateMedicinesSubmit(dataWithoutNull)
     }
     const { prescribingId } = useParams();
 

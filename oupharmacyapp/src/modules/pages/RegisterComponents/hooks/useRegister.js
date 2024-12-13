@@ -140,7 +140,7 @@ const useRegister = () => {
 
                 if (res.status === 201) {
                     setOpenBackdrop(false)
-                    SuccessfulAlert(t("modal:createSuccessed"),t('modal:ok'), ()=> {router('/login')})
+                    SuccessfulAlert(t("modal:createSuccess"),t('modal:ok'), ()=> {router('/login')})
                 }
             } catch (err) {
                 if (err) {

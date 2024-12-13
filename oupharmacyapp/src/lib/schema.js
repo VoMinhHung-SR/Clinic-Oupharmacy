@@ -6,19 +6,6 @@ import {REGEX_NUMBER999, REGEX_ADDRESS, REGEX_NAME, REGEX_EMAIL, REGEX_PHONE_NUM
 const SchemaModels = () => {
     const {t} = useTranslation(['yup-validate', 'modal', 'prescription-detail'])
 
-
-    // const medicineSubmitUpdateSchema = Yup.array().of(
-    //     Yup.object().shape({
-    //         uses: Yup.string().trim()
-    //             .required(t('yupUsesRequired'))
-    //             .max(100, t('yupUsesMaxLength'))
-    //             .matches(REGEX_ADDRESS, t('yupUsesInvalid')),
-    //         quantity: Yup.string(t('yupQuantityNumber')).trim()
-    //             .max(3, t('yupQuantityMax'))
-    //             .required(t('yupQuantityRequired'))
-    //             .matches(REGEX_NUMBER999, t('yupQuantityInvalid')),
-    //     })
-    // );
     const medicineSubmitUpdateSchema = Yup.object({
         medicineSubmit: Yup.array().of(
             Yup.object().shape({
@@ -31,7 +18,7 @@ const SchemaModels = () => {
                     .required(t('yupQuantityRequired'))
                     .matches(REGEX_NUMBER999, t('yupQuantityInvalid')),
             })
-        ).required(t('yupArrayRequired')).nullable()
+        )
     });
 
     const addingPatientSchema = Yup.object().shape({

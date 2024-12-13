@@ -58,6 +58,7 @@
     "yupQuantityNumber": "Quantity must be a number",
     "yupQuantityRequired": "Quantity was required",
     "yupQuantityMax": "Quantity does not accept",
+    "yupQuantityOverRaw": "Over raw quantity",
     "yupQuantityInvalid":"Invalid quantity",
 
     "yupCityRequired": "City was required",

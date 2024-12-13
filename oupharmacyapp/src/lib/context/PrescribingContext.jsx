@@ -41,6 +41,8 @@ export const PrescribingProvider = ({children}) => {
     };
 
     const handleUpdateMedicinesSubmit = (updatedData) => {
+        if(updatedData.length === 0)
+            return setMedicinesSubmit([])
         const updatedMedicinesSubmit = medicinesSubmit.map(medicine => {
             const updatedMedicine = updatedData.find(item => item.medicineName === medicine.medicineName);
             return updatedMedicine ? { ...medicine, ...updatedMedicine } : null;
@@ -116,7 +118,7 @@ export const PrescribingProvider = ({children}) => {
                         })
                     );
                     setMedicinesSubmit([]);
-                    SuccessfulAlert(t('modal:createSuccessed'), t('modal:ok'), () => router('/dashboard/prescribing'));
+                    SuccessfulAlert(t('modal:createSuccess'), t('modal:ok'), () => router('/dashboard/prescribing'));
                 } else {
                     ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
                 }
