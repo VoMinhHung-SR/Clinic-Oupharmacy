@@ -115,7 +115,7 @@ const usePrescriptionDetailCard = () => {
                         createNotificationRealtime(recipientID, examID)
                         await keyUpdateExam(examID, "isCommitted", true)
                     }
-                    return SuccessfulAlert(t('modal:createSuccessed'), t('modal:ok'), () => router('/'))
+                    return SuccessfulAlert(t('modal:createSuccess'), t('modal:ok'), () => router('/'))
                 }
                    
                 else{

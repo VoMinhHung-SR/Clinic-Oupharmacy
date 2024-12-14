@@ -156,7 +156,6 @@ const useDoctorAvailability = () => {
         }
 
         const handleOnSubmit = async (doctorWorkingTime) => {
-            // setOpenBackdrop(true)
             // Update done or created patient info
             const res = await fetchCreateOrUpdatePatient(patientData.id, patientData);
             
@@ -176,25 +175,21 @@ const useDoctorAvailability = () => {
                 }
                 const resExamination = await fetchCreateExamination(examinationData);
                 if(resExamination.status === 201){
-                    createToastMessage({message:t('modal:createSuccessed'), type:TOAST_SUCCESS})
+                    createToastMessage({message:t('modal:createSuccess'), type:TOAST_SUCCESS})
                     callbackSuccess();
                     setSlideRight(false);
                     handleChangeFlag();
                 }
                 else{
-                    // setOpenBackdrop(false)
                     return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
                 }
                 if(resExamination.status === 500){
-                    // setOpenBackdrop(false)
                     return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
                 }
             }
             else{
-                // setOpenBackdrop(false)
                 return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
             }
-            // setOpenBackdrop(false)
         }
         
         return ConfirmAlert(t('booking:confirmBooking'),t('modal:noThrowBack'),t('modal:yes'),t('modal:cancel'),

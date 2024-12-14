@@ -2,14 +2,13 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Box, Button, TextField, Tooltip, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
-import usePrescriptionDetailCard from "../../../common/components/card/PrescriptionDetailCard/hooks/usePrescriptionDetailCard"
 import { useTranslation } from "react-i18next"
 import AddIcon from '@mui/icons-material/Add';
 
 const PrescribingMedicine = ({medicine, onAddToPrescription, schema}) => {
     const {t, ready} = useTranslation(['prescription-detail', 'yup-validate', 'modal'])
    
-    const { register, control, handleSubmit, formState: { errors }, reset, setError } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset, setError } = useForm({
         resolver: yupResolver(schema),
     });
 
@@ -21,11 +20,7 @@ const PrescribingMedicine = ({medicine, onAddToPrescription, schema}) => {
         });
         
     else
-        // Process the medicine data
-        console.log('Medicine data:', data);
-    
         // Reset the form after submission
-
         reset();
     
         // Add the medicine to the prescription

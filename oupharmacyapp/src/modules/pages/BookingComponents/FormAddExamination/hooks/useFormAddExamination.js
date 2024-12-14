@@ -193,13 +193,12 @@ const useFormAddExamination = () => {
                 const examinationData = {
                     patient: res.data.id,
                     description: data.description,
-                    // created_date: data.createdDate
                     created_date: new Date(formattedDateTime),
                     doctor_availability: doctorWorkingTime
                 }
                 const resExamination = await fetchCreateExamination(examinationData);
                 if(resExamination.status === 201){
-                    createToastMessage({message:t('modal:createSuccessed'), type:TOAST_SUCCESS})
+                    createToastMessage({message:t('modal:createSuccess'), type:TOAST_SUCCESS})
                     callback();
                 }
                 else{

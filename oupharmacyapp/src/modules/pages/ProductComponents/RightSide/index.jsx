@@ -9,9 +9,6 @@ import { ROLE_DOCTOR } from "../../../../lib/constants";
 import { useTranslation } from "react-i18next";
 import PrescribingMedicine from "./prescribingMedicine";
 import usePrescriptionDetailCard from "../../../common/components/card/PrescriptionDetailCard/hooks/usePrescriptionDetailCard";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-
 const ProductHomeRight = ({actionButton, onAddMedicineLineItem, callback}) => {
     
     const { medicines, page, handleChangePage, pagination, medicineLoading } = useMedicine();
@@ -19,15 +16,6 @@ const ProductHomeRight = ({actionButton, onAddMedicineLineItem, callback}) => {
     const {prescriptionDetailSchema} = usePrescriptionDetailCard();
     
     const {t, ready} = useTranslation(['prescription-detail', 'yup-validate', 'modal'])
-
-    const methods = useForm({
-        mode:"onSubmit",
-        resolver: yupResolver(prescriptionDetailSchema),
-        default: {
-            uses: "",
-            quantity:""
-        }
-    })
 
     const router = useLocation()
 
@@ -39,12 +27,8 @@ const ProductHomeRight = ({actionButton, onAddMedicineLineItem, callback}) => {
         return <div className="ou-h-[500px] ou-flex ou-items-center"><Loading/></div>
 
     const handleAddToPrescription = (medicine, data) => {
-        // Handle the addition of the medicine to the prescription
-        console.log('Adding to prescription:', medicine, data);
-
         // this function add one-line item in usePrescriptionDetailCard with name onSubmit
         onAddMedicineLineItem(medicine, data)
-        
     };
 
 
