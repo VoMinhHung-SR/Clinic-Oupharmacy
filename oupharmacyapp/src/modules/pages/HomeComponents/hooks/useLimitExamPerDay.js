@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { fetchGetTotalExamsPerDay } from "../services"
+import { CURRENT_DATE } from "../../../../lib/constants"
 
-const useLimitExamPerDay = (date) => {
-    const [totalExams, setTotalExams]= useState(null)
+const useLimitExamPerDay = (date = CURRENT_DATE) => {
+    const [totalExams, setTotalExams]= useState(0)
     const [isOpen, setIsOpen] = useState(false)
 
     const handleCloseModal = () => setIsOpen(false)

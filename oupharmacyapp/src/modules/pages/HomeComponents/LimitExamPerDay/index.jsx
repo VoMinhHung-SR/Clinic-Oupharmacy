@@ -12,7 +12,6 @@ import UserContext from "../../../../lib/context/UserContext"
 const LimitExamPerDay = () => {
     const {t} = useTranslation(['modal', "common"])
     const {totalExams, handleOpenModal, handleCloseModal, isOpen} = useLimitExamPerDay(CURRENT_DATE) 
-    // const [user] = useContext(userContext);
     const {user} = useContext(UserContext);
 
 

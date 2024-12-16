@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import Copyright from './footer';
 import NavDashboard from './nav';
 
-export default function Dashboard() {
+export default function DashboardLayout() {
 
   return (
       <Box sx={{ display: 'flex' }}>

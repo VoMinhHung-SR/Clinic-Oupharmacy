@@ -1,0 +1,11 @@
+{
+    "users": "Users",
+    "patients": "Patients",
+    "bookings": "Bookings",
+    "medicineUnit": "Medicine Unit",
+
+    "noteTotalPatients": "Total number of patient profiles",
+    "noteTotalUsers": "Total number of users",
+    "noteTotalBookings": "Total bookings for today",
+    "noteTotalMedicines": "Total units of medicine"
+}
