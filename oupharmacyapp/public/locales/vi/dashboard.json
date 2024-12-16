@@ -1,0 +1,11 @@
+{
+    "users": "Người dùng",
+    "patients": "Bệnh nhân",
+    "bookings": "Lịch khám",
+    "medicineUnit": "Thuốc kê toa",
+
+    "noteTotalPatients": "Tổng số hồ sơ bệnh nhân",
+    "noteTotalUsers": "Tổng số người dùng",
+    "noteTotalBookings": "Tổng số lượt đặt hôm nay",
+    "noteTotalMedicines": "Tổng số đơn vị thuốc"
+}
