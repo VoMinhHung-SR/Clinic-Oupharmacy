@@ -425,20 +425,30 @@ OUPharmacy xin chúc bạn một ngày tốt lành và thật nhiều sức kh�
     def get_total_exam_per_day(self, request):
         date_str = request.data.get('date')
         try:
-            if date_str:
-                date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-            else:
-                date = datetime.datetime.now().date()
+            date = datetime.datetime.strptime(date_str,
+                                              '%Y-%m-%d').date() if date_str else datetime.datetime.now().date()
             start_of_day = datetime.datetime.combine(date, datetime.time.min).astimezone(pytz.utc)
             end_of_day = datetime.datetime.combine(date, datetime.time.max).astimezone(pytz.utc)
-            examinations = Examination.objects.filter(created_date__range=(start_of_day, end_of_day)).all()
-        except Exception as error:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"errMsg": "Can't get Examinations"})
-        return Response(data={"totalExams": len(examinations), "dateStr": date, 
-                              "examinations": ExaminationSerializer(examinations,
-                                                                    context={'request': request}, many=True).data},
-                        status=status.HTTP_200_OK)
-
+            examinations = Examination.objects.filter(created_date__range=(start_of_day, end_of_day))
+            total_exams = examinations.count()
+            return Response(
+                data={
+                    "totalExams": total_exams,
+                    "dateStr": date,
+                    "examinations": ExaminationSerializer(examinations, context={'request': request}, many=True).data
+                },
+                status=status.HTTP_200_OK,
+            )
+        except ValueError:
+            return Response(
+                data={"errMsg": "Invalid date format. Use 'YYYY-MM-DD'."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception:
+            return Response(
+                data={"errMsg": "An error occurred while fetching examinations."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
     @action(methods=['get'], detail=False, url_path='get-list-exam-today')
     def get_list_exam_today(self, request):
         try:
