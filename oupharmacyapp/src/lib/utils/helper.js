@@ -191,7 +191,7 @@ export function formatNumberCurrency(number) {
 export const calculateAge = (dob) => {
   const today = new Date();
   const birthDate = new Date(dob);
-  const age = today.getFullYear() - birthDate.getFullYear()
+  let age = today.getFullYear() - birthDate.getFullYear()
   if (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) {
     age--;
   }
