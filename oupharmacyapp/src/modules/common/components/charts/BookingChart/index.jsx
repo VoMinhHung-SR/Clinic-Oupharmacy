@@ -9,19 +9,25 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import { useTranslation } from 'react-i18next';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const BookingChart = ({ dataBooking, year }) => {
+    const {t} = useTranslation(['dashboard'])
     // Chart data
     const data = {
         labels: [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
+            t('dashboard:January'), t('dashboard:February'),
+            t('dashboard:.March'), t('dashboard:April'),
+            t('dashboard:May'), t('dashboard:June'),
+            t('dashboard:July'), t('dashboard:August'),
+            t('dashboard:September'), t('dashboard:October'),
+            t('dashboard:November'), t('dashboard:December'),
         ],
         datasets: [
             {
-                label: `Examinations in ${year}`,
+                label: `${t('dashboard:examinationLabel')} ${year}`,
                 data: dataBooking,
                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -39,7 +45,7 @@ const BookingChart = ({ dataBooking, year }) => {
             },
             title: {
                 display: true,
-                text: `Monthly Booking Statistics for ${year}`
+                text: `${t('examinationTitle')} ${year}`
             }
         }
     };

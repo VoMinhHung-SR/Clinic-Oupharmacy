@@ -93,3 +93,10 @@ export const fetchMedicineStats = async (quarter, year) => {
   ) 
   return res;
 };
+
+export const fetchRevenueStats = async (quarter, year) => {
+  const res = await authApi().post(endpoints['dashboard-revenue-stats'], 
+    {quarter, year}
+  ) 
+  return res;
+};
