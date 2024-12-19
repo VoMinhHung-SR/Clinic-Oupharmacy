@@ -1,5 +1,5 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import APIs, { endpoints } from "../../config/APIs";
+import APIs, { authApi, endpoints } from "../../config/APIs";
 import { db } from "../../config/firebase";
 import { getDirections } from "../utils/getDirections";
 import moment from "moment";
@@ -78,3 +78,25 @@ export const handleSendRemindEmail = async () => {
       console.error('Error getting document:', error);
     }
   };
+
+
+export const fetchBookingStats = async (quarter, year) => {
+  const res = await authApi().post(endpoints['dashboard-booking-stats'], 
+    {quarter, year}
+  ) 
+  return res;
+};
+
+export const fetchMedicineStats = async (quarter, year) => {
+  const res = await authApi().post(endpoints['dashboard-medicine-stats'], 
+    {quarter, year}
+  ) 
+  return res;
+};
+
+export const fetchRevenueStats = async (quarter, year) => {
+  const res = await authApi().post(endpoints['dashboard-revenue-stats'], 
+    {quarter, year}
+  ) 
+  return res;
+};

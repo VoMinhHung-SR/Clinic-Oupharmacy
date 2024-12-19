@@ -7,5 +7,27 @@
     "noteTotalPatients": "Tổng số hồ sơ bệnh nhân",
     "noteTotalUsers": "Tổng số người dùng",
     "noteTotalBookings": "Tổng số lượt đặt hôm nay",
-    "noteTotalMedicines": "Tổng số đơn vị thuốc"
+    "noteTotalMedicines": "Tổng số đơn vị thuốc",
+
+    "month": "Tháng",
+    "revenue": "Doanh thu (VND)",
+    "revenueLabel": "Doanh thu trong năm",
+    "revenueTitle": "Doanh thu qua các tháng trong năm",
+
+    "examinationLabel": "Đặt lịch trong năm",
+    "examinationTitle": "Thông kê đặt lịch các tháng trong năm",
+  
+    "January": "Tháng Một",
+    "February": "Tháng Hai",
+    "March": "Tháng Ba",
+    "April": "Tháng Tư",
+    "May": "Tháng Năm",
+    "June": "Tháng Sáu",
+    "July": "Tháng Bảy",
+    "August": "Tháng Tám",
+    "September": "Tháng Chín",
+    "October": "Tháng Mười",
+    "November": "Tháng Mười Một",
+    "December": "Tháng Mười Hai"
+    
 }

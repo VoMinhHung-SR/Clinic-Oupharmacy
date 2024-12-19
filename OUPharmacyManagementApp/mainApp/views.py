@@ -13,6 +13,7 @@ from datetime import timedelta
 from pickle import FALSE
 
 from django.db.models.functions import TruncDate
+from django.db.models.functions.datetime import TruncMonth
 from django.utils import timezone
 import requests
 import hmac
@@ -847,7 +848,6 @@ class PrescribingViewSet(viewsets.ViewSet, generics.ListAPIView, generics.Retrie
                                                           context={'request': request}).data,
                         status=status.HTTP_200_OK)
 
-
 @api_view(http_method_names=["GET"])
 def get_all_config(request):
     try:
@@ -891,4 +891,3 @@ def get_all_config(request):
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"errMgs": "value Error"})
     else:
         return Response(data=res_data, status=status.HTTP_200_OK)
-

@@ -1,8 +1,9 @@
 from django.urls import path, include
-from . import views, views
+from . import views
 from rest_framework import routers
 from .admin import admin, admin_site, MainAppAdminSite
 from . import admin_views
+from .services import statistic_views
 
 router = routers.DefaultRouter()
 router.register("users", views.UserViewSet, basename="user")
@@ -31,5 +32,8 @@ urlpatterns = [
         path('',  admin_site.urls)
     ])),
     path('stats/', views.StatsView.as_view()),
-    path('common-configs/', views.get_all_config)
+    path('common-configs/', views.get_all_config),
+    path('dashboard/stats/get-booking-stats/', statistic_views.get_booking_stats),
+    path('dashboard/stats/get-medicine-stats/', statistic_views.get_medicines_stats),
+    path('dashboard/stats/get-revenue-stats/', statistic_views.get_revenue_stats)
 ]
