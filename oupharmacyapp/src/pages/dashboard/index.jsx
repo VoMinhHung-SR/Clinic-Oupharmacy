@@ -14,6 +14,8 @@ import useBookingChart from "../../modules/common/components/charts/hooks/useBoo
 import BookingChart from "../../modules/common/components/charts/BookingChart";
 import MedicinesChart from "../../modules/common/components/charts/MedicinesChart";
 import useMedicineChart from "../../modules/common/components/charts/hooks/useMedicineChart";
+import RevenueChart from "../../modules/common/components/charts/RevenueChart";
+import useRevenueChart from "../../modules/common/components/charts/hooks/useRevenueChart";
 
 const DashBoard = () => {
 
@@ -24,6 +26,7 @@ const DashBoard = () => {
 
     const {bookingChartData} = useBookingChart()
     const {medicineData, medicineLabelChartData} = useMedicineChart()
+    const {revenueData} = useRevenueChart()
 
     if (tReady)
         return <Box sx={{ minHeight: "300px" }}>
@@ -71,7 +74,7 @@ const DashBoard = () => {
                 </Box> 
             </Box>
             <Box component={Paper} className="ou-w-[100%] ou-p-4">
-                <BookingChart dataBooking={bookingChartData} year={2024}/>
+                <RevenueChart dataRevenue={revenueData} year={2024}/>
             </Box> 
         </Box>
 

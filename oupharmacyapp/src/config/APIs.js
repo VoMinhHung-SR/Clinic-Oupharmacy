@@ -72,7 +72,8 @@ export let endpoints = {
 
     //Dashboard---API
     'dashboard-booking-stats': 'dashboard/stats/get-booking-stats/',
-    'dashboard-medicine-stats': 'dashboard/stats/get-medicine-stats/'
+    'dashboard-medicine-stats': 'dashboard/stats/get-medicine-stats/',
+    'dashboard-revenue-stats': 'dashboard/stats/get-revenue-stats/'
 }
 let baseURL;
 if (process.env.NODE_ENV === 'production') {
