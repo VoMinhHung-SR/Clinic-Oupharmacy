@@ -10,12 +10,10 @@ import useLimitExamPerDay from "../../modules/pages/HomeComponents/hooks/useLimi
 import { useTranslation } from "react-i18next";
 import Loading from "../../modules/common/components/Loading";
 import PillsIcon from "../../lib/icon/PillsIcon";
-import useBookingChart from "../../modules/common/components/charts/hooks/useBookingChart";
 import BookingChart from "../../modules/common/components/charts/BookingChart";
 import MedicinesChart from "../../modules/common/components/charts/MedicinesChart";
 import useMedicineChart from "../../modules/common/components/charts/hooks/useMedicineChart";
 import RevenueChart from "../../modules/common/components/charts/RevenueChart";
-import useRevenueChart from "../../modules/common/components/charts/hooks/useRevenueChart";
 
 const DashBoard = () => {
 
@@ -24,9 +22,6 @@ const DashBoard = () => {
     const {totalPatients, totalUsers, totalMedicineUnit} = useStatistic()
     const {totalExams} = useLimitExamPerDay(CURRENT_DATE) 
 
-    const {bookingChartData} = useBookingChart()
-    const {medicineData, medicineLabelChartData} = useMedicineChart()
-    const {revenueData} = useRevenueChart()
 
     if (tReady)
         return <Box sx={{ minHeight: "300px" }}>
@@ -66,16 +61,16 @@ const DashBoard = () => {
             
             <Box className="ou-flex ou-mb-4">
                 <Box component={Paper} className="ou-w-[50%] ou-p-4 ou-mr-2">
-                    <BookingChart dataBooking={bookingChartData} year={2023}/>
+                    <BookingChart/>
                 </Box>
                 <Box component={Paper} className="ou-w-[50%] ou-p-4 ou-ml-2">
-                    <MedicinesChart medicinesLabel={medicineLabelChartData}
-                    medicinesData={medicineData} year={2024}/>
+                    <RevenueChart/>
                 </Box> 
             </Box>
-            <Box component={Paper} className="ou-w-[100%] ou-p-4">
-                <RevenueChart dataRevenue={revenueData} year={2024}/>
-            </Box> 
+            {/* <Box component={Paper} className="ou-w-[100%] ou-p-4">
+                    <MedicinesChart medicinesLabel={medicineLabelChartData}
+                    medicinesData={medicineData} year={2024}/>  
+            </Box>  */}
         </Box>
 
         </>

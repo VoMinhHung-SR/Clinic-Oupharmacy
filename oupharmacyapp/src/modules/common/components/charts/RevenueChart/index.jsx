@@ -11,12 +11,15 @@ import {
     Legend
 } from 'chart.js';
 import { useTranslation } from 'react-i18next';
+import { TextField } from '@mui/material';
+import useRevenueChart from '../hooks/useRevenueChart';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const RevenueChart = ({ dataRevenue, year }) => {
+const RevenueChart = () => {
     const {t} = useTranslation(['dashboard'])
-    // Chart data
+    const {revenueData, handleYearChange, selectedYear} = useRevenueChart()
+
     const data = {
         labels: [
             t('dashboard:January'), t('dashboard:February'),
@@ -28,8 +31,8 @@ const RevenueChart = ({ dataRevenue, year }) => {
         ],
         datasets: [
             {
-                label: `${t('dashboard:revenueLabel')} ${year}`,
-                data: dataRevenue,
+                label: `${t('dashboard:revenueLabel')} ${selectedYear}`,
+                data: revenueData,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 2,
@@ -51,7 +54,7 @@ const RevenueChart = ({ dataRevenue, year }) => {
             },
             title: {
                 display: true,
-                text: `${t('dashboard:revenueTitle')} ${year}`
+                text: `${t('dashboard:revenueTitle')} ${selectedYear}`
             }
         },
         scales: {
@@ -61,17 +64,20 @@ const RevenueChart = ({ dataRevenue, year }) => {
                     display: true,
                     text: t('revenue')
                 }
-            },
-            x: {
-                title: {
-                    display: true,
-                    text: t('month')
-                }
             }
         }
     };
 
-    return <Line data={data} options={options} />;
+    return (
+        <div>
+            <div className='ou-text-right ou-mb-3'>
+                <TextField placeholder={t('dashboard:Year')} value={selectedYear}
+                onChange={handleYearChange} type='number'/>
+            </div>   
+            <Line data={data} options={options} />;
+        </div>
+    )
+    
 };
 
 export default RevenueChart;
