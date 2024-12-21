@@ -1,7 +1,6 @@
 import { Box, Grid, Paper } from "@mui/material"
 import { Helmet } from "react-helmet"
 import StatisticCard from "../../modules/common/components/card/StatisticCard"
-import { styled } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
@@ -11,6 +10,10 @@ import useLimitExamPerDay from "../../modules/pages/HomeComponents/hooks/useLimi
 import { useTranslation } from "react-i18next";
 import Loading from "../../modules/common/components/Loading";
 import PillsIcon from "../../lib/icon/PillsIcon";
+import BookingChart from "../../modules/common/components/charts/BookingChart";
+import MedicinesChart from "../../modules/common/components/charts/MedicinesChart";
+import useMedicineChart from "../../modules/common/components/charts/hooks/useMedicineChart";
+import RevenueChart from "../../modules/common/components/charts/RevenueChart";
 
 const DashBoard = () => {
 
@@ -18,6 +21,7 @@ const DashBoard = () => {
 
     const {totalPatients, totalUsers, totalMedicineUnit} = useStatistic()
     const {totalExams} = useLimitExamPerDay(CURRENT_DATE) 
+
 
     if (tReady)
         return <Box sx={{ minHeight: "300px" }}>
@@ -32,9 +36,9 @@ const DashBoard = () => {
             <title>Dashboard</title>
         </Helmet>
 
-        <Box className="!ou-py-8 ou-mx-8 ou-flex ou-justify-center">
+        <Box className="!ou-py-8 ou-mx-8">
             {/* <StatisticCard icon={"patients"} title={"patientList"} value={10} footer={"day la footer"}/> */}
-            <Grid container columns={{ xs: 4, sm: 6, md: 12 }} className="ou-flex">
+            <Grid container columns={{ xs: 4, sm: 6, md: 12 }} className="ou-flex ou-mb-8">
                 <Grid item xs={3} className="ou-p-2">
                     <StatisticCard icon={<AccessibilityNewIcon className="!ou-text-[60px] ou-text-blue-700"/>} 
                     title={t('dashboard:patients')} value={totalPatients} footer={t('dashboard:noteTotalPatients')}/>
@@ -54,8 +58,21 @@ const DashBoard = () => {
                     title={t('dashboard:medicineUnit')} value={totalMedicineUnit} footer={t('dashboard:noteTotalMedicines')}/>
                 </Grid>
             </Grid>
-                        
+            
+            <Box className="ou-flex ou-mb-4">
+                <Box component={Paper} className="ou-w-[50%] ou-p-4 ou-mr-2">
+                    <BookingChart/>
+                </Box>
+                <Box component={Paper} className="ou-w-[50%] ou-p-4 ou-ml-2">
+                    <RevenueChart/>
+                </Box> 
+            </Box>
+            {/* <Box component={Paper} className="ou-w-[100%] ou-p-4">
+                    <MedicinesChart medicinesLabel={medicineLabelChartData}
+                    medicinesData={medicineData} year={2024}/>  
+            </Box>  */}
         </Box>
+
         </>
     )
 }
