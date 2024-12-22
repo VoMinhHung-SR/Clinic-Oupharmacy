@@ -30,11 +30,11 @@ const Nav = () => {
       name:t('booking'),
       link: '/booking'
     },
-    {
-      id: 'products',
-      name:t('products'),
-      link: '/products'
-    },
+    // {
+    //   id: 'products',
+    //   name:t('products'),
+    //   link: '/products'
+    // },
     {
       id: 'waiting-room',
       name: t('waitingRoom'),

@@ -96,7 +96,7 @@ function App() {
                               <Route path='/' element={<Home />}/>
                               
                               <Route path='/waiting-room' element={<WaitingRoom/>}/>
-                              <Route path='/products' element={<ProductList/>}/>
+                              {/* <Route path='/products' element={<ProductList/>}/> */}
                               
                               {/* Accepted when user authorized */}
                               <Route element={<ProtectedUserRoute/>}>
