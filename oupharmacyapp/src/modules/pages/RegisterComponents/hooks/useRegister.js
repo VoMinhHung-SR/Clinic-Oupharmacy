@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import * as Yup from 'yup';
 import SuccessfulAlert, { ErrorAlert } from '../../../../config/sweetAlert2';
-import { REGEX_EMAIL, REGEX_NAME, REGEX_PHONE_NUMBER, ROLE_USER, TOAST_ERROR } from '../../../../lib/constants';
+import { REGEX_EMAIL, REGEX_NAME, REGEX_PHONE_NUMBER, REGEX_STRONG_PASSWORD, ROLE_USER, TOAST_ERROR } from '../../../../lib/constants';
 import createToastMessage from '../../../../lib/utils/createToastMessage';
 import { fetchCreateLocation, fetchCreateUser, fetchDistrictsByCity,fetchCreateUserRole } from '../services';
 
@@ -82,6 +82,7 @@ const useRegister = () => {
         .required(t('yupDOBRequired')), 
         password: Yup.string().trim()
             .required(t('yupPasswordRequired'))
+            .matches(REGEX_STRONG_PASSWORD, t('yupNewPasswordRegex'))
             .max(128, t('yupPasswordMaxLength')),
         confirmPassword: Yup.string().trim()
             .required(t('yupConfirmPasswordRequire'))
