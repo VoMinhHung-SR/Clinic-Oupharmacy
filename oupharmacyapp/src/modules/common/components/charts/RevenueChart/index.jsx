@@ -74,7 +74,7 @@ const RevenueChart = () => {
                 <TextField placeholder={t('dashboard:Year')} value={selectedYear}
                 onChange={handleYearChange} type='number'/>
             </div>   
-            <Line data={data} options={options} />;
+            <Line data={data} options={options} />
         </div>
     )
     
