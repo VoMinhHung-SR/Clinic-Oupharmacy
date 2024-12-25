@@ -42,7 +42,6 @@ import { UserProvider } from './lib/context/UserContext'
 import Diagnosis from './pages/dashboard/examinations/id/diagnosis'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import ProductList from './pages/products'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { PrescribingProvider } from './lib/context/PrescribingContext'
