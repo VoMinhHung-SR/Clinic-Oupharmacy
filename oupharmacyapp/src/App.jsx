@@ -77,7 +77,6 @@ function App() {
   },[])
 
     return isLoading ? <Box className='ou-h-[100vh] ou-flex ou-place-content-center'><Loading/></Box> :
-    
     <>
     <QueryClientProvider client={queryClient}>
         <I18nextProvider i18n={i18n}>
@@ -96,10 +95,9 @@ function App() {
                               
                               <Route path='/waiting-room' element={<WaitingRoom/>}/>
                               {/* <Route path='/products' element={<ProductList/>}/> */}
-                              
                               {/* Accepted when user authorized */}
                               <Route element={<ProtectedUserRoute/>}>
-                          
+                          0
                                 <Route path='/booking' element={<Booking/>}/>
                                 
                                 <Route path='/profile' element={<Profile />} >
@@ -110,7 +108,6 @@ function App() {
                                 <Route path='/conversations'  element={<ConversationList/>} >
                                   <Route path='/conversations/:conversationId/:recipientId/message' element={<ChatWindow/>} />
                                 </Route>
-
                               </Route>
 
 
@@ -127,6 +124,7 @@ function App() {
                                   {/* Accepted user.role = (ROLE_NURSE || ROLE_DOCTOR) */}
                                   <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR, ROLE_NURSE]} />}>
                                     <Route path='/dashboard/examinations' element={<Examinations/>}/> 
+                                    <Route path='/dashboard/conversations' element={<Examinations/>}/> 
                                   </Route>
 
                                   {/* Accepted user.role = ROLE_DOCTOR */}

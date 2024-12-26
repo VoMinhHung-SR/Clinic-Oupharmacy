@@ -138,14 +138,14 @@ const Nav = () => {
                 </Box>
               </Link>
           </Tooltip>
-            <Box className="hover:ou-cursor-pointer">
-                <NotificationButton
-                length={notifyListContent && notifyListContent.filter(item => !item.is_commit).length}
-                isLoading={isLoading}
-                items={notifyListContent}
-                updateNotifications={updateNotifications}
-              />                
-            </Box>
+          <Box className="hover:ou-cursor-pointer">
+              <NotificationButton
+              length={notifyListContent && notifyListContent.filter(item => !item.is_commit).length}
+              isLoading={isLoading}
+              items={notifyListContent}
+              updateNotifications={updateNotifications}
+            />                
+          </Box>
        
           <Tooltip followCursor title={t('openSettings')}>
             <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}
