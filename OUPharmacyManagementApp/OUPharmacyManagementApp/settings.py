@@ -125,7 +125,7 @@ DATABASES = {
         'USER': config('DB_MYSQL_USER'),
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT')
+        'PORT': config('DB_MYSQL_PORT')
     }
 }
 
