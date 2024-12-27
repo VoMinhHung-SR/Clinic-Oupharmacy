@@ -17,7 +17,7 @@ const Layout = () => {
             {isHomepage ? (
             <Outlet />
             ) : (
-            <Container>
+            <Container className="ou-py-8">
                 <Outlet />
             </Container>
             )}

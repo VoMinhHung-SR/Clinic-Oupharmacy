@@ -45,8 +45,8 @@ const Examinations = () => {
           <title>Examinations</title>
         </Helmet>
 
-        <Box className="ou-p-5"> 
-          <Loading />
+        <Box className="ou-text-center ou-p-10">
+            <Loading/>
         </Box>
       </Box>
     )
@@ -56,7 +56,7 @@ const Examinations = () => {
       <Helmet>
           <title>Examinations</title>
       </Helmet>
-          <Box className="!ou-py-8 ou-mx-8 ou-flex ou-justify-center ou-flex-col" >
+          <Box className="ou-flex ou-justify-center ou-flex-col" >
           <TableContainer component={Paper} elevation={4}>
 
             <div className="ou-flex ou-items-center ou-justify-between">
@@ -94,8 +94,8 @@ const Examinations = () => {
 
                 {isLoadingExamination && 
                   <TableCell colSpan={12} component="th" scope="row">
-                      <Box className="p-5 ou-w-full" >
-                        <Loading></Loading>
+                      <Box className="ou-text-center ou-p-10">
+                          <Loading/>
                       </Box>
                     </TableCell>
                 }

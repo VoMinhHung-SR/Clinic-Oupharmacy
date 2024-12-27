@@ -52,7 +52,7 @@ const SidebarInbox = (props) => {
                         </Box>
                         <Divider />
 
-                        <List sx={{ height: "500px", overflowY:"auto" }}>
+                        <List sx={{  overflowY:"auto" }}>
                             <Typography className="ou-py-2 ou-text-center ou-text-green-700">{t('conversation')}</Typography>
                             {conversationsSnapshot?.docs.map((c)=>(
                                 <ConversationDetail 
@@ -60,6 +60,7 @@ const SidebarInbox = (props) => {
                                     key = {c.id}
                                     members={c.data().members}
                                 />
+                                
                             ))}
                             {conversationsSnapshot?.docs?.length == 0 &&  <Box className="ou-text-center ou-py-3 ou-text-gray-400">{t('errNoConversation')}</Box> }
                                <Divider />

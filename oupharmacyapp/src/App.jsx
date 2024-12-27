@@ -97,7 +97,7 @@ function App() {
                               {/* <Route path='/products' element={<ProductList/>}/> */}
                               {/* Accepted when user authorized */}
                               <Route element={<ProtectedUserRoute/>}>
-                          0
+                          
                                 <Route path='/booking' element={<Booking/>}/>
                                 
                                 <Route path='/profile' element={<Profile />} >
@@ -124,14 +124,13 @@ function App() {
                                   {/* Accepted user.role = (ROLE_NURSE || ROLE_DOCTOR) */}
                                   <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR, ROLE_NURSE]} />}>
                                     <Route path='/dashboard/examinations' element={<Examinations/>}/> 
-                                    <Route path='/dashboard/conversations' element={<Examinations/>}/> 
                                   </Route>
 
                                   {/* Accepted user.role = ROLE_DOCTOR */}
                                   <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR]} />}>
                                     <Route path='/dashboard/examinations/:examinationId/diagnosis' element={<Diagnosis />} />
                                     <Route path='/dashboard/prescribing' element={<PrescriptionList/>} />
-                                      <Route path='/dashboard/prescribing/:prescribingId' element={<PrescriptionDetail/>} />
+                                    <Route path='/dashboard/prescribing/:prescribingId' element={<PrescriptionDetail/>} />
                                   </Route>
 
                                   {/* Accepted user.role = ROLE_NURSE */}
@@ -143,6 +142,10 @@ function App() {
                                   <Route path='/dashboard/profile' element={<DashboardProfile />} >
                                     <Route path='/dashboard/profile/address-info' element={<ProfileAddressInfo />} />
                                     <Route path='/dashboard/profile/examinations' element={<ExaminationList />} />
+                                  </Route>
+
+                                  <Route path='/dashboard/conversations'  element={<ConversationList/>} >
+                                    <Route path='/dashboard/conversations/:conversationId/:recipientId/message' element={<ChatWindow/>} />
                                   </Route>
 
                                   <Route path="/dashboard/forbidden" element={<Forbidden />} />

@@ -24,7 +24,7 @@ export default function DashboardLayout() {
 
               }}
               >
-              <Box sx={{ mt: 8, mb: 4 }} className='ou-flex ou-justify-center ou-flex-col'>
+              <Box sx={{ mt: 8, mb: 4 }} className='ou-px-4 ou-py-4 ou-flex ou-justify-center ou-flex-col'>
                   <Outlet />         
                   <Copyright sx={{ pt: 4 }} />
               </Box>
