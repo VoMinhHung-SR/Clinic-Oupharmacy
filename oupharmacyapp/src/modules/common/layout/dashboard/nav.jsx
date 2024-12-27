@@ -24,7 +24,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import PaymentIcon from '@mui/icons-material/Payment';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import CategoryIcon from '@mui/icons-material/Category';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/Mail';
 import HomeIcon from '@mui/icons-material/Home';
 import KeyIcon from '@mui/icons-material/Key';
 import useCustomModal from '../../../../lib/hooks/useCustomModal';
@@ -229,20 +229,19 @@ const NavDashboard = () => {
             {/* Show nav menu */}
             <ul className="ou-flex ou-justify-center ou-items-center">
 
-              <Tooltip followCursor title={t('openSettings')}>
-                <Link to="/dashboard/conversations" className="ou-pr-3 ou-text-[#333]">
-                  <Box>
-                    <MailOutlineIcon sx={{fontSize:"24px"}} />    
-                  </Box>
-                </Link>
-              </Tooltip>
+              <Link to="/dashboard/conversations" className="ou-pr-3 ou-text-[#333]">
+                <Box>
+                  <MailIcon sx={{fontSize:"24px"}} />    
+                </Box>
+              </Link>
+
               <Box className="hover:ou-cursor-pointer !ou-text-[#333]">
-                  <NotificationButton
+                <NotificationButton
                   length={notifyListContent && notifyListContent.filter(item => !item.is_commit).length}
                   isLoading={isLoading}
                   items={notifyListContent}
                   updateNotifications={updateNotifications}
-                />                
+                />                  
               </Box>
 
               <Tooltip followCursor title={t('openSettings')}>

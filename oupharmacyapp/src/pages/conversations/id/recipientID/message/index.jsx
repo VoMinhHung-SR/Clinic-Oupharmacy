@@ -36,7 +36,7 @@ const ChatWindow = () => {
         if (messagesSnapshot) {
             if(messagesSnapshot.docs.length === 0)
                 return (
-                <h3 className="ou-opacity-50 ou-text-center ou-h-full ou-m-auto ou-grid ou-place-content-center">
+                <h3 className="ou-opacity-50 ou-text-center ou-h-[585px] ou-m-auto ou-grid ou-place-content-center">
                     <Box>
                         <InsertCommentIcon sx={{width:50, height:50}}/> 
                     </Box>
@@ -62,7 +62,7 @@ const ChatWindow = () => {
         </Helmet>
 
         <Grid item >
-            <Box square className="ou-h-[60px] ou-bg-blue-600">
+            <Box square className="ou-bg-blue-600">
                 <ListItem key={""}>
                     {recipient !== null ?
                         (
@@ -95,7 +95,7 @@ const ChatWindow = () => {
                 sx={{ backgroundColor: "lightGray", overflowY: "auto",   
                     position: "relative", scrollBehavior:"smooth",
                     top: 0,
-                    bottom: 0,}} height={"460px"}> 
+                    bottom: 0,}}> 
                 {renderMessages()}
             </Box> 
            

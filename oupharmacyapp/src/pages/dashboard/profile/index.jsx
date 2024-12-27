@@ -52,7 +52,7 @@ const DashboardProfile = () => {
 
     return (
         <>
-        <Box className="ou-flex !ou-py-8 ou-mx-8 ou-justify-center">
+        <Box className="ou-flex ou-justify-center">
             <Box  className=" ou-w-[30%]" >
                 <AvatarProfile/>
                 <Box  component={Paper} elevation={4} className="ou-p-5 ou-mt-6 ">

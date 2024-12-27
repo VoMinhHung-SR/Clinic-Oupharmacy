@@ -46,16 +46,17 @@ const ConversationList = () => {
                 <title>Conversations</title>
             </Helmet>
             <div>
-                <Box style={{ "padding": "30px 0px" }} >
-                    <Box sx={{ bgcolor: "background.paper", width: "100%", boxShadow: 3, display: "flex" }} minHeight={"600px"}>
+                <Box className="ou-h-[80vh]">
+                    <Box sx={{ bgcolor: "background.paper", width: "100%", boxShadow: 3, display: "flex" }} 
+                    minHeight={"600px"} className="ou-h-full">
                         <Box xs={4} md={4} sm={12} width={"30%"} >
                             <SidebarInbox user={user}/>
                         </Box>
 
-                        <Box xs={8} md={8} sm={12} width={"70%"}>
+                        <Box xs={8} md={8} sm={12} width={"70%"} className="ou-h-full">
                             {(conversationId && recipientId) ? 
                                 <Outlet /> :  
-                                <Grid item sx={{ backgroundColor: "lightGray" }} height={"600px"}>
+                                <Grid item sx={{ backgroundColor: "lightGray" }}>
                                     <Box square  className="ou-bg-blue-600">
                                         <ListItem>
                                             <ListItemText primary={t('conversation:selectUser')} style={{ "color": "white" }} />
