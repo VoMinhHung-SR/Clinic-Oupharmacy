@@ -24,11 +24,14 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import PaymentIcon from '@mui/icons-material/Payment';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import CategoryIcon from '@mui/icons-material/Category';
+import MailIcon from '@mui/icons-material/Mail';
 import HomeIcon from '@mui/icons-material/Home';
 import KeyIcon from '@mui/icons-material/Key';
 import useCustomModal from '../../../../lib/hooks/useCustomModal';
 import CustomModal from '../../components/Modal';
 import FormChangePassword from '../../../pages/HomeComponents/FormChangePassword';
+import useNotification from '../../../../lib/hooks/useNotification';
+import NotificationButton from '../../components/button/Notification';
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -89,7 +92,7 @@ const NavDashboard = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    
+    const {isLoading, notifyListContent, updateNotifications} = useNotification();
     const location = useLocation()
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
     const [open, setOpen] = useState(true);
@@ -222,8 +225,25 @@ const NavDashboard = () => {
                 </MenuItem>
             </Menu>
             
+
             {/* Show nav menu */}
             <ul className="ou-flex ou-justify-center ou-items-center">
+
+              <Link to="/dashboard/conversations" className="ou-pr-3 ou-text-[#333]">
+                <Box>
+                  <MailIcon sx={{fontSize:"24px"}} />    
+                </Box>
+              </Link>
+
+              <Box className="hover:ou-cursor-pointer !ou-text-[#333]">
+                <NotificationButton
+                  length={notifyListContent && notifyListContent.filter(item => !item.is_commit).length}
+                  isLoading={isLoading}
+                  items={notifyListContent}
+                  updateNotifications={updateNotifications}
+                />                  
+              </Box>
+
               <Tooltip followCursor title={t('openSettings')}>
                 <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}
                   aria-controls={open ? 'account-menu' : undefined}

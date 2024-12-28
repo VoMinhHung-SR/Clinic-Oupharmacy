@@ -42,7 +42,6 @@ import { UserProvider } from './lib/context/UserContext'
 import Diagnosis from './pages/dashboard/examinations/id/diagnosis'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import ProductList from './pages/products'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { PrescribingProvider } from './lib/context/PrescribingContext'
@@ -78,7 +77,6 @@ function App() {
   },[])
 
     return isLoading ? <Box className='ou-h-[100vh] ou-flex ou-place-content-center'><Loading/></Box> :
-    
     <>
     <QueryClientProvider client={queryClient}>
         <I18nextProvider i18n={i18n}>
@@ -97,7 +95,6 @@ function App() {
                               
                               <Route path='/waiting-room' element={<WaitingRoom/>}/>
                               {/* <Route path='/products' element={<ProductList/>}/> */}
-                              
                               {/* Accepted when user authorized */}
                               <Route element={<ProtectedUserRoute/>}>
                           
@@ -111,7 +108,6 @@ function App() {
                                 <Route path='/conversations'  element={<ConversationList/>} >
                                   <Route path='/conversations/:conversationId/:recipientId/message' element={<ChatWindow/>} />
                                 </Route>
-
                               </Route>
 
 
@@ -134,7 +130,7 @@ function App() {
                                   <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR]} />}>
                                     <Route path='/dashboard/examinations/:examinationId/diagnosis' element={<Diagnosis />} />
                                     <Route path='/dashboard/prescribing' element={<PrescriptionList/>} />
-                                      <Route path='/dashboard/prescribing/:prescribingId' element={<PrescriptionDetail/>} />
+                                    <Route path='/dashboard/prescribing/:prescribingId' element={<PrescriptionDetail/>} />
                                   </Route>
 
                                   {/* Accepted user.role = ROLE_NURSE */}
@@ -146,6 +142,10 @@ function App() {
                                   <Route path='/dashboard/profile' element={<DashboardProfile />} >
                                     <Route path='/dashboard/profile/address-info' element={<ProfileAddressInfo />} />
                                     <Route path='/dashboard/profile/examinations' element={<ExaminationList />} />
+                                  </Route>
+
+                                  <Route path='/dashboard/conversations'  element={<ConversationList/>} >
+                                    <Route path='/dashboard/conversations/:conversationId/:recipientId/message' element={<ChatWindow/>} />
                                   </Route>
 
                                   <Route path="/dashboard/forbidden" element={<Forbidden />} />

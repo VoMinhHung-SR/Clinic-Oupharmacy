@@ -75,7 +75,7 @@ const Diagnosis = () => {
                             
                             </Box>
 
-                            <Box className='ou-mt-5 ou-pb-8'>
+                            <Box>
                                 <Box style={{ "margin": "auto" }}>
                                     {user && <DiagnosisForm
                                         id={prescriptionId}

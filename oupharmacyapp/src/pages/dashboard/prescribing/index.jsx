@@ -17,7 +17,6 @@ import DiagnosedCard from "../../../modules/common/components/card/DiagnosedCard
 const PrescriptionList = () => {
     const {user, prescriptionList, isLoadingPrescriptionList,
     pagination, page, handleChangePage, handleOnSubmitFilter, paramsFilter} = usePrescriptionList()
-    const router = useNavigate()
     const {t, ready} = useTranslation(['prescription', 'common'])
     //TODO: add skeletons here
     if(!ready)
@@ -36,7 +35,7 @@ const PrescriptionList = () => {
             <Helmet>
                 <title>Prescribing</title>
             </Helmet>
-            <Box className='ou-py-8 ou-m-auto ou-mx-8'>
+            <Box className='ou-m-auto ou-w-full'>
                 <TableContainer component={Paper} elevation={4}>
                 <div className="ou-flex ou-items-center ou-justify-between">
                     <div className="ou-flex ou-items-end">
@@ -49,7 +48,7 @@ const PrescriptionList = () => {
                     hasPayment={paramsFilter.hasPayment}/>
 
                 </div>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell>{t('prescriptionId')}</TableCell>

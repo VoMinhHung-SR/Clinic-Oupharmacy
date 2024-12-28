@@ -36,7 +36,7 @@ const DashBoard = () => {
             <title>Dashboard</title>
         </Helmet>
 
-        <Box className="!ou-py-8 ou-mx-8">
+        <Box>
             {/* <StatisticCard icon={"patients"} title={"patientList"} value={10} footer={"day la footer"}/> */}
             <Grid container columns={{ xs: 4, sm: 6, md: 12 }} className="ou-flex ou-mb-8">
                 <Grid item xs={3} className="ou-p-2">

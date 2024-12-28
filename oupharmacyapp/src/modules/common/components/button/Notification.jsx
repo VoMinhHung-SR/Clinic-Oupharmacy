@@ -165,7 +165,7 @@ export default function NotificationButton({ length, isLoading, items, updateNot
                 color="error"
                 onClick={toggleDrawer(anchor, true)}
             >
-                <NotificationsIcon sx={{fontSize:"26px"}}   className='ou-text-[#f3f3f3]'/>
+                <NotificationsIcon sx={{fontSize:"26px"}}   className='ou-text-inherit'/>
             </Badge>
           <Drawer
             anchor={anchor}

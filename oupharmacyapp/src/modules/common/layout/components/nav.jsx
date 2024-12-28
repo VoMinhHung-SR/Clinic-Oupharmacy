@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 import { useState } from "react";
 import Logo from "../../../../../public/logo";
 import useNav from "../../../pages/HomeComponents/hooks/useNav";
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/Mail';
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { changeLanguage } from "i18next";
@@ -131,21 +131,19 @@ const Nav = () => {
         
         {/* Show nav menu */}
         <ul className="ou-flex ou-justify-center ou-items-center">
-          <Tooltip followCursor title={t('openSettings')}>
-              <Link to="/conversations" className="ou-pr-3">
-                <Box>
-                  <MailOutlineIcon color="#f3f3f3" sx={{fontSize:"24px"}} />    
-                </Box>
-              </Link>
-          </Tooltip>
-            <Box className="hover:ou-cursor-pointer">
-                <NotificationButton
-                length={notifyListContent && notifyListContent.filter(item => !item.is_commit).length}
-                isLoading={isLoading}
-                items={notifyListContent}
-                updateNotifications={updateNotifications}
-              />                
+          <Link to="/conversations" className="ou-pr-3">
+            <Box>
+              <MailIcon color="#f3f3f3" sx={{fontSize:"24px"}} />    
             </Box>
+          </Link>
+          <Box className="hover:ou-cursor-pointer">
+              <NotificationButton
+              length={notifyListContent && notifyListContent.filter(item => !item.is_commit).length}
+              isLoading={isLoading}
+              items={notifyListContent}
+              updateNotifications={updateNotifications}
+            />                
+          </Box>
        
           <Tooltip followCursor title={t('openSettings')}>
             <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}

@@ -1,5 +1,5 @@
 import { Avatar, Box, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import Loading from "../../../common/components/Loading"
 import useConversationDetail from "../hooks/useConvesationDetail"
 import { AVATAR_DEFAULT, ERROR_CLOUDINARY } from "../../../../lib/constants"
@@ -9,8 +9,14 @@ const ConversationDetail = (props) => {
     const {t} = useTranslation(['common'])
     const {docs, loading, error, recipientId} = useConversationDetail(props.members)
     const router = useNavigate()
+    const location = useLocation();
     const onSelectConversation = () =>{
-        router(`/conversations/${props.id}/${recipientId}/message`)
+        // console.log(location)
+        if (location.pathname.includes("/dashboard/conversations")) {
+            router(`/dashboard/conversations/${props.id}/${recipientId}/message`);
+        } else if (location.pathname.includes("/conversations")) {
+            router(`/conversations/${props.id}/${recipientId}/message`);
+        }
     }
     if (loading)
         return <Loading/>
