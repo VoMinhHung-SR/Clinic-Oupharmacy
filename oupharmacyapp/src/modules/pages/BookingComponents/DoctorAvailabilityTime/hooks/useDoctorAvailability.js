@@ -166,7 +166,6 @@ const useDoctorAvailability = () => {
             
 
             if(res.status === 200 || res.status === 201){
-                console.log(res)
                 const examinationData = {
                     patient: res.data.id,
                     description: data.description,

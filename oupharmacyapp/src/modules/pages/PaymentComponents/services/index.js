@@ -8,7 +8,7 @@ export const fetchDiagnosisByExaminationID = async (examinationID) => {
 }
 // To get status of prescribing sheet  
 // If does have the bill => then show the button for user trigger create
-export const fetchReciept = async (prescribingID) =>{
+export const fetchReceipt = async (prescribingID) =>{
     const res = await authApi().post(endpoints['receipt'],{
         prescribing: parseInt(prescribingID)
     });

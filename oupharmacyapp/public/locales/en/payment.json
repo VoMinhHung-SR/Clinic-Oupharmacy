@@ -28,7 +28,7 @@
     "success": "Completed",
     "done":"Done",
     "unDone": "Undone",
-    "payCompleled":"Successed",
+    "paidCompleted":"Success",
     "payFailed":"Failed",
     "confirmCreateBill": "Confirm to create this bill"
 }

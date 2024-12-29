@@ -19,7 +19,6 @@ const PatientCard = ({patientData, callBackOnClickCard = () => {}, isSelected}) 
 
     const handleOnClick = () =>{
         callBackOnClickCard(patientData)
-        // console.log(patientData)
     }
 
 

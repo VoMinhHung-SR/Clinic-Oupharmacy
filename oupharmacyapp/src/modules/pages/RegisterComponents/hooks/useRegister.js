@@ -125,7 +125,6 @@ const useRegister = () => {
         const register = async (locationId) => {
             try {
                 let formData = new FormData()
-                console.log(userRoleID)
                 formData.append("first_name", data.firstName)
                 formData.append("last_name", data.lastName)
                 formData.append("password", data.password)

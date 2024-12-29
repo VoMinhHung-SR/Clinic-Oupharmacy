@@ -11,7 +11,6 @@ const ConversationDetail = (props) => {
     const router = useNavigate()
     const location = useLocation();
     const onSelectConversation = () =>{
-        // console.log(location)
         if (location.pathname.includes("/dashboard/conversations")) {
             router(`/dashboard/conversations/${props.id}/${recipientId}/message`);
         } else if (location.pathname.includes("/conversations")) {

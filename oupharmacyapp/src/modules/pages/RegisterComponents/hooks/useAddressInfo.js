@@ -53,7 +53,6 @@ const useAddressInfo = () => {
                 }
             }catch (err){
                 setListPlace([])
-                console.log(err)
             }finally{
                 setLoading(false)
             }
