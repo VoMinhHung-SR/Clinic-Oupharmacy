@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { fetchDiagnosisByExaminationID, fetchPrescribingByDiagnosis } from "../../../../../pages/PaymentComponents/services"
-import { fetchPrescrriptionDetailBillCard } from "../../BillCard/services"
+import { fetchPrescriptionDetailBillCard } from "../../BillCard/services"
 
 const useExaminationDetailCard = (examinationID) => {
    const [diagnosis , setDiagnosis] = useState([])
@@ -43,7 +43,7 @@ const useExaminationDetailCard = (examinationID) => {
 
     const loadBill = async (prescribingID) => {
         try{
-            const res = await fetchPrescrriptionDetailBillCard(prescribingID)
+            const res = await fetchPrescriptionDetailBillCard(prescribingID)
             if(res.status === 200){
                 setBill(res.data)
             }

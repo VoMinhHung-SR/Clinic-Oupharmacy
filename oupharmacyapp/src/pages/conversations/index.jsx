@@ -12,7 +12,7 @@ const ConversationList = () => {
     const router = useNavigate()
 
     const {conversationId, recipientId} = useParams()
-
+    console
     if(tReady)
         return <Box className="ou-p-3">
             <Helmet>

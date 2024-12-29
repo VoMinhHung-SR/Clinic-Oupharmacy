@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import SuccessfulAlert, { ConfirmAlert, ErrorAlert } from "../../../../../../config/sweetAlert2"
-import { fetchReciept } from "../../../../../pages/PaymentComponents/services"
-import { fetchAddBill, fetchMomoPaymentURL, fetchPrescrriptionDetailBillCard, fetcZaloPayPaymentURL } from "../services"
+import { fetchReceipt } from "../../../../../pages/PaymentComponents/services"
+import { fetchAddBill, fetchMomoPaymentURL, fetchPrescriptionDetailBillCard, fetcZaloPayPaymentURL } from "../services"
 
 const useBillCard = (prescribingID) => {
     const {t} = useTranslation(['payment','modal'])
@@ -19,7 +19,7 @@ const useBillCard = (prescribingID) => {
     useEffect(()=>{
         const loadPrescriptionDetail = async () =>{
             try{
-                const res = await fetchPrescrriptionDetailBillCard(prescribingID)
+                const res = await fetchPrescriptionDetailBillCard(prescribingID)
                 if (res.status === 200){
                     setIsLoadingPrescriptionDetail(false)
                     setPrescriptionDetail(res.data)
@@ -31,7 +31,7 @@ const useBillCard = (prescribingID) => {
         }
         const loadReceipt = async () => {
             try {
-                const res = await fetchReciept(prescribingID)
+                const res = await fetchReceipt(prescribingID)
                 if (res.status === 200) {
                     setReceipt(true)
                     console.log(res.data)
@@ -53,7 +53,7 @@ const useBillCard = (prescribingID) => {
                 if (res.status === 201) {
                     handleChangeFlag();
                     setIsLoadingButton(false)
-                    return SuccessfulAlert(t('payCompleled'), t('modal:ok'))                 
+                    return SuccessfulAlert(t('paidCompleted'), t('modal:ok'))                 
                 }
             } catch (err) {
                 setIsLoadingButton(false)

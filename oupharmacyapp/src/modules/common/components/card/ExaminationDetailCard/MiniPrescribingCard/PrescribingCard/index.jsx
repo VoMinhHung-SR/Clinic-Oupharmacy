@@ -2,9 +2,9 @@ import { Container, Paper, Table, TableBody, TableCell, TableContainer, TableHea
 import { Box } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { fetchReciept } from "../../../../../../pages/PaymentComponents/services"
+import { fetchReceipt } from "../../../../../../pages/PaymentComponents/services"
 import Loading from "../../../../Loading"
-import { fetchPrescrriptionDetailBillCard } from "../../../BillCard/services"
+import { fetchPrescriptionDetailBillCard } from "../../../BillCard/services"
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 
@@ -22,7 +22,7 @@ const PrescribingCard = ({prescribing}) => {
 
             // Load Prescribing Data
             try{
-                const {data} = await fetchPrescrriptionDetailBillCard(prescribing)
+                const {data} = await fetchPrescriptionDetailBillCard(prescribing)
                 setP(data);
             }catch(err){
                 console.log(err)
@@ -30,10 +30,9 @@ const PrescribingCard = ({prescribing}) => {
 
             // Load Receipt Data
             try{
-                const {status} = await fetchReciept(prescribing)
+                const {status} = await fetchReceipt(prescribing)
                 setReceiptStatus(status === 200) // will be true if status === 200 else is false
             }catch(err){
-                console.log(err)
                 setReceiptStatus(false);
             }
             setIsLoading(false);
