@@ -5,7 +5,6 @@ import useSidebarInbox from "./hooks/useSidebarInbox";
 import ConversationDetail from "../ConversationComponents";
 import { useTranslation } from "react-i18next";
 import { AVATAR_DEFAULT, ERROR_CLOUDINARY, ROLE_DOCTOR, ROLE_NURSE, ROLE_USER } from "../../../../lib/constants";
-import { convertFirestoreTimestampToString } from "../../../../lib/utils/getMessagesInConversation";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import clsx from "clsx";
@@ -60,7 +59,6 @@ const SidebarInbox = (props) => {
                                     key = {c.id}
                                     members={c.data().members}
                                 />
-                                
                             ))}
                             {conversationsSnapshot?.docs?.length == 0 &&  <Box className="ou-text-center ou-py-3 ou-text-gray-400">{t('errNoConversation')}</Box> }
                                <Divider />

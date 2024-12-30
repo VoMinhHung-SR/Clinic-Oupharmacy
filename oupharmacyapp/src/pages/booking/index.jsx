@@ -1,9 +1,4 @@
 import { Avatar, Box, Button, Container, FormControl, Grid, IconButton, InputLabel, OutlinedInput, Paper } from "@mui/material"
-
-import SendIcon from '@mui/icons-material/Send';
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import FormAddExamination from "../../modules/pages/BookingComponents/FormAddExamination";
 import BackdropLoading from "../../modules/common/components/BackdropLoading";
 import { useTranslation } from "react-i18next";
 import Loading from "../../modules/common/components/Loading";
@@ -11,7 +6,7 @@ import useBooking from "../../modules/pages/BookingComponents/hooks/useBooking";
 import { Helmet } from "react-helmet";
 import DoctorProfileCard from "../../modules/common/components/card/DoctorProfileCard";
 import { useSelector } from "react-redux";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import PersonIcon from '@mui/icons-material/Person';
 import clsx from "clsx";
@@ -218,7 +213,6 @@ const Booking = () => {
                     </div>
                 </Box>
             </Box>
-
         </>
     )
     
