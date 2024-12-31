@@ -49,7 +49,7 @@ const ConversationList = () => {
                 <Box className="ou-h-[80vh]">
                     <Box sx={{ bgcolor: "background.paper", width: "100%", boxShadow: 3, display: "flex" }} 
                     minHeight={"600px"} className="ou-h-full">
-                        <Box xs={4} md={4} sm={12} width={"30%"} >
+                        <Box xs={4} md={4} sm={12} width={"30%"} className="ou-overflow-auto">
                             <SidebarInbox user={user}/>
                         </Box>
 
