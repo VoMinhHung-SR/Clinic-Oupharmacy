@@ -156,27 +156,6 @@ const WaitingRoom = () => {
         return  <span className="ou-text-red-700">{t('unDone')}</span>
     }
 
-    // return !isGeolocationAvailable ? (
-    //     <div>Your browser does not support Geolocation</div>
-    // ) : !isGeolocationEnabled ? (
-    //     <Container>
-    //         <Helmet>
-    //             <title>Waiting room</title>
-    //         </Helmet>
-    //           <div className="ou-grid ou-grid-cols-12 ou-text-center">
-    //              {renderCurrentAndNextExam(exams)}
-    //             </div>
-    //             <Box></Box>
-    //         <div>Geolocation is not enabled</div>
-    //     </Container>
-    // ) : coords ? (
-    //     // THis is for render data
-    //     "render data for the logic auto detect user's locale"
-    // ) : (
-    //     <div>Getting the location data&hellip; </div>
-    // );
-
-
     const renderDoctor = (doctorId) => {
         const doctor = allConfig.doctors.find(doctor => doctor.id === doctorId);
         
