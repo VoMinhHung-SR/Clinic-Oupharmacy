@@ -7,8 +7,6 @@ import { QueueStateContext } from "../../lib/context/QueueStateContext";
 import CountDownExam from "../../modules/pages/WaittingRoomComponents/CountDownExam"
 import useWaitingRoom from "../../modules/pages/WaittingRoomComponents/hooks/useWaitingRoom";
 import Loading from "../../modules/common/components/Loading";
-import { convertFirestoreTimestampToString } from "../../lib/utils/getMessagesInConversation";
-import { convertTimestampToDateTime } from "../../lib/utils/helper";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet";
 
@@ -24,12 +22,7 @@ const WaitingRoom = () => {
     const {t, tReady} = useTranslation(['waiting-room'])
     const {user} = useContext(UserContext)
     const { allConfig } = useSelector((state) => state.config);
-    const {isGeolocationAvailable, isGeolocationEnabled, coords, getPosition} = useGeolocated({
-        positionOptions: {
-            enableHighAccuracy: false,
-        },
-        userDecisionTimeout: 5000,
-    })
+
 
     if(isLoading || tReady){
         return <>
@@ -137,11 +130,6 @@ const WaitingRoom = () => {
                             </span>
                         </Tooltip>
                     </>}
-                    {/* <Tooltip title={t('userInfo')}>
-                        <span>
-                            <Button className="!ou-bg-green-700 !ou-text-white !ou-ml-1" onClick={()=> handleMoveToTop(index)}><InfoIcon/></Button>
-                        </span>
-                    </Tooltip> */}
                </>
             ) 
    }
@@ -192,11 +180,6 @@ const WaitingRoom = () => {
                             <TableCell align="center">{t("status")}</TableCell>
                             {(!user || user.role !== ROLE_USER) &&    <>
                                 <TableCell align="center">{t("emailRemind")}</TableCell>
-                                {/* <TableCell align="center">
-                                    <Box className="ou-flex ou-justify-center ou-items-center">
-                                        {t("function")}   
-                                    </Box>
-                            </TableCell> */}
                             </> }
                          
                             </TableRow>
@@ -243,9 +226,6 @@ const WaitingRoom = () => {
                                                 {e.remindStatus ?  <span className="ou-text-green-700">{t('sent')}</span> 
                                                 : <span className="ou-text-red-700">{t('unSent')}</span>}
                                             </TableCell>
-                                            {/* <TableCell align="center">
-                                                {renderButton(index, e.isCommitted)}
-                                            </TableCell> */}
                                         </>}
                                        
                                     </TableRow>
