@@ -8,9 +8,12 @@ import { useCollection } from "react-firebase-hooks/firestore"
 import createToastMessage from "../../../../../lib/utils/createToastMessage";
 import { APP_ENV, TOAST_ERROR } from "../../../../../lib/constants";
 import useDebounce from "../../../../../lib/hooks/useDebounce";
+import { useTranslation } from "react-i18next";
 const useSidebarInbox = (user) => {
     const [isLoadingRecipients, setIsLoadingRecipients] = useState(true)
     const [recipientList, setRecipientList] = useState([])
+
+    const {t} = useTranslation(['conversation', 'modal'])
 
     const [name, setName] = useState('')
     const debouncedSearchValue = useDebounce(name, 500);
@@ -73,9 +76,9 @@ const useSidebarInbox = (user) => {
             await addDoc(collection(db, `${APP_ENV}_conversations`), {
                 members: [user.id, userId]
             })
-            SuccessfulAlert("Thêm cuộc trò chuyện thành công", "OK")
+            SuccessfulAlert(t('conversation:addNewConversationSuccess'), t('modal:ok'))
         } else {
-            return createToastMessage({type: TOAST_ERROR, message: "Không thể tạo mới"})
+            return createToastMessage({type: TOAST_ERROR, message: t('conversation:addFailed')})
         }
     }
 

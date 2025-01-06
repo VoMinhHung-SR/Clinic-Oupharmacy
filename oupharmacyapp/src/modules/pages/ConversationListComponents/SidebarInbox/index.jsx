@@ -38,12 +38,11 @@ const SidebarInbox = (props) => {
                             {t('chat')}
                         </Typography>
                         <Box sx={{
-                            margin: "5px 10px", padding: "0px 5px", display: 'flex',
-                            alignItems: 'flex-end', width: "100%"
-                        }}>
+                            padding: "0px 5px", display: 'flex',
+                            alignItems: 'flex-end',
+                        }} className="ou-w-full !ou-px-3 !ou-py-2">
                             <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                            <TextField id="input-with-sx"
-                                className="ou-w-[85%]"
+                            <TextField id="input-with-sx" className="ou-w-full"
                                 placeholder={t('enterUserEmail')}
                                 value={name}
                                 onChange={(evt) => setName(evt.target.value)}
