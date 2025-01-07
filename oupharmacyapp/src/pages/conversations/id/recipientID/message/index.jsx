@@ -13,7 +13,7 @@ const ChatWindow = () => {
     const {recipient, messagesLoading, newMessage, setNewMessage, 
         // refEndMessage,
         sendMessageOnClick, sendMessageOnEnter, messagesInCoversation, messagesSnapshot} = useChatWindow()
-    const {t} = useTranslation(['conversation'])
+    const {t} = useTranslation(['conversation', 'common'])
 
     const chatWindowRef = useRef(null);
     useEffect(() => {
@@ -36,7 +36,7 @@ const ChatWindow = () => {
         if (messagesSnapshot) {
             if(messagesSnapshot.docs.length === 0)
                 return (
-                <h3 className="ou-opacity-50 ou-text-center ou-h-[585px] ou-m-auto ou-grid ou-place-content-center">
+                <h3 className="ou-opacity-50 ou-text-center ou-h-[565px] ou-m-auto ou-grid ou-place-content-center">
                     <Box>
                         <InsertCommentIcon sx={{width:50, height:50}}/> 
                     </Box>
@@ -58,7 +58,7 @@ const ChatWindow = () => {
 
     return (<>
         <Helmet>
-            <title>Conversations</title>
+            <title>{t('common:conversations')}</title>
         </Helmet>
 
         <Grid item >
@@ -90,7 +90,7 @@ const ChatWindow = () => {
             </Box>
 
             
-            <Box id="chat-window" 
+            <Box id="chat-window" className="ou-h-[565px]"
                 ref={chatWindowRef}
                 sx={{ backgroundColor: "lightGray", overflowY: "auto",   
                     position: "relative", scrollBehavior:"smooth",
@@ -101,9 +101,8 @@ const ChatWindow = () => {
            
             
             <Box height={"60px"}>
-                <FormControl fullWidth variant="filled">
+                <FormControl fullWidth >
                     <OutlinedInput
-                        id="adornment-amount"
                         className="m-2"
                         multiline
                         placeholder={t('conversation:enterMessage')}
