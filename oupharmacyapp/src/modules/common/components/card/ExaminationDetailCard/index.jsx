@@ -2,7 +2,6 @@ import { Box, Collapse, Grid, List, ListItemIcon, ListItemText, Paper, Typograph
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import CustomCollapseListItemButton from "../../collapse/ListItemButton";
-// import useExaminationDetail from "../../../../pages/ExaminationDetailComponents/hooks/useExaminationDetail";
 import Loading from "../../Loading";
 import DiagnosisCard from "../DiagnosisCard";
 import useExaminationDetailCard from "./hooks/useExaminationDetailCard";

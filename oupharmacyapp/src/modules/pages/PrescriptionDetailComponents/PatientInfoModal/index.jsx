@@ -11,20 +11,14 @@ const PatientInfoModal = ({patientData}) => {
     return (
         <>
          <Typography>
-       
-
-     
-                <Button
-                    variant="contained"
-                
-                    className="ou-bg-blue-700 !ou-min-w-[68px] !ou-min-h-[40px] ou-w-[50%] !ou-py-2 !ou-px-8 !ou-mx-2"
-                    size="small"
-                    onClick={()=>handleOpenModal()}
-                >
-                    {/* {t('common:seeDetail')} */}
-                    {t('patientInfo')}
-                </Button>
-       
+            <Button
+                variant="contained"
+                className="ou-bg-blue-700 !ou-min-w-[68px] !ou-min-h-[40px] ou-w-[50%] !ou-py-2 !ou-px-8 !ou-mx-2"
+                size="small"
+                onClick={()=>handleOpenModal()}
+            >
+                {t('patientInfo')}
+            </Button>
         </Typography>
 
         <CustomModal

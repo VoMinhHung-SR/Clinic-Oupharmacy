@@ -13,5 +13,6 @@
     "noRecipient": "There is no recipients is your chat",
 
     "addNewConversationSuccess": "Add new conversation successfully",
-    "addFailed":"Add conversation failed"
+    "addFailed":"Add conversation failed",
+    "": ""
 }

@@ -1,16 +1,9 @@
 import { Button, Container, FormControl, Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material"
 import { Box } from "@mui/system"
-import { Link, useNavigate } from "react-router-dom"
 import Loading from "../../../modules/common/components/Loading"
 import usePrescriptionList from "../../../modules/pages/PrescriptionListComponents/hooks/usePrescription"
-import SearchIcon from '@mui/icons-material/Search';
-import PaidIcon from "@mui/icons-material/Paid";
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import moment from "moment"
 import { useTranslation } from "react-i18next"
-import { ROLE_DOCTOR, ROLE_NURSE } from "../../../lib/constants"
 import { Helmet } from "react-helmet"
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DiagnosisFilter from "../../../modules/common/components/FIlterBar/DiagnosisFilter"
 import DiagnosedCard from "../../../modules/common/components/card/DiagnosedCard"
 
