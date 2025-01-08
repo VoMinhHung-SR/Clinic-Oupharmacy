@@ -8,6 +8,7 @@ import { AVATAR_DEFAULT, ERROR_CLOUDINARY, ROLE_DOCTOR, ROLE_NURSE, ROLE_USER } 
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import clsx from "clsx";
+import { useState } from "react";
 
 const SidebarInbox = (props) => {
     const {t} = useTranslation(['conversation'])
@@ -20,13 +21,12 @@ const SidebarInbox = (props) => {
         return date.fromNow();
         }
 
-
     return (
         <>
             {isLoadingRecipients ?
                 (<>
-                    <Box sx={{ minHeight: "300px" }}>
-                        <Box className='p-5'>
+                    <Box className="ou-h-full ou-flex ou-justify-center ou-items-center">
+                        <Box className='ou-p-5'>
                             <Loading />
                         </Box>
                     </Box>
@@ -57,14 +57,20 @@ const SidebarInbox = (props) => {
                                     id={c.id}
                                     key = {c.id}
                                     members={c.data().members}
+
                                 />
                             ))}
-                            {conversationsSnapshot?.docs?.length == 0 &&  <Box className="ou-text-center ou-py-3 ou-text-gray-400">{t('errNoConversation')}</Box> }
+
+                            {/* {isAnyChildLoading && <Box className='ou-p-5'><Loading /></Box>} */}
+
+                            {conversationsSnapshot?.docs?.length == 0 &&  
+                                <Box className="ou-text-center ou-py-3 ou-text-gray-400">
+                                    {t('errNoConversation')}
+                                </Box>
+                            }
                                <Divider />
                             <Typography className="ou-text-center ou-pt-4 ou-pb-2 ou-text-blue-700">{t('user')}</Typography>
-
                             {recipients.length === 0 ? <Box className="ou-text-center ou-py-3 ou-text-gray-400">{t('errNoRecipient')}</Box> 
-                            
                                 : ( recipients
                                     .filter((recipient) => {
                                         // Check if recipient's id is not in any of the conversation's members

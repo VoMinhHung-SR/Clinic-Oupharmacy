@@ -67,10 +67,6 @@ const DashBoard = () => {
                     <RevenueChart/>
                 </Box> 
             </Box>
-            {/* <Box component={Paper} className="ou-w-[100%] ou-p-4">
-                    <MedicinesChart medicinesLabel={medicineLabelChartData}
-                    medicinesData={medicineData} year={2024}/>  
-            </Box>  */}
         </Box>
 
         </>

@@ -68,7 +68,8 @@ const Examinations = () => {
               {/* Filter area */}
               <ExaminationFilter onSubmit={handleOnSubmitFilter} 
                     mailStatus={paramsFilter.mailStatus} createdDate={paramsFilter.createdDate} 
-                    kw={paramsFilter.kw} hasDiagnosis={paramsFilter.hasDiagnosis}/>
+                    kw={paramsFilter.kw} hasDiagnosis={paramsFilter.hasDiagnosis}
+              />
             
             </div>
             
