@@ -6,7 +6,7 @@ import { AVATAR_DEFAULT, ERROR_CLOUDINARY } from "../../../../lib/constants"
 import { useTranslation } from "react-i18next"
 
 const ConversationDetail = (props) => {
-    const {t} = useTranslation(['common'])
+    const {t} = useTranslation(['common', 'errNoConversation'])
     const {docs, loading, error, recipientId} = useConversationDetail(props.members)
     const router = useNavigate()
     const location = useLocation();
@@ -17,10 +17,11 @@ const ConversationDetail = (props) => {
             router(`/conversations/${props.id}/${recipientId}/message`);
         }
     }
+
     if (loading)
         return <Loading/>
+
     return (<>
-        {error ? <div>có lỗi xảy ra</div> : <></>}
        
         {docs?.docs[0]?.data() !== null ? (
             <ListItem className="ou-cursor-pointer hover:ou-bg-gray-300" key={docs?.docs[0]?.data().id} 
@@ -38,7 +39,7 @@ const ConversationDetail = (props) => {
                 />
             </ListItem>
         ): <>
-            <Typography>Hiện tại chưa có hội thoại</Typography>
+            <Typography>{t('conversation:errNoConversation')}</Typography>
         </>}
     </>)
 }

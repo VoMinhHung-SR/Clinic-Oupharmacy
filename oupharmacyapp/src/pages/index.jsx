@@ -210,7 +210,6 @@ const Home = () => {
               <Paper style={{height: '100%'}}>
               <Box
               component={Paper} elevation={5}
-                      // max-[600px]:ou-w-[354px] max-[600px]:ou-m-auto 
                 className=" ou-rounded  ou-min-w-[300px]"
               >
                 <MapGL longitude={viewport.longitude} latitude={viewport.latitude} zoom={viewport.zoom}/>

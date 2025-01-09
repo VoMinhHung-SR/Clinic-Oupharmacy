@@ -30,16 +30,12 @@ const BillCard = (props) =>{
                         {t('zalopayPayment')}
                 </Button> */}
                 <Button variant="contained"  className="!ou-bg-[#a50064]"
-                    onClick={()=> momoPayment(calculateAmount(prescriptionDetail, props.wage), props.id)}
-                    >
+                    onClick={()=> momoPayment(calculateAmount(prescriptionDetail, props.wage), props.id)}>
                         {t('momoPayment')}
                 </Button>
                 
                 <Button className="!ou-ml-5" onClick={()=>
-                    onSubmit(calculateAmount(prescriptionDetail, props.wage), 
-                    // , props.handleChangeFlag
-                    props.id)} 
-              
+                    onSubmit(calculateAmount(prescriptionDetail, props.wage), props.id)} 
                     variant="contained" color="success">
                     {t('pay')}
                 </Button>

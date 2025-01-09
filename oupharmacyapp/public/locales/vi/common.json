@@ -25,6 +25,7 @@
     "login": "Đăng nhập",
     "register":"Đăng ký",
     "logout": "Đăng xuất",
+    "conversations": "Hộp thoại",
     "changePassword": "Đổi mật khẩu",
     "newPassword": "Mật khẩu mới",
     "reEnterNewPassword": "Xác nhận mật khẩu mới",

@@ -10,5 +10,9 @@
     "enterMessage": "Typing a new message...",
     "isDoctor": "This user is a doctor",
     "isNurse": "This user is a nurse",
-    "noRecipient": "There is no recipients is your chat"
+    "noRecipient": "There is no recipients is your chat",
+
+    "addNewConversationSuccess": "Add new conversation successfully",
+    "addFailed":"Add conversation failed",
+    "": ""
 }

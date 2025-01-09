@@ -25,6 +25,7 @@
     "login": "Login",
     "register":"Register",
     "logout": "Logout",
+    "conversations": "Conversations",
     "changePassword": "Change Password",
     "newPassword": "New password",
     "reEnterNewPassword": "Confirm new password",
