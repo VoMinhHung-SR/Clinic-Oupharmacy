@@ -6,7 +6,7 @@ import { AVATAR_DEFAULT, ERROR_CLOUDINARY } from "../../../../lib/constants"
 import { useTranslation } from "react-i18next"
 
 const ConversationDetail = (props) => {
-    const {t} = useTranslation(['common', 'errNoConversation'])
+    const {t} = useTranslation(['common', 'conversation'])    
     const {docs, loading, error, recipientId} = useConversationDetail(props.members)
     const router = useNavigate()
     const location = useLocation();
