@@ -1,10 +1,9 @@
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import SendIcon from '@mui/icons-material/Send';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { useTranslation } from 'react-i18next';
@@ -17,13 +16,12 @@ import Logout from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import { changeLanguage } from "i18next";
 import useNav from '../../../pages/HomeComponents/hooks/useNav';
-import { ERROR_CLOUDINARY, ROLE_DOCTOR } from '../../../../lib/constants';
+import { ERROR_CLOUDINARY } from '../../../../lib/constants';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState } from "react";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PaymentIcon from '@mui/icons-material/Payment';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
-import CategoryIcon from '@mui/icons-material/Category';
 import MailIcon from '@mui/icons-material/Mail';
 import HomeIcon from '@mui/icons-material/Home';
 import KeyIcon from '@mui/icons-material/Key';
@@ -114,6 +112,12 @@ const NavDashboard = () => {
           name:t('examinations'),
           icon: <AssignmentIcon className='ou-text-white'/>,
           link: '/dashboard/examinations'
+        },
+        {  
+          id: 'medicines',
+          name:t('medicines'),
+          icon: <AssignmentIcon className='ou-text-white'/>,
+          link: '/dashboard/medicines'
         }
       ];
     const page_ROLE_DOCTOR = [ 
@@ -165,9 +169,9 @@ const NavDashboard = () => {
       if(path.length > 1){
         const wordsAfterDashboard = parts[1].split('/');
         const firstWord = wordsAfterDashboard.find(word => word !== '');
-        return firstWord || null // Return null if no word is found
+        return firstWord || null
       }
-      return null  // Return null if "/dashboard/" is not in the path
+      return null
     }
 
     if (user){

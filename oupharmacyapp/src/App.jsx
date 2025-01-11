@@ -124,6 +124,7 @@ function App() {
                                   {/* Accepted user.role = (ROLE_NURSE || ROLE_DOCTOR) */}
                                   <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR, ROLE_NURSE]} />}>
                                     <Route path='/dashboard/examinations' element={<Examinations/>}/> 
+                                    <Route path='/dashboard/medicines' element={<Examinations/>}/> 
                                   </Route>
 
                                   {/* Accepted user.role = ROLE_DOCTOR */}
