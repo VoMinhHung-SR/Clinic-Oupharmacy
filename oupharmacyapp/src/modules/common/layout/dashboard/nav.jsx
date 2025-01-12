@@ -9,14 +9,14 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { useTranslation } from 'react-i18next';
 import { ListItemIcon, ListItemButton, ListItemText, Toolbar,
     MenuItem, Tooltip, Button, Box, List, Menu, Avatar } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import FlagUK from '../../../../../public/flagUK';
 import FlagVN from '../../../../../public/flagVN';
 import Logout from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import { changeLanguage } from "i18next";
 import useNav from '../../../pages/HomeComponents/hooks/useNav';
-import { ERROR_CLOUDINARY } from '../../../../lib/constants';
+import { ERROR_CLOUDINARY, ROLE_ADMIN, ROLE_DOCTOR, ROLE_NURSE } from '../../../../lib/constants';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState } from "react";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -30,6 +30,9 @@ import CustomModal from '../../components/Modal';
 import FormChangePassword from '../../../pages/HomeComponents/FormChangePassword';
 import useNotification from '../../../../lib/hooks/useNotification';
 import NotificationButton from '../../components/button/Notification';
+import PillsIcon from '../../../../lib/icon/PillsIcon';
+import CategoryIcon from '@mui/icons-material/Category';
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -98,7 +101,7 @@ const NavDashboard = () => {
         setOpen(!open);
     };
     const {t, i18n}= useTranslation(['common', 'modal']);
-
+    const router = useNavigate()
 
     const pages = [
         {
@@ -112,33 +115,46 @@ const NavDashboard = () => {
           name:t('examinations'),
           icon: <AssignmentIcon className='ou-text-white'/>,
           link: '/dashboard/examinations'
-        },
-        {  
-          id: 'medicines',
-          name:t('medicines'),
-          icon: <AssignmentIcon className='ou-text-white'/>,
-          link: '/dashboard/medicines'
         }
       ];
     const page_ROLE_DOCTOR = [ 
         {  
-          // Only user-Doctor
           id: 'prescribing',
           name:t('prescribing'),
           icon: <MedicalServicesIcon className='ou-text-white'/>,
           link: '/dashboard/prescribing'
         }
-
     ]
+    const pagesMedicineManagement = [
+      {  
+        id: 'categories',
+        name:t('categories'),
+        icon: <CategoryIcon className='ou-text-white'/>,
+        link: '/dashboard/categories'
+      },
+      {  
+        id: 'medicines',
+        name:t('medicines'),
+        icon: <PillsIcon className='ou-text-white'/>,
+        link: '/dashboard/medicines'
+      },
+      {  
+        id: 'medicine-Unit',
+        name:t('medicineUnit'),
+        icon: <PillsIcon className='ou-text-white'/>,
+        link: '/dashboard/medicine-unit'
+      }
+    ] 
     const page_ROLE_NURSE= [ 
       {  
-        // Only user-Doctor
         id: 'payments',
         name:t('payments'),
         icon: <PaymentIcon className='ou-text-white'/>,
         link: '/dashboard/payments'
-      }]
-    const {user, handleLogout} = useNav();
+      }
+    ]
+      
+    const {user, handleLogout, handleChangingPage} = useNav();
     let btn = <>
         <ul className="ou-flex ou-items-center ou-text-[#070707]">
           <Link to="/login">
@@ -149,18 +165,22 @@ const NavDashboard = () => {
         </ul>
     </>
 
-    const renderPage = (routingRole) => {
-      return routingRole && routingRole.map(item => (
-        <Link to={`${item.link}`} key={`${item.id}_tl`}>
-              <ListItemButton>
-                  <ListItemIcon >
-                    {item.icon && item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={`${item.name}`}/>
-              </ListItemButton>
-          </Link>
-    ))
+    const handleNav = (role, link) => {
+      if(role.includes(user.role))
+        return handleChangingPage(link)
+      handleChangingPage("/dashboard/forbidden")
+    }
 
+    const renderPage = (routingRole, role) => {
+        return routingRole && routingRole.map(item => (
+            <ListItemButton onClick={() => handleNav(role, item.link)}>
+                <ListItemIcon >
+                  {item.icon && item.icon}
+                </ListItemIcon>
+                <ListItemText primary={`${item.name}`}/>
+            </ListItemButton>
+
+        ))
     }
     const renderHeadingTitle = (path) => {
       if(path=== '/dashboard')
@@ -327,13 +347,16 @@ const NavDashboard = () => {
             {/* Nav */}
             <List component="nav">
     
-            {renderPage(pages)}
+            {renderPage(pages, ROLE_NURSE +" "+ ROLE_DOCTOR)}
             <Divider sx={{ my: 1 }} />
 
-            {renderPage(page_ROLE_DOCTOR)}
+            {renderPage(page_ROLE_DOCTOR, ROLE_DOCTOR)}
 
             <Divider sx={{ my: 1 }} />
-            {renderPage(page_ROLE_NURSE)}
+            {renderPage(page_ROLE_NURSE, ROLE_NURSE)}
+
+            <Divider sx={{ my: 1 }} />
+            {renderPage(pagesMedicineManagement, ROLE_NURSE +" "+ ROLE_DOCTOR+" "+ ROLE_ADMIN)}
 
             </List>
 
