@@ -19,10 +19,13 @@ const useNav = () =>{
 
         return router('/login')
     }
+    const handleChangingPage = (address) => {
+        router(address)
+    }
 
     return {
         user,
-        handleLogout
+        handleLogout, handleChangingPage
     }
 }
 export default useNav;

@@ -123,7 +123,7 @@ DATABASES = {
         'ENGINE': config('DB_PG_ENGINE'),
         'NAME': config('DB_NAME'),
         'USER': config('DB_PG_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
+        'PASSWORD': config('DB_PG_PASSWORD'),
         'HOST': config('DB_HOST'),
         'PORT': config('DB_PG_PORT')
     }

@@ -162,21 +162,10 @@ export const OwnerExaminationUpdate = ({e, handleDeleteExamination}) => {
     </TableRow>
 
     <CustomModal
-            // title={t('medicalRecords')}
             className="ou-w-[900px] ou-text-center"
             open={isOpen}
             onClose={handleCloseModal}
             content={<Box>
-                  {/* <CustomCollapseListItemButton title={t("diagnose")} 
-                  content={
-                    <ExaminationUpdate examination={e} />
-                  }
-                />
-                <CustomCollapseListItemButton title={t("patientInfo")}
-                   content={
-                    <ExaminationUpdate examination={e} />
-                  }
-                /> */}
                   <ExaminationUpdate examination={e} handleClose={handleCloseModal}/>
             </Box>}
             actions={[

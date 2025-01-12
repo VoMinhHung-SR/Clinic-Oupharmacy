@@ -8,7 +8,7 @@
     "backToHomepage": "Back to homepage",
     "here": "Here",
     "send": "Send",
-
+    "name": "Name",
     "delete": "Delete",
     "update": "Update",
     "edit": "Edit",
@@ -22,6 +22,9 @@
     "examinations": "Examinations",
     "prescribing": "Prescribing",  
     "payments": "Payments",
+    "categories": "Categories",
+    "medicines": "Medicines",
+    "medicineUnit": "Medicine unit",
     "login": "Login",
     "register":"Register",
     "logout": "Logout",

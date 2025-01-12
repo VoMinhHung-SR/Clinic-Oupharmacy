@@ -5,7 +5,7 @@ import useSidebarInbox from "./hooks/useSidebarInbox";
 import ConversationDetail from "../ConversationComponents";
 import { useTranslation } from "react-i18next";
 import { AVATAR_DEFAULT, ERROR_CLOUDINARY, ROLE_DOCTOR, ROLE_NURSE, ROLE_USER } from "../../../../lib/constants";
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import clsx from "clsx";
 import { useState } from "react";
