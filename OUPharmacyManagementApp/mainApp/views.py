@@ -521,7 +521,7 @@ class PatientViewSet(viewsets.ViewSet, generics.ListAPIView, generics.CreateAPIV
 
 
 class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView, generics.UpdateAPIView,
-                      generics.DestroyAPIView):
+                      generics.CreateAPIView, generics.DestroyAPIView):
     queryset = Category.objects.filter(active=True)
     serializer_class = CategorySerializer
 

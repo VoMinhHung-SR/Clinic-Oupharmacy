@@ -1,22 +1,40 @@
-import { Box, Button, Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, FormControl, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
 import Loading from "../../../modules/common/components/Loading";
 import useCategory from "../../../modules/pages/CategoriesComponents/hooks/useCategory";
-
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CustomModal from "../../../modules/common/components/Modal";
+import useCustomModal from "../../../lib/hooks/useCustomModal";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from 'yup';
+import { REGEX_NOTE } from "../../../lib/constants";
 const CategoryList = () => {
-    // const { isLoading, examinationList, handleDeleteExamination, 
-    //     handleChangePage, page,pagination} = useExaminationList();
-    const {categories, isLoading} = useCategory();
-    const router = useNavigate();
- 
-    const {t,ready} = useTranslation(['examinations','common'])   
+    const {categories, isLoading, onSubmit} = useCategory();
+    const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
+    const {t,ready} = useTranslation(['category','common', 'yup-validate'])   
     
+    const categorySchema = Yup.object().shape({
+        name: Yup.string()
+            .required(t('yup-validate:yupNameCateRequired'))
+            .max(254, t('yup-validate:yupNameCateMax'))
+            .matches(REGEX_NOTE, t('yup-validate:yupNameCateInvalid'))
+            .trim()
+    });
+
+    const methods = useForm({
+        mode: "onSubmit",
+        resolver: yupResolver(categorySchema),
+        defaultValues: {
+            name: ""
+        }
+    })
+
     if(!ready)
         return <Box sx={{ minHeight: "300px" }}>
         <Helmet>
-            <title>Category list</title>
+            <title>Categories</title>
         </Helmet>
         <Box className='ou-p-5'>
             <Loading></Loading>
@@ -26,7 +44,7 @@ const CategoryList = () => {
     return(
     <>
         <Helmet>
-            <title>Category list</title>
+            <title>{t('common:categories')}</title>
         </Helmet>
         {isLoading && categories.length === 0 ?
             (<Box sx={{ minHeight: "300px" }}>
@@ -34,28 +52,27 @@ const CategoryList = () => {
                     <Loading></Loading>
                 </Box>
             </Box>)
-            : categories.length === 0 ?
-                (<Box className="ou-relative ou-items-center  ou-h-full">
-                    <Box className='ou-absolute ou-p-5 ou-text-center 
-                    ou-flex-col ou-flex ou-justify-center ou-items-center
-                    ou-top-0 ou-bottom-0 ou-w-full ou-place-items-center'>
-                        <h2 className='ou-text-xl ou-text-red-600'>
-                            {t('errExaminationList')}
-                        </h2>
-                        <Typography className='text-center'>
-                            <h3>{t('common:goToBooking')}</h3>
-                            <Button onClick={() => { router('/booking') }}>{t('common:here')}!</Button>
-                        </Typography>
-                    </Box>
-                </Box>)
                 : (
                     <Box sx={{ minHeight: "300px" }}>
-                        <TableContainer component={Paper}>
+                        <TableContainer component={Paper} elevation={4}>
+ 
+                        <div className="ou-flex ou-items-center ou-justify-between">
+                            <div className="ou-flex ou-justify-between ou-w-full">
+                                <h1 className="ou-text-xl ou-px-4 ou-py-8">{t('common:categories')}</h1>
+                                <div className="ou-ml-auto ou-px-4 ou-py-8">
+                                    <Button color="success" variant="contained"
+                                    onClick={handleOpenModal}>
+                                        <AddCircleOutlineIcon className="ou-mr-1"/> {t('category:addCategory')}
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
                             <Table aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>{t('id')}</TableCell>
-                                        <TableCell align="left">{t('common:name')}</TableCell>
+                                        <TableCell>{t('category:id')}</TableCell>
+                                        <TableCell align="left">{t('category:name')}</TableCell>
+                                        <TableCell align="center">{t('category:function')}</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -81,11 +98,35 @@ const CategoryList = () => {
                             </Table>
                         </TableContainer>
                     </Box>
-                 
                 )
             }
-        
-            </>)
+        <CustomModal
+            title={t('category:addCategory')}
+            className="ou-w-[900px]"
+            open={isOpen}
+            onClose={handleCloseModal}
+            content={<Box className="ou-p-8">
+                <form onSubmit={methods.handleSubmit((data) => onSubmit(data))}>
+                    <div className="ou-mb-3">
+                        <TextField
+                            className="ou-w-full"
+                            variant="outlined"
+                            label={t('category:name')}
+                            error={methods.formState.errors.name}
+                            {...methods.register("name")} 
+                        />
+                        {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                            {methods.formState.errors.name?.message}</p>) : <></>} 
+
+                    </div>
+                    <div className="ou-text-right">
+                        <Button type="submit" color="success" variant="contained">{t('category:submit')}</Button>
+                    </div>
+                </form>
+            </Box>}
+           
+        />
+    </>)
 } 
 
 

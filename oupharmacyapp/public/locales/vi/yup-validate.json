@@ -66,6 +66,10 @@
     "yupCityNumber": "Tỉnh/Thành phố phải được chọn",
 
     "yupDistrictRequired": "Quận/Huyện không được để trống",
-    "yupDistrictNumber": "Quận/Huyện phải được chọn"
+    "yupDistrictNumber": "Quận/Huyện phải được chọn",
+
+    "yupNameCateRequired": "Tên danh mục là bắt buộc",
+    "yupNameCateMax": "Tên danh mục không được vượt quá 50 ký tự",
+    "yupNameCateInvalid": "Tên danh mục không hợp lệ"
 
 }

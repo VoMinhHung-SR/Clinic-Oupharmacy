@@ -67,5 +67,9 @@
     "yupDistrictRequired": "District was required",
     "yupDistrictNumber": "District must be selected",
 
-    "yupAddressMustBeSelected": "You must choose one option address"
+    "yupAddressMustBeSelected": "You must choose one option address",
+
+    "yupNameCateRequired": "Category name is required",
+    "yupNameCateMax": "Category name must not exceed 50 characters",
+    "yupNameCateInvalid": "Invalid category name"
 }
