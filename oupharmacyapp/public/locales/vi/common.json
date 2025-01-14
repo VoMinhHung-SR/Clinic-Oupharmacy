@@ -9,7 +9,7 @@
     "here": "Tại đây",
     "send":"Gửi",
     "refresh" : "Phiên bản hết hạn vui lòng làm mới trang",
-
+    "name": "Tên",
     "delete": "Xóa",
     "update": "Cập nhật",
     "edit": "Chỉnh sửa",
@@ -22,6 +22,9 @@
     "examinations": "Phiếu khám",
     "prescribing": "Kê toa",
     "payments": "Thanh toán",
+    "categories": "Doanh mục",
+    "medicines": "Thuốc",
+    "medicineUnit": "Đơn vị thuốc",
     "login": "Đăng nhập",
     "register":"Đăng ký",
     "logout": "Đăng xuất",

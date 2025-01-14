@@ -20,6 +20,9 @@ export let endpoints = {
     // Common Location
     'location':'/common-locations/', 
     'location-detail':(locationID) => `/common-locations/${locationID}/`,
+    //Category
+    'categories': '/categories/',
+    'category-detail':(cateID) => `/categories/${cateID}/`,
     // User
     'users':'/users/',
     'user-patients':(userId) => `/users/${userId}/get-patients/`,    

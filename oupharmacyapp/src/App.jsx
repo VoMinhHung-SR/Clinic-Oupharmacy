@@ -49,6 +49,9 @@ import { BookingProvider } from './lib/context/BookingContext'
 import DashboardProfile from './pages/dashboard/profile'
 import DashboardLayout from './modules/common/layout/dashboard'
 import DashBoard from './pages/dashboard'
+import CategoryList from './pages/dashboard/categories'
+import MedicineList from './pages/dashboard/medicines'
+import MedicineUnit from './pages/dashboard/medicine-unit'
 
 export const userContext = createContext()
 const queryClient = new QueryClient()
@@ -124,7 +127,9 @@ function App() {
                                   {/* Accepted user.role = (ROLE_NURSE || ROLE_DOCTOR) */}
                                   <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR, ROLE_NURSE]} />}>
                                     <Route path='/dashboard/examinations' element={<Examinations/>}/> 
-                                    <Route path='/dashboard/medicines' element={<Examinations/>}/> 
+                                    <Route path='/dashboard/categories' element={<CategoryList/>}/> 
+                                    <Route path='/dashboard/medicines' element={<MedicineList/>}/> 
+                                    <Route path='/dashboard/medicine-unit' element={<MedicineUnit/>}/> 
                                   </Route>
 
                                   {/* Accepted user.role = ROLE_DOCTOR */}
