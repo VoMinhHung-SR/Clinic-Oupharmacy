@@ -1,8 +1,8 @@
 {
     "id":"ID",
-    "name": "Tên doanh mục",
+    "name": "Tên danh mục",
     "function": "Chức năng",
-    "addCategory": "Thêm doanh mục",
-    "submit": "Tạo mới"
-
+    "addCategory": "Thêm danh mục",
+    "submit": "Tạo mới",
+    "deleteCate": "Xóa danh mục"
 }

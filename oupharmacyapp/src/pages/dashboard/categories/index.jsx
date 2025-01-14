@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from 'yup';
 import { REGEX_NOTE } from "../../../lib/constants";
 const CategoryList = () => {
-    const {categories, isLoading, onSubmit} = useCategory();
+    const {categories, isLoading, onSubmit, handleOnDeleted} = useCategory();
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
     const {t,ready} = useTranslation(['category','common', 'yup-validate'])   
     
@@ -92,6 +92,14 @@ const CategoryList = () => {
                                                     {c.name}
                                                 </Typography>
                                             </TableCell>
+
+                                            <TableCell align="center">
+                                                <Button variant="contained" color="primary" 
+                                                className="!ou-mr-1">{t('common:update')}</Button>
+                                                <Button variant="contained" color="error" 
+                                                onClick={() => handleOnDeleted(c.id)}
+                                                className="!ou-ml-1">{t('common:delete')}</Button>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -106,7 +114,7 @@ const CategoryList = () => {
             open={isOpen}
             onClose={handleCloseModal}
             content={<Box className="ou-p-8">
-                <form onSubmit={methods.handleSubmit((data) => onSubmit(data))}>
+                <form onSubmit={methods.handleSubmit((data) => onSubmit(data, () => {handleCloseModal(); methods.reset()} ))}>
                     <div className="ou-mb-3">
                         <TextField
                             className="ou-w-full"

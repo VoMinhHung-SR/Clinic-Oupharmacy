@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"
-import { fetchCategoryList, fetchCreateCategory } from "../services"
+import { fetchCategoryList, fetchCreateCategory, fetchDeleteCategory, fetchUpdateCategory } from "../services"
 import createToastMessage from "../../../../lib/utils/createToastMessage"
 import { TOAST_SUCCESS } from "../../../../lib/constants"
 import { useTranslation } from "react-i18next"
+import { ConfirmAlert } from "../../../../config/sweetAlert2"
 
 const useCategory = () => {
     const [categories, setCategories] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [flag, setFlag] = useState(false)
-    const {t} = useTranslation(['modal'])
+    const {t} = useTranslation(['modal', 'category'])
 
     useEffect(() => {
         try{
@@ -25,13 +26,15 @@ const useCategory = () => {
         }
     }, [flag])
     
-    const onSubmit = (data) => {
+    const onSubmit = (data, callbackOnSuccess) => {
         const handleOnSubmit = async () => {
             try{
                 const res = await fetchCreateCategory(data.name)
-                if(res.status === 201)
+                if(res.status === 201){
+                    callbackOnSuccess() 
                     return createToastMessage({type:TOAST_SUCCESS,
                         message: t('modal:createSuccess')});
+                }
                 
             }catch (err) {
                 console.log(err)
@@ -42,8 +45,27 @@ const useCategory = () => {
         handleOnSubmit()
     }
 
+    const handleOnDeleted = (id) => {
+        const deletedItem = async () => {
+            try{
+                const res = await fetchDeleteCategory(id)
+                if(res.status === 204)
+                    createToastMessage({type:TOAST_SUCCESS, message: t('modal:deleteCompleted')});         
+            }catch (err) {
+                console.log(err)
+            }finally {
+                setFlag(!flag)
+            }
+        }
+        return ConfirmAlert(t('category:deleteCate'),t('modal:noThrowBack'),t('modal:yes'),t('modal:cancel'),
+        ()=>{
+            deletedItem();
+        }, () => { return; })
+    }
+
     return {
-        categories, isLoading, onSubmit
+        categories, isLoading, onSubmit,
+        handleOnDeleted
     }
 }
 
