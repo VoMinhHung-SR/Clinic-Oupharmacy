@@ -10,7 +10,7 @@ export const fetchCreateCategory = async (name) => {
     return res
 }
 
-export const fetchUpdateCategory = async ({id,name}) => {
+export const fetchUpdateCategory = async (id,name) => {
     const res = await authApi().patch(endpoints['category-detail'](id), {name})
     return res
 }
