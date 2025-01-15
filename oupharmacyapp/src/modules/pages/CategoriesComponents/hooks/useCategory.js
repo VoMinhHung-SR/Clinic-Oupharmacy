@@ -63,9 +63,23 @@ const useCategory = () => {
         }, () => { return; })
     }
 
+    const handleOnUpdate = (id, data) => {
+        const updateItem = async () => {
+            const res = await fetchUpdateCategory(id,data.name)
+                if(res.status === 200)
+                    createToastMessage({type:TOAST_SUCCESS, message: t('modal:updateSuccess')});  
+        }
+
+        return ConfirmAlert(t('category:deleteCate'),t('modal:noThrowBack'),t('modal:yes'),t('modal:cancel'),
+        ()=>{
+            updateItem();
+        }, () => { return; })
+    }
+
+
     return {
         categories, isLoading, onSubmit,
-        handleOnDeleted
+        handleOnDeleted, handleOnUpdate
     }
 }
 

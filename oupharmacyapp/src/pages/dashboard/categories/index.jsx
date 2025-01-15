@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import Loading from "../../../modules/common/components/Loading";
@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from 'yup';
 import { REGEX_NOTE } from "../../../lib/constants";
 const CategoryList = () => {
-    const {categories, isLoading, onSubmit, handleOnDeleted} = useCategory();
+    const {categories, isLoading, onSubmit, handleOnDeleted, handleOnUpdate} = useCategory();
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
     const {t,ready} = useTranslation(['category','common', 'yup-validate'])   
     
@@ -55,7 +55,6 @@ const CategoryList = () => {
                 : (
                     <Box sx={{ minHeight: "300px" }}>
                         <TableContainer component={Paper} elevation={4}>
- 
                         <div className="ou-flex ou-items-center ou-justify-between">
                             <div className="ou-flex ou-justify-between ou-w-full">
                                 <h1 className="ou-text-xl ou-px-4 ou-py-8">{t('common:categories')}</h1>
@@ -77,10 +76,9 @@ const CategoryList = () => {
                                 </TableHead>
                                 <TableBody>
                                     {categories.map(c => (
-                                        <TableRow
-                                        key={c.id}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
+                                        <TableRow key={c.id}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
                                             <TableCell component="th" scope="row" >
                                                 <Typography>
                                                     {c.id}
@@ -95,10 +93,13 @@ const CategoryList = () => {
 
                                             <TableCell align="center">
                                                 <Button variant="contained" color="primary" 
-                                                className="!ou-mr-1">{t('common:update')}</Button>
+                                                    className="!ou-mr-1" onClick={() => handleOnDeleted(c.id)}>
+                                                    {t('common:update')}
+                                                </Button>
                                                 <Button variant="contained" color="error" 
-                                                onClick={() => handleOnDeleted(c.id)}
-                                                className="!ou-ml-1">{t('common:delete')}</Button>
+                                                    onClick={() => handleOnDeleted(c.id)} className="!ou-ml-1">
+                                                    {t('common:delete')}
+                                                </Button>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -132,7 +133,6 @@ const CategoryList = () => {
                     </div>
                 </form>
             </Box>}
-           
         />
     </>)
 } 
