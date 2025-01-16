@@ -9,12 +9,17 @@ import useCustomModal from "../../../lib/hooks/useCustomModal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from 'yup';
-import { REGEX_NOTE } from "../../../lib/constants";
+import { REGEX_NOTE, TOAST_ERROR } from "../../../lib/constants";
+import { useState } from "react";
+import createToastMessage from "../../../lib/utils/createToastMessage";
 const CategoryList = () => {
     const {categories, isLoading, onSubmit, handleOnDeleted, handleOnUpdate} = useCategory();
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
     const {t,ready} = useTranslation(['category','common', 'yup-validate'])   
     
+    const [createNotUpdate, setCreateNoUpdate] = useState(true)
+    const [cateID, setCateID] = useState(-1)
+
     const categorySchema = Yup.object().shape({
         name: Yup.string()
             .required(t('yup-validate:yupNameCateRequired'))
@@ -41,6 +46,15 @@ const CategoryList = () => {
         </Box>
     </Box>
 
+    const onSubmitCreateOrUpdate = (data) => {
+        if (createNotUpdate)
+            return onSubmit(data, () => {handleCloseModal(); methods.reset()} )
+        else
+            if (cateID === -1)
+                return createToastMessage({type:TOAST_ERROR, message: t('common:updateFailed')})
+            return handleOnUpdate(cateID, data, () => {handleCloseModal(); methods.reset()})
+    }
+
     return(
     <>
         <Helmet>
@@ -60,7 +74,7 @@ const CategoryList = () => {
                                 <h1 className="ou-text-xl ou-px-4 ou-py-8">{t('common:categories')}</h1>
                                 <div className="ou-ml-auto ou-px-4 ou-py-8">
                                     <Button color="success" variant="contained"
-                                    onClick={handleOpenModal}>
+                                    onClick={() => {handleOpenModal(); setCreateNoUpdate(true)}}>
                                         <AddCircleOutlineIcon className="ou-mr-1"/> {t('category:addCategory')}
                                     </Button>
                                 </div>
@@ -93,7 +107,9 @@ const CategoryList = () => {
 
                                             <TableCell align="center">
                                                 <Button variant="contained" color="primary" 
-                                                    className="!ou-mr-1" onClick={() => handleOnDeleted(c.id)}>
+                                                    className="!ou-mr-1" onClick={() => {
+                                                        handleOpenModal(); setCreateNoUpdate(false); setCateID(c.id)} 
+                                                    }>
                                                     {t('common:update')}
                                                 </Button>
                                                 <Button variant="contained" color="error" 
@@ -110,12 +126,13 @@ const CategoryList = () => {
                 )
             }
         <CustomModal
-            title={t('category:addCategory')}
-            className="ou-w-[900px]"
+            title={createNotUpdate && createNotUpdate ? t('category:addCategory') : t('category:updateCategory')}
+            className="ou-w-[800px]"
             open={isOpen}
             onClose={handleCloseModal}
-            content={<Box className="ou-p-8">
-                <form onSubmit={methods.handleSubmit((data) => onSubmit(data, () => {handleCloseModal(); methods.reset()} ))}>
+            content={
+            <Box className="ou-p-8">
+                <form onSubmit={methods.handleSubmit((data) => onSubmitCreateOrUpdate(data) )}>
                     <div className="ou-mb-3">
                         <TextField
                             className="ou-w-full"
@@ -129,10 +146,11 @@ const CategoryList = () => {
 
                     </div>
                     <div className="ou-text-right">
-                        <Button type="submit" color="success" variant="contained">{t('category:submit')}</Button>
+                        <Button type="submit" color="success" variant="contained">{createNotUpdate ? t('category:submit') : t('category:update')}</Button>
                     </div>
                 </form>
-            </Box>}
+            </Box>
+        }
         />
     </>)
 } 

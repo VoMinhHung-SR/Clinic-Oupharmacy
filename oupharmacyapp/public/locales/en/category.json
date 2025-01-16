@@ -3,6 +3,7 @@
     "name": "Category name",
     "function": "Function",
     "addCategory": "Add new category",
+    "updateCategory": "Update category",
     "submit": "Submit",
     "deleteCate": "Delete category"
 }
