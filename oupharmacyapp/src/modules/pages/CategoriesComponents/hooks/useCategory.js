@@ -32,7 +32,7 @@ const useCategory = () => {
                 const res = await fetchCreateCategory(data.name)
                 if(res.status === 201){
                     callbackOnSuccess() 
-                    return createToastMessage({type:TOAST_SUCCESS,
+                    createToastMessage({type:TOAST_SUCCESS,
                         message: t('modal:createSuccess')});
                 }
                 
@@ -63,17 +63,22 @@ const useCategory = () => {
         }, () => { return; })
     }
 
-    const handleOnUpdate = (id, data) => {
+    const handleOnUpdate = (id, data, callbackOnSuccess) => {
         const updateItem = async () => {
-            const res = await fetchUpdateCategory(id,data.name)
-                if(res.status === 200)
-                    createToastMessage({type:TOAST_SUCCESS, message: t('modal:updateSuccess')});  
+            try{
+                const res = await fetchUpdateCategory(id,data.name)
+                    if(res.status === 200){
+                        callbackOnSuccess()
+                        createToastMessage({type:TOAST_SUCCESS, message: t('modal:updateSuccess')});  
+                    }
+            }catch (err) {
+                console.log(err)
+            } finally {
+                setFlag(!flag)
+            }
         }
+        updateItem();
 
-        return ConfirmAlert(t('category:deleteCate'),t('modal:noThrowBack'),t('modal:yes'),t('modal:cancel'),
-        ()=>{
-            updateItem();
-        }, () => { return; })
     }
 
 
