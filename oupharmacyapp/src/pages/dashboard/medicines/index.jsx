@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
 import useMedicine from "../../../lib/hooks/useMedicine"
-import { Box, Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { Helmet } from "react-helmet";
 import Loading from "../../../modules/common/components/Loading";
 import MedicineUnitLineItem from "../../../modules/pages/MedicineComponent/MedicineUnitLineItem";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const MedicineList = () => {
     const {page, pagination, handleChangePage,
@@ -35,11 +36,12 @@ const MedicineList = () => {
                     <span className="ou-pl-2 ou-text-sm">{t('medicine:resultOfTotal', {result: pagination.count})}</span>
                   </div>
     
-                  {/* Filter area */}
-                  {/* <ExaminationFilter onSubmit={handleOnSubmitFilter} 
-                        mailStatus={paramsFilter.mailStatus} createdDate={paramsFilter.createdDate} 
-                        kw={paramsFilter.kw} hasDiagnosis={paramsFilter.hasDiagnosis}
-                  /> */}
+                  <div className="ou-ml-auto ou-px-4 ou-py-8">
+                      <Button color="success" variant="contained"
+                      onClick={() => {handleOpenModal()}}>
+                          <AddCircleOutlineIcon className="ou-mr-1"/> {t('medicine:addMedicine')}
+                      </Button>
+                  </div>
                 
                 </div>
                 
@@ -47,7 +49,7 @@ const MedicineList = () => {
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t("id")}</TableCell>
+                      <TableCell></TableCell>
                       <TableCell align="center">{t("medicine:medicineName")}</TableCell>
                       <TableCell align="center">{t("medicine:inStock")}</TableCell>
                       <TableCell align="center">{t("medicine:price")}</TableCell>    

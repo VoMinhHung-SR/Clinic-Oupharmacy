@@ -7,6 +7,7 @@
     "function": "Chức năng",
     "category": "Danh mục",
     "errMedicinesNull": "Không có thuốc nào.",
+    "addMedicine": "Thêm thuốc",
 
     "resultOfTotal": "({{result}} kết quả)"
 }
