@@ -129,6 +129,7 @@ class MedicineSerializer(ModelSerializer):
 class MedicineUnitSerializer(ModelSerializer):
     image_path = serializers.SerializerMethodField(source='image')
     medicine = MedicineSerializer()
+    category = CategorySerializer()
 
     class Meta:
         model = MedicineUnit
