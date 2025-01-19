@@ -51,7 +51,6 @@ import DashboardLayout from './modules/common/layout/dashboard'
 import DashBoard from './pages/dashboard'
 import CategoryList from './pages/dashboard/categories'
 import MedicineList from './pages/dashboard/medicines'
-import MedicineUnit from './pages/dashboard/medicine-unit'
 
 export const userContext = createContext()
 const queryClient = new QueryClient()
@@ -113,13 +112,11 @@ function App() {
                                 </Route>
                               </Route>
 
-
                               <Route path="/forbidden" element={<Forbidden />} />
                               <Route path="*" element={<NotFound/>} />
 
                               <Route path='/demo' element={<Demo/>}/>
-                                
-                      
+                                          
                             </Route>
                             <Route path='/dashboard/' element={<DashboardLayout/>}>
                               <Route element={<ProtectedUserRoute/>}>
@@ -129,7 +126,6 @@ function App() {
                                     <Route path='/dashboard/examinations' element={<Examinations/>}/> 
                                     <Route path='/dashboard/categories' element={<CategoryList/>}/> 
                                     <Route path='/dashboard/medicines' element={<MedicineList/>}/> 
-                                    <Route path='/dashboard/medicine-unit' element={<MedicineUnit/>}/> 
                                   </Route>
 
                                   {/* Accepted user.role = ROLE_DOCTOR */}

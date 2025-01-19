@@ -1,0 +1,13 @@
+{
+    "listOfMedicines": "Danh sách thuốc",
+    "medicineName": "Tên thuốc",
+    "packing": "Đóng gói",
+    "inStock": "Tồn kho",
+    "price": "Giá",
+    "function": "Chức năng",
+    "category": "Danh mục",
+    "errMedicinesNull": "Không có thuốc nào.",
+    "addMedicine": "Thêm thuốc",
+
+    "resultOfTotal": "({{result}} kết quả)"
+}

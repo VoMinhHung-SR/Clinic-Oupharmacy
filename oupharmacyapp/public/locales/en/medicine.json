@@ -1,0 +1,13 @@
+{
+    "listOfMedicines": "List of medicine",
+    "medicineName": "Medicine name",
+    "packing": "Packing",
+    "inStock": "In stock",
+    "price": "Price",
+    "function": "Function",
+    "category": "Category",
+    "errMedicinesNull": "No medicines available.",
+    "addMedicine": "Add medicine",
+
+    "resultOfTotal": "({{result}} results)"
+}
