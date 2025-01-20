@@ -137,12 +137,6 @@ const NavDashboard = () => {
         name:t('medicines'),
         icon: <PillsIcon className='ou-text-white'/>,
         link: '/dashboard/medicines'
-      },
-      {  
-        id: 'medicine-Unit',
-        name:t('medicineUnit'),
-        icon: <PillsIcon className='ou-text-white'/>,
-        link: '/dashboard/medicine-unit'
       }
     ] 
     const page_ROLE_NURSE= [ 
