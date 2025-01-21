@@ -1,15 +1,31 @@
 import { useTranslation } from "react-i18next";
 import useMedicine from "../../../lib/hooks/useMedicine"
-import { Box, Button, Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Helmet } from "react-helmet";
 import Loading from "../../../modules/common/components/Loading";
 import MedicineUnitLineItem from "../../../modules/pages/MedicineComponent/MedicineUnitLineItem";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CustomModal from "../../../modules/common/components/Modal";
+import useCustomModal from "../../../lib/hooks/useCustomModal";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const MedicineList = () => {
     const {page, pagination, handleChangePage,
         medicineLoading, medicines} = useMedicine()
+
+    const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
+
     const { t, ready } = useTranslation(["medicine", "common", "modal"]);
+
+    const methods = useForm({
+      mode: "onSubmit",
+      resolver: yupResolver(),
+      defaultValues: {
+          name: ""
+      }
+  })
+
     if (!ready)
         return (
           <Box sx={{ height: "300px" }}>
@@ -81,7 +97,7 @@ const MedicineList = () => {
                     {!medicineLoading && medicines.length === 0 &&  <TableCell colSpan={12} component="th" scope="row">
                         <Typography> 
                             <Box className="ou-text-center ou-p-10 ou-text-red-700">
-                                {t('examinations:errExamsNull')}
+                                {t('medicine:errMedicinesNull')}
                             </Box>
                         </Typography>
                       </TableCell>
@@ -104,7 +120,88 @@ const MedicineList = () => {
                 </Box>
               )}
           </Box>
-    
+        
+          <CustomModal
+            title={t('medicine:addMedicine')}
+            className="ou-w-[800px]"
+            open={isOpen}
+            onClose={handleCloseModal}
+            content={
+            <Box className="ou-p-8">
+                <form onSubmit={methods.handleSubmit((data) => onSubmitCreateOrUpdate(data) )}>
+                    <div className="ou-mb-3">
+                        <TextField
+                            className="ou-w-full"
+                            variant="outlined"
+                            label={t('category:name')}
+                            error={methods.formState.errors.name}
+                            {...methods.register("name")} 
+                        />
+
+                        <TextField
+                            className="ou-w-full"
+                            variant="outlined"
+                            label={t('category:effect')}
+                            error={methods.formState.errors.name}
+                            {...methods.register("name")} 
+                        />
+
+                        <TextField
+                            className="ou-w-full"
+                            variant="outlined"
+                            label={t('category:contraindications')}
+                            error={methods.formState.errors.name}
+                            {...methods.register("name")} 
+                        />
+
+
+                        <TextField
+                            className="ou-w-full"
+                            variant="outlined"
+                            label={t('category:price')}
+                            error={methods.formState.errors.name}
+                            {...methods.register("name")} 
+                        />
+                        <TextField
+                            className="ou-w-full"
+                            variant="outlined"
+                            label={t('category:inStock')}
+                            error={methods.formState.errors.name}
+                            {...methods.register("name")} 
+                        />
+                        <TextField
+                            className="ou-w-full"
+                            variant="outlined"
+                            label={t('category:packaging')}
+                            error={methods.formState.errors.name}
+                            {...methods.register("name")} 
+                        />
+                        <TextField
+                            className="ou-w-full"
+                            variant="outlined"
+                            label={t('category:category')}
+                            error={methods.formState.errors.name}
+                            {...methods.register("name")} 
+                        />
+                        <TextField
+                            className="ou-w-full"
+                            variant="outlined"
+                            label={t('category:image')}
+                            error={methods.formState.errors.name}
+                            {...methods.register("name")} 
+                        />
+                        {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                            {methods.formState.errors.name?.message}</p>) : <></>} 
+
+                    </div>
+                    <div className="ou-text-right">
+                        <Button type="submit" color="success" variant="contained">{t('common:submit')}</Button>
+                    </div>
+                </form>
+            </Box>
+        }
+        />
+
         </>
       );
 }
