@@ -53,9 +53,38 @@ const SchemaModels = () => {
            
     });
 
+    const medicineUnitSchema = Yup.object().shape({
+        name: Yup.string().trim()
+            .required(t('yupFirstNameRequired'))
+            .max(150, t('yupFirstNameMaxLength'))
+            .matches(REGEX_NAME, t('yupFirstNameInvalid')),
+
+        effect: Yup.string().trim()
+            .required(t('yupLastNameRequired'))
+            .max(150, t('yupLastNameMaxLength'))
+            .matches(REGEX_NAME, t('yupLastNameInvalid')),
+
+        contraindications: Yup.string().trim()
+            .required(t('yupEmailRequired'))
+            .max(254, t('yupEmailMaxLength'))
+            .matches(REGEX_EMAIL, t('yupEmailInvalid')),
+
+        price: Yup.string().trim()
+            .required(t('yupPhoneNumberRequired'))
+            .matches(REGEX_PHONE_NUMBER, t('yupPhoneNumberInvalid')),
+            
+        inStock: Yup.string().trim()
+            .required(t('yupAddressRequired'))
+            .matches(REGEX_ADDRESS, t('yupAddressInvalid')),
+
+        packaging: Yup.string()
+            .required(t('yupDOBRequired')),
+           
+    });
+
     return {
         medicineSubmitUpdateSchema,
-        addingPatientSchema
+        addingPatientSchema, medicineUnitSchema
     }
 }
 

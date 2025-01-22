@@ -1,13 +1,17 @@
 {
     "listOfMedicines": "List of medicine",
     "medicineName": "Medicine name",
-    "packing": "Packing",
+    "packaging": "Packaging",
     "inStock": "In stock",
     "price": "Price",
     "function": "Function",
     "category": "Category",
     "errMedicinesNull": "No medicines available.",
     "addMedicine": "Add medicine",
-
+    
+    "effect": "Medicine effect",
+    "contraindications": "Medicine contraindication",
+    "uploadMedicineImage": "Upload medicine image",
+    
     "resultOfTotal": "({{result}} results)"
 }

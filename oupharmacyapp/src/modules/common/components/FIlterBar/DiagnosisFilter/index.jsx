@@ -23,7 +23,6 @@ const DiagnosisFilter = ({onSubmit, hasPayment, createdDate, hasPrescription, pa
                 <FormControl className='!ou-min-w-[100px] !ou-mr-3'>
                     <InputLabel id="prescription_filter_diagnosisDate">{t('prescription:diagnosisDate')}</InputLabel>
                         <Select
-
                             id="prescription_filter_diagnosis_date_label"      
                             name="diagnosisDate"
                             label={t('prescription:diagnosisDate')}

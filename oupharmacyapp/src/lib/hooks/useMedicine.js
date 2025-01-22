@@ -6,7 +6,8 @@ const useMedicine = () => {
 
     const [medicines, setMedicines] = useState([])
     const [medicineLoading, setMedicineLoading] = useState(true)
-
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
     // ====== QuerySet ======
     const [q] = useSearchParams();
 
@@ -54,10 +55,13 @@ const useMedicine = () => {
 
     return {
         page,
+        imageUrl,
         medicines,
         pagination,
+        selectedImage,
         medicineLoading,
-        handleChangePage
+        setSelectedImage, setImageUrl,
+        handleChangePage,
     }
 }
 
