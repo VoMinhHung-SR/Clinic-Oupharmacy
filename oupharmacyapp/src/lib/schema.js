@@ -56,26 +56,21 @@ const SchemaModels = () => {
     const medicineUnitSchema = Yup.object().shape({
         name: Yup.string().trim()
             .required(t('yupFirstNameRequired'))
-            .max(150, t('yupFirstNameMaxLength'))
-            .matches(REGEX_NAME, t('yupFirstNameInvalid')),
+            .max(150, t('yupFirstNameMaxLength')),
 
         effect: Yup.string().trim()
             .required(t('yupLastNameRequired'))
-            .max(150, t('yupLastNameMaxLength'))
-            .matches(REGEX_NAME, t('yupLastNameInvalid')),
+            .max(254, t('yupLastNameMaxLength')),
 
         contraindications: Yup.string().trim()
             .required(t('yupEmailRequired'))
-            .max(254, t('yupEmailMaxLength'))
-            .matches(REGEX_EMAIL, t('yupEmailInvalid')),
+            .max(254, t('yupEmailMaxLength')),
 
         price: Yup.string().trim()
-            .required(t('yupPhoneNumberRequired'))
-            .matches(REGEX_PHONE_NUMBER, t('yupPhoneNumberInvalid')),
+            .required(t('yupPhoneNumberRequired')),
             
         inStock: Yup.string().trim()
-            .required(t('yupAddressRequired'))
-            .matches(REGEX_ADDRESS, t('yupAddressInvalid')),
+            .required(t('yupAddressRequired')),
 
         packaging: Yup.string()
             .required(t('yupDOBRequired')),
