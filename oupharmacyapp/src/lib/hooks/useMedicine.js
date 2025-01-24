@@ -5,6 +5,7 @@ import { fetchCreateMedicine, fetchCreateMedicineUnit } from "../../modules/page
 import SuccessfulAlert from "../../config/sweetAlert2";
 import createToastMessage from "../utils/createToastMessage";
 import { TOAST_SUCCESS } from "../constants";
+import { useTranslation } from "react-i18next";
 
 const useMedicine = () => {
 
@@ -14,7 +15,7 @@ const useMedicine = () => {
     const [imageUrl, setImageUrl] = useState(null);
     const [flag, setFlag] = useState(false)
     const [backdropLoading, setBackDropLoading] = useState(false)
-
+    const {t} = useTranslation(['modal'])
     // ====== QuerySet ======
     const [q] = useSearchParams();
 
@@ -58,7 +59,7 @@ const useMedicine = () => {
         loadMedicines()
     }, [page, flag])
 
-    const addMedicine = (data) => {
+    const addMedicine = (data, callBackSuccess) => {
         const handleMedicine = async () => {
             try{
                 setBackDropLoading(true)
@@ -75,8 +76,8 @@ const useMedicine = () => {
                     const resMedicineUnit = await fetchCreateMedicineUnit(
                         medicineUnitSubmit, resMedicine.data.id, data.category)
                     if(resMedicineUnit.status === 201){
-                        createToastMessage({type:TOAST_SUCCESS,message: 'SUCCESS'});
-
+                        callBackSuccess()
+                        createToastMessage({type:TOAST_SUCCESS, message: t('modal:createSuccess')});
                     }
                 }
                     
