@@ -70,6 +70,24 @@
 
     "yupNameCateRequired": "Tên danh mục là bắt buộc",
     "yupNameCateMax": "Tên danh mục không được vượt quá 50 ký tự",
-    "yupNameCateInvalid": "Tên danh mục không hợp lệ"
+    "yupNameCateInvalid": "Tên danh mục không hợp lệ",
+
+    "yupMedicineNameRequired": "Tên thuốc là bắt buộc.",
+    "yupMedicineNameInvalid": "Tên thuốc không hợp lệ.",
+    "yupMedicineNameMaxLength": "Tên thuốc không được vượt quá {{max}} ký tự.",
+
+    "yupMedicineEffectRequired": "Tác dụng của thuốc là bắt buộc.",
+    "yupMedicineEffectInvalid": "Tác dụng của thuốc không hợp lệ.",
+    "yupMedicineEffectMaxLength": "Tác dụng của thuốc không được vượt quá {{max}} ký tự.",
+
+    "yupMedicineContraindicationsRequired": "Chống chỉ định là bắt buộc.",
+    "yupMedicineContraindicationsInvalid": "Chống chỉ định không hợp lệ.",
+    "yupMedicineContraindicationsMaxLength": "Chống chỉ định không được vượt quá {{max}} ký tự.",
+
+    "yupMedicinePackagingRequired": "Đóng gói là bắt buộc.",
+    "yupMedicinePackagingInvalid": "Đóng gói không hợp lệ.",
+
+    "yupPriceRequired": "Giá là bắt buộc.",
+    "yupPriceNumber": "Giá phải là một số."
 
 }

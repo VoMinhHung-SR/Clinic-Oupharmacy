@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import * as Yup from 'yup';
-import {REGEX_NUMBER999, REGEX_ADDRESS, REGEX_NAME, REGEX_EMAIL, REGEX_PHONE_NUMBER} from "../lib/constants"
+import {REGEX_NUMBER999, REGEX_ADDRESS, REGEX_NAME, REGEX_EMAIL, REGEX_PHONE_NUMBER, REGEX_NOTE} from "../lib/constants"
 
 
 const SchemaModels = () => {
@@ -55,25 +55,26 @@ const SchemaModels = () => {
 
     const medicineUnitSchema = Yup.object().shape({
         name: Yup.string().trim()
-            .required(t('yupFirstNameRequired'))
-            .max(150, t('yupFirstNameMaxLength')),
+            .required(t('yupMedicineNameRequired'))
+            .max(254, t('yupMedicineNameMaxLength', {max: 254})),
 
         effect: Yup.string().trim()
-            .required(t('yupLastNameRequired'))
-            .max(254, t('yupLastNameMaxLength')),
-
+            .required(t('yupMedicineEffectRequired'))
+            .max(254, t('yupMedicineEffectMaxLength', {max: 254})),
+            
         contraindications: Yup.string().trim()
-            .required(t('yupEmailRequired'))
-            .max(254, t('yupEmailMaxLength')),
+            .required(t('yupMedicineContraindicationsRequired'))
+            .max(254, t('yupMedicineContraindicationsMaxLength', {max: 254})),
 
         price: Yup.string().trim()
-            .required(t('yupPhoneNumberRequired')),
+            .required(t('yupPriceRequired')),
             
         inStock: Yup.string().trim()
-            .required(t('yupAddressRequired')),
+            .required(t('yupMedicinePackagingRequired')),
 
-        packaging: Yup.string()
-            .required(t('yupDOBRequired')),
+        packaging: Yup.string().trim()
+            .required(t('yupMedicinePackagingRequired'))
+            .matches(REGEX_NOTE, t('yupMedicinePackagingInvalid')),
            
     });
 

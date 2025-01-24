@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import useMedicine from "../../../lib/hooks/useMedicine"
-import { Box, Button, Divider, FormControl, InputLabel, MenuItem, OutlinedInput, Pagination, Paper, Select, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, FilledInput, FormControl, Input, InputAdornment, InputLabel, MenuItem, OutlinedInput, Pagination, Paper, Select, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Helmet } from "react-helmet";
 import Loading from "../../../modules/common/components/Loading";
 import MedicineUnitLineItem from "../../../modules/pages/MedicineComponent/MedicineUnitLineItem";
@@ -100,17 +100,14 @@ const MedicineList = () => {
                 <TableBody>
                   {medicineLoading && 
                     <TableCell colSpan={12} component="th" scope="row">
-                        <Box className="ou-text-center ou-p-10">
-                            <Loading/>
-                        </Box>
-                      </TableCell>
-                  }
+                      <Box className="ou-text-center ou-p-10">
+                          <Loading/>
+                      </Box>
+                  </TableCell>}
 
-                  {
-                    !medicineLoading && medicines.length > 0 && medicines.map(medicine => (
+                  {!medicineLoading && medicines.length > 0 && medicines.map(medicine => (
                       <MedicineUnitLineItem  data={medicine}/>
-                    ))
-                  }
+                  ))}
 
                   {!medicineLoading && medicines.length === 0 &&  <TableCell colSpan={12} component="th" scope="row">
                       <Typography> 
@@ -118,8 +115,7 @@ const MedicineList = () => {
                               {t('medicine:errMedicinesNull')}
                           </Box>
                       </Typography>
-                    </TableCell>
-                  } 
+                  </TableCell>} 
   
                 </TableBody>
               </Table>
@@ -146,14 +142,15 @@ const MedicineList = () => {
           onClose={handleCloseModal}
           content={
           <Box className="ou-p-8">
-              <form onSubmit={methods.handleSubmit((data) => addMedicine(data))}>
+              <form onSubmit={methods.handleSubmit((data) => addMedicine(data,() => {
+                methods.reset(); handleCloseModal()}))}>
                   
                   <h3 className="ou-text-center ou-pb-3 ou-text-xl">
                     {t('medicine:medicineInfo')}
                     <Divider/>
                   </h3>
                   <div className="ou-mb-3">
-                    <FormControl className="ou-w-full">
+                    <FormControl className="ou-w-full !ou-mb-2">
                       <TextField
                           className="ou-w-full"
                           variant="outlined"
@@ -207,12 +204,13 @@ const MedicineList = () => {
 
                     <div className="ou-flex ou-mb-3">
                       <FormControl className="ou-w-[50%] !ou-mr-2">
-                        <TextField
-                            className="ou-w-full"
-                            variant="outlined"
-                            label={t('medicine:price')}
-                            error={methods.formState.errors.price}
-                            {...methods.register("price")} 
+                        <InputLabel htmlFor="medicine-form-price-label">{t('medicine:price')}</InputLabel>
+                        <OutlinedInput
+                          id="medicine-form-price"
+                          label={t('medicine:price')}
+                          startAdornment={<InputAdornment position="start">VND</InputAdornment>}
+                          error={methods.formState.errors.price}
+                          {...methods.register("price")} 
                         />
                         {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.price?.message}</p>) : <></>}
                       </FormControl>
