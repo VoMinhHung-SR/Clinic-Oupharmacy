@@ -61,6 +61,9 @@ export let endpoints = {
     // Prescription Detail
     'prescription-detail':'/prescription-details/',
     
+    //Medicines
+    'medicines':'/medicines/',
+
     //Medicine Units
     'medicine-units':'/medicine-units/',
     'medicine-units-detail':(medicineUnitID) =>  `/medicine-units/${medicineUnitID}/`,

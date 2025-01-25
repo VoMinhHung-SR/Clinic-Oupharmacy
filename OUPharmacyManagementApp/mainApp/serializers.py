@@ -128,8 +128,8 @@ class MedicineSerializer(ModelSerializer):
 
 class MedicineUnitSerializer(ModelSerializer):
     image_path = serializers.SerializerMethodField(source='image')
-    medicine = MedicineSerializer()
-    category = CategorySerializer()
+    medicine = serializers.PrimaryKeyRelatedField(queryset=Medicine.objects.all())
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
 
     class Meta:
         model = MedicineUnit
@@ -142,6 +142,12 @@ class MedicineUnitSerializer(ModelSerializer):
         if obj.image:
             path = '{cloud_context}{image_name}'.format(cloud_context=cloud_context, image_name=obj.image)
             return path
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['medicine'] = MedicineSerializer(instance.medicine).data
+        representation['category'] = CategorySerializer(instance.category).data
+        return representation
 
 
 class PatientSerializer(ModelSerializer):

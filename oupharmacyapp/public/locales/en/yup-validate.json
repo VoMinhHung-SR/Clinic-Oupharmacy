@@ -28,6 +28,7 @@
 
     "yupAddressRequired":"Address was required",
     "yupAddressInvalid":"Invalid address",
+    "yupAddressMustBeSelected": "You must choose one option address",
 
     "yupDOBRequired":"Date of birth was required",
 
@@ -67,9 +68,26 @@
     "yupDistrictRequired": "District was required",
     "yupDistrictNumber": "District must be selected",
 
-    "yupAddressMustBeSelected": "You must choose one option address",
-
     "yupNameCateRequired": "Category name is required",
     "yupNameCateMax": "Category name must not exceed 50 characters",
-    "yupNameCateInvalid": "Invalid category name"
+    "yupNameCateInvalid": "Invalid category name",
+
+    "yupMedicineNameRequired": "Medicine name is required.",
+    "yupMedicineNameInvalid": "Invalid medicine name.",
+    "yupMedicineNameMaxLength": "Medicine name must not exceed {{max}} characters.",
+
+    "yupMedicineEffectRequired": "Medicine effect is required.",
+    "yupMedicineEffectInvalid": "Invalid medicine effect.",
+    "yupMedicineEffectMaxLength": "Medicine effect must not exceed {{max}} characters.",
+
+    "yupMedicineContraindicationsRequired": "Contraindications are required.",
+    "yupMedicineContraindicationsInvalid": "Invalid contraindications.",
+    "yupMedicineContraindicationsMaxLength": "Contraindications must not exceed {{max}} characters.",
+
+    "yupMedicinePackagingRequired": "Packaging is required.",
+    "yupMedicinePackagingInvalid": "Invalid packaging.",
+
+    "yupPriceRequired":"Price was required",
+    "yupPriceNumber":"Price must be a number"
+
 }

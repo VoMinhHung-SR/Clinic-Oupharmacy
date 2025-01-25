@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react"
 import { fetchMedicinesUnit } from "../../modules/common/components/card/PrescriptionDetailCard/services"
 import { useSearchParams } from "react-router-dom";
+import { fetchCreateMedicine, fetchCreateMedicineUnit } from "../../modules/pages/ProductComponents/services";
+import SuccessfulAlert from "../../config/sweetAlert2";
+import createToastMessage from "../utils/createToastMessage";
+import { TOAST_SUCCESS } from "../constants";
+import { useTranslation } from "react-i18next";
 
 const useMedicine = () => {
 
     const [medicines, setMedicines] = useState([])
     const [medicineLoading, setMedicineLoading] = useState(true)
-
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
+    const [flag, setFlag] = useState(false)
+    const [backdropLoading, setBackDropLoading] = useState(false)
+    const {t} = useTranslation(['modal'])
     // ====== QuerySet ======
     const [q] = useSearchParams();
-
 
     // ====== Pagination ======
     const [pagination, setPagination] = useState({ count: 0, sizeNumber: 0 });
     const [page, setPage] = useState(1);
-
 
     const handleChangePage = (event, value) => {
         if(page === value)
@@ -50,14 +57,49 @@ const useMedicine = () => {
             }
         }
         loadMedicines()
-    }, [page])
+    }, [page, flag])
+
+    const addMedicine = (data, callBackSuccess) => {
+        const handleMedicine = async () => {
+            try{
+                setBackDropLoading(true)
+                
+                const resMedicine = await fetchCreateMedicine({
+                    name: data.name, effect: data.effect, contraindications: data.contraindications})
+                
+                const medicineUnitSubmit = {
+                    price: data.price,
+                    inStock: data.inStock,
+                    image: imageUrl
+                }     
+                if(resMedicine.status === 201){
+                    const resMedicineUnit = await fetchCreateMedicineUnit(
+                        medicineUnitSubmit, resMedicine.data.id, data.category)
+                    if(resMedicineUnit.status === 201){
+                        callBackSuccess()
+                        createToastMessage({type:TOAST_SUCCESS, message: t('modal:createSuccess')});
+                    }
+                }
+                    
+           }catch(err){
+                console.log(err)
+            }finally{
+                setBackDropLoading(false)
+                setFlag(!flag)
+            }
+        }
+        handleMedicine()
+    }
 
     return {
         page,
+        imageUrl,
         medicines,
         pagination,
-        medicineLoading,
-        handleChangePage
+        selectedImage,
+        medicineLoading, backdropLoading,
+        setSelectedImage, setImageUrl,
+        handleChangePage, addMedicine
     }
 }
 
