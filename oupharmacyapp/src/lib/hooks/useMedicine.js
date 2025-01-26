@@ -2,13 +2,11 @@ import { useEffect, useState } from "react"
 import { fetchMedicinesUnit } from "../../modules/common/components/card/PrescriptionDetailCard/services"
 import { useSearchParams } from "react-router-dom";
 import { fetchCreateMedicine, fetchCreateMedicineUnit } from "../../modules/pages/ProductComponents/services";
-import SuccessfulAlert from "../../config/sweetAlert2";
 import createToastMessage from "../utils/createToastMessage";
 import { TOAST_SUCCESS } from "../constants";
 import { useTranslation } from "react-i18next";
 
 const useMedicine = () => {
-
     const [medicines, setMedicines] = useState([])
     const [medicineLoading, setMedicineLoading] = useState(true)
     const [selectedImage, setSelectedImage] = useState(null);
@@ -16,6 +14,7 @@ const useMedicine = () => {
     const [flag, setFlag] = useState(false)
     const [backdropLoading, setBackDropLoading] = useState(false)
     const {t} = useTranslation(['modal'])
+    
     // ====== QuerySet ======
     const [q] = useSearchParams();
 
