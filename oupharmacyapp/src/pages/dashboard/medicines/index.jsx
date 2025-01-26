@@ -213,7 +213,7 @@ const MedicineList = () => {
                           {...methods.register("price")} 
                         />
                         {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.price?.message}</p>) : <></>}
-                      </FormControl>
+                      </FormControl> 
                       <FormControl className="ou-w-[50%]">
                         <TextField
                             className="ou-w-full"
