@@ -86,6 +86,7 @@
 
     "yupMedicinePackagingRequired": "Đóng gói là bắt buộc.",
     "yupMedicinePackagingInvalid": "Đóng gói không hợp lệ.",
+    "yupMedicineExist": "Tên thuốc này đã tồn tại",
 
     "yupPriceRequired": "Giá là bắt buộc.",
     "yupPriceNumber": "Giá phải là một số."

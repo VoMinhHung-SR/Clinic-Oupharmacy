@@ -3,7 +3,7 @@ import { fetchMedicinesUnit } from "../../modules/common/components/card/Prescri
 import { useSearchParams } from "react-router-dom";
 import { fetchCreateMedicine, fetchCreateMedicineUnit } from "../../modules/pages/ProductComponents/services";
 import createToastMessage from "../utils/createToastMessage";
-import { TOAST_SUCCESS } from "../constants";
+import { TOAST_ERROR, TOAST_SUCCESS } from "../constants";
 import { useTranslation } from "react-i18next";
 
 const useMedicine = () => {
@@ -13,7 +13,7 @@ const useMedicine = () => {
     const [imageUrl, setImageUrl] = useState(null);
     const [flag, setFlag] = useState(false)
     const [backdropLoading, setBackDropLoading] = useState(false)
-    const {t} = useTranslation(['modal'])
+    const {t} = useTranslation(['modal', 'yup-validate'])
     
     // ====== QuerySet ======
     const [q] = useSearchParams();
@@ -58,7 +58,7 @@ const useMedicine = () => {
         loadMedicines()
     }, [page, flag])
 
-    const addMedicine = (data, callBackSuccess) => {
+    const addMedicine = (data, callBackSuccess, setError) => {
         const handleMedicine = async () => {
             try{
                 setBackDropLoading(true)
@@ -69,7 +69,7 @@ const useMedicine = () => {
                 const medicineUnitSubmit = {
                     price: data.price,
                     inStock: data.inStock,
-                    image: imageUrl
+                    image: selectedImage && selectedImage.name
                 }     
                 if(resMedicine.status === 201){
                     const resMedicineUnit = await fetchCreateMedicineUnit(
@@ -82,6 +82,17 @@ const useMedicine = () => {
                     
            }catch(err){
                 console.log(err)
+                if (err) {
+                    const data = err.response.data;
+                    setBackDropLoading(false)
+                    if (data.name)
+                        setError("name", {
+                            type: "custom",
+                            message: t('yup-validate:yupMedicineExist'),
+                        });
+                    
+                    createToastMessage({type:TOAST_ERROR, message:t("modal:createFailed")})
+                }
             }finally{
                 setBackDropLoading(false)
                 setFlag(!flag)
