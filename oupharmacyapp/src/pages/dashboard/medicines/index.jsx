@@ -15,8 +15,8 @@ import SchemaModels from "../../../lib/schema";
 import BackdropLoading from "../../../modules/common/components/BackdropLoading";
 
 const MedicineList = () => {
-    const {page, pagination, handleChangePage, selectedImage, setSelectedImage,
-      imageUrl, setImageUrl, medicineLoading, medicines, addMedicine, backdropLoading} = useMedicine()
+    const {page, pagination, handleChangePage, selectedImage, setSelectedImage, imageUrl, 
+    setImageUrl, medicineLoading, medicines, addMedicine, backdropLoading} = useMedicine()
 
     const {categories, isLoading} = useCategory()
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
@@ -37,7 +37,6 @@ const MedicineList = () => {
         if (selectedImage) {
             setImageUrl(URL.createObjectURL(selectedImage));
         }
-
   }, [selectedImage]);
 
   if (!ready && medicineLoading && isLoading)
@@ -76,7 +75,6 @@ const MedicineList = () => {
                         <AddCircleOutlineIcon className="ou-mr-1"/> {t('medicine:addMedicine')}
                     </Button>
                 </div>
-              
               </div>
               
               {/* Content area */}
@@ -142,9 +140,9 @@ const MedicineList = () => {
           onClose={handleCloseModal}
           content={
           <Box className="ou-p-8">
-              <form onSubmit={methods.handleSubmit((data) => addMedicine(data,() => {
-                methods.reset(); handleCloseModal()}))}>
-                  
+              <form onSubmit={methods.handleSubmit((data) =>  
+              addMedicine(data,() => {methods.reset(); handleCloseModal()}, methods.setError))}
+                >
                   <h3 className="ou-text-center ou-pb-3 ou-text-xl">
                     {t('medicine:medicineInfo')}
                     <Divider/>
@@ -259,7 +257,6 @@ const MedicineList = () => {
                                   setSelectedImage(e.target.files[0]);
                               }}
                           />
-        
                           <label htmlFor="select-image">
                               <Button className="!ou-min-w-[150px]"  variant="contained" color="primary" component="span">
                                   {t('medicine:uploadMedicineImage')}
@@ -272,7 +269,6 @@ const MedicineList = () => {
                               </Box>
                           )}
                       </Box>
-
                   </div>
                   <div className="ou-text-right">
                       <Button type="submit" color="success" variant="contained">{t('common:submit')}</Button>
@@ -281,7 +277,6 @@ const MedicineList = () => {
           </Box>
       }
       />
-
       </>
   );
 }
