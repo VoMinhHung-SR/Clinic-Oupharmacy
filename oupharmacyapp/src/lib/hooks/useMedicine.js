@@ -62,18 +62,22 @@ const useMedicine = () => {
         const handleMedicine = async () => {
             try{
                 setBackDropLoading(true)
-                
+            
+                console.log(data)
                 const resMedicine = await fetchCreateMedicine({
                     name: data.name, effect: data.effect, contraindications: data.contraindications})
-                
-                const medicineUnitSubmit = {
-                    price: data.price,
-                    inStock: data.inStock,
-                    image: selectedImage && selectedImage.name
-                }     
+
                 if(resMedicine.status === 201){
-                    const resMedicineUnit = await fetchCreateMedicineUnit(
-                        medicineUnitSubmit, resMedicine.data.id, data.category)
+
+                    let medicineFormData = new FormData()
+                    medicineFormData.append("price", data.price)
+                    medicineFormData.append("in_stock", data.inStock)
+                    medicineFormData.append("image", selectedImage)
+                    medicineFormData.append("packaging", data.packaging)
+                    medicineFormData.append("medicine", resMedicine.data.id)
+                    medicineFormData.append("category", data.category)
+                    
+                    const resMedicineUnit = await fetchCreateMedicineUnit(medicineFormData)
                     if(resMedicineUnit.status === 201){
                         callBackSuccess()
                         createToastMessage({type:TOAST_SUCCESS, message: t('modal:createSuccess')});
