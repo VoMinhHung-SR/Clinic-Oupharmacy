@@ -86,6 +86,7 @@
 
     "yupMedicinePackagingRequired": "Packaging is required.",
     "yupMedicinePackagingInvalid": "Invalid packaging.",
+    "yupMedicineExist": "Medicine name is already existed",
 
     "yupPriceRequired":"Price was required",
     "yupPriceNumber":"Price must be a number"

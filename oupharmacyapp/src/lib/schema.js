@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import * as Yup from 'yup';
-import {REGEX_NUMBER999, REGEX_ADDRESS, REGEX_NAME, REGEX_EMAIL, REGEX_PHONE_NUMBER, REGEX_NOTE} from "../lib/constants"
+import {REGEX_NUMBER999, REGEX_ADDRESS, REGEX_NAME, REGEX_EMAIL, REGEX_PHONE_NUMBER, REGEX_NOTE, REGEX_POS_NUM} from "../lib/constants"
 
 
 const SchemaModels = () => {
@@ -70,7 +70,8 @@ const SchemaModels = () => {
             .required(t('yupPriceRequired')),
             
         inStock: Yup.string().trim()
-            .required(t('yupMedicinePackagingRequired')),
+            .required(t('yupQuantityRequired'))
+            .matches(REGEX_POS_NUM, t('yupQuantityInvalid')),
 
         packaging: Yup.string().trim()
             .required(t('yupMedicinePackagingRequired'))

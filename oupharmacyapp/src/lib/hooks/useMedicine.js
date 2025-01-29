@@ -2,20 +2,19 @@ import { useEffect, useState } from "react"
 import { fetchMedicinesUnit } from "../../modules/common/components/card/PrescriptionDetailCard/services"
 import { useSearchParams } from "react-router-dom";
 import { fetchCreateMedicine, fetchCreateMedicineUnit } from "../../modules/pages/ProductComponents/services";
-import SuccessfulAlert from "../../config/sweetAlert2";
 import createToastMessage from "../utils/createToastMessage";
-import { TOAST_SUCCESS } from "../constants";
+import { TOAST_ERROR, TOAST_SUCCESS } from "../constants";
 import { useTranslation } from "react-i18next";
 
 const useMedicine = () => {
-
     const [medicines, setMedicines] = useState([])
     const [medicineLoading, setMedicineLoading] = useState(true)
     const [selectedImage, setSelectedImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const [flag, setFlag] = useState(false)
     const [backdropLoading, setBackDropLoading] = useState(false)
-    const {t} = useTranslation(['modal'])
+    const {t} = useTranslation(['modal', 'yup-validate'])
+    
     // ====== QuerySet ======
     const [q] = useSearchParams();
 
@@ -59,22 +58,26 @@ const useMedicine = () => {
         loadMedicines()
     }, [page, flag])
 
-    const addMedicine = (data, callBackSuccess) => {
+    const addMedicine = (data, callBackSuccess, setError) => {
         const handleMedicine = async () => {
             try{
                 setBackDropLoading(true)
-                
+            
+                console.log(data)
                 const resMedicine = await fetchCreateMedicine({
                     name: data.name, effect: data.effect, contraindications: data.contraindications})
-                
-                const medicineUnitSubmit = {
-                    price: data.price,
-                    inStock: data.inStock,
-                    image: imageUrl
-                }     
+
                 if(resMedicine.status === 201){
-                    const resMedicineUnit = await fetchCreateMedicineUnit(
-                        medicineUnitSubmit, resMedicine.data.id, data.category)
+
+                    let medicineFormData = new FormData()
+                    medicineFormData.append("price", data.price)
+                    medicineFormData.append("in_stock", data.inStock)
+                    medicineFormData.append("image", selectedImage)
+                    medicineFormData.append("packaging", data.packaging)
+                    medicineFormData.append("medicine", resMedicine.data.id)
+                    medicineFormData.append("category", data.category)
+                    
+                    const resMedicineUnit = await fetchCreateMedicineUnit(medicineFormData)
                     if(resMedicineUnit.status === 201){
                         callBackSuccess()
                         createToastMessage({type:TOAST_SUCCESS, message: t('modal:createSuccess')});
@@ -83,6 +86,17 @@ const useMedicine = () => {
                     
            }catch(err){
                 console.log(err)
+                if (err) {
+                    const data = err.response.data;
+                    setBackDropLoading(false)
+                    if (data.name)
+                        setError("name", {
+                            type: "custom",
+                            message: t('yup-validate:yupMedicineExist'),
+                        });
+                    
+                    createToastMessage({type:TOAST_ERROR, message:t("modal:createFailed")})
+                }
             }finally{
                 setBackDropLoading(false)
                 setFlag(!flag)

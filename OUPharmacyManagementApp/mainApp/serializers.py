@@ -136,6 +136,7 @@ class MedicineUnitSerializer(ModelSerializer):
         fields = ["id", "price", "in_stock", "image", "packaging", "medicine", "category", "image_path"]
         extra_kwargs = {
             'image_path': {'read_only': 'true'},
+            'image': {'write_only': 'true'},
         }
 
     def get_image_path(self, obj):
