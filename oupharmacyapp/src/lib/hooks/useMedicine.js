@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { fetchMedicinesUnit } from "../../modules/common/components/card/PrescriptionDetailCard/services"
 import { useSearchParams } from "react-router-dom";
-import { fetchCreateMedicine, fetchCreateMedicineUnit } from "../../modules/pages/ProductComponents/services";
+import { fetchCreateMedicine, fetchCreateMedicineUnit, fetchDeletedMedicine, fetchDeletedMedicineUnit } from "../../modules/pages/ProductComponents/services";
 import createToastMessage from "../utils/createToastMessage";
 import { TOAST_ERROR, TOAST_SUCCESS } from "../constants";
 import { useTranslation } from "react-i18next";
@@ -104,13 +104,33 @@ const useMedicine = () => {
         }
         handleMedicine()
     }
+    const removeMedicine = (medicineID, medicineUnitID) => {
+        const handleRemove = async () => {
+            try{
+                const medicineRes = await fetchDeletedMedicine(medicineID)      
+                if(medicineRes.status === 204){
+                    const medicineUnitRes = await fetchDeletedMedicineUnit(medicineUnitID)
+                    if(medicineUnitRes.status === 204){
+                        callBackSuccess();
+                        createToastMessage({type:TOAST_SUCCESS, message: t('modal:deleteCompleted')});
+                    }
+                }
+            }catch (err) {
+                console.log(err)
+                setFlag(!flag)
+            } finally {
+                setFlag(!flag)  
+            }
+        }
+        handleRemove()
+    }
 
     return {
         page,
         imageUrl,
         medicines,
         pagination,
-        selectedImage,
+        selectedImage, removeMedicine,
         medicineLoading, backdropLoading,
         setSelectedImage, setImageUrl,
         handleChangePage, addMedicine

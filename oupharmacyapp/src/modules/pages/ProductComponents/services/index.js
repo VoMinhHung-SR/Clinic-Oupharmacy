@@ -10,3 +10,13 @@ export const fetchCreateMedicineUnit = async (medicineUnitData) => {
 
     return res;
 }
+
+export const fetchDeletedMedicine = async (medicineData) => {
+    const res = await APIs.delete(endpoints['medicine-detail'], medicineData)
+    return res;
+}
+
+export const fetchDeletedMedicineUnit = async (medicineUnitData) => {
+    const res = await APIs.delete(endpoints['medicine-units-detail'], medicineUnitData)
+    return res;
+}

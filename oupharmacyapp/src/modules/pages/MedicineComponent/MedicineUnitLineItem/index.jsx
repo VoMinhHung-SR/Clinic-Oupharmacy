@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ERROR_CLOUDINARY } from "../../../../lib/constants";
 import { formatNumberCurrency } from "../../../../lib/utils/helper";
-const MedicineUnitLineItem = ({data}) => {
+const MedicineUnitLineItem = ({data, removeMedicine}) => {
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
 
     const { t } = useTranslation(["examinations", "common", "modal"]);
