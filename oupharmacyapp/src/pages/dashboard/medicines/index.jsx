@@ -104,7 +104,9 @@ const MedicineList = () => {
                   </TableCell>}
 
                   {!medicineLoading && medicines.length > 0 && medicines.map(medicine => (
-                      <MedicineUnitLineItem  data={medicine} removeMedicine={removeMedicine}/>
+                      <MedicineUnitLineItem 
+                      key={`medicine-unit-${medicine.id}`}  
+                      data={medicine} removeMedicine={removeMedicine}/>
                   ))}
 
                   {!medicineLoading && medicines.length === 0 &&  <TableCell colSpan={12} component="th" scope="row">
