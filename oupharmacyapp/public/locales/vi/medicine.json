@@ -14,6 +14,6 @@
     "effect": "Tác dụng thuốc",
     "contraindications": "Chống chỉ định",
     "uploadMedicineImage": "Tải ảnh thuốc lên",
-
+"confirmDeleteMedicineUnit":"Xác nhận xóa đơn vị thuốc này",
     "resultOfTotal": "({{result}} kết quả)"
 }

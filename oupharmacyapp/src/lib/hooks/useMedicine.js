@@ -5,6 +5,7 @@ import { fetchCreateMedicine, fetchCreateMedicineUnit, fetchDeletedMedicine, fet
 import createToastMessage from "../utils/createToastMessage";
 import { TOAST_ERROR, TOAST_SUCCESS } from "../constants";
 import { useTranslation } from "react-i18next";
+import { ConfirmAlert } from "../../config/sweetAlert2";
 
 const useMedicine = () => {
     const [medicines, setMedicines] = useState([])
@@ -104,25 +105,30 @@ const useMedicine = () => {
         }
         handleMedicine()
     }
-    const removeMedicine = (medicineID, medicineUnitID) => {
+    const removeMedicine = (medicineID, medicineUnitID, callBackSuccess) => {
         const handleRemove = async () => {
             try{
-                const medicineRes = await fetchDeletedMedicine(medicineID)      
-                if(medicineRes.status === 204){
-                    const medicineUnitRes = await fetchDeletedMedicineUnit(medicineUnitID)
-                    if(medicineUnitRes.status === 204){
+                const medicineUnitRes = await fetchDeletedMedicineUnit(medicineUnitID)
+                if(medicineUnitRes.status === 204){
+                    const medicineRes = await fetchDeletedMedicine(medicineID)      
+                    if(medicineRes.status === 204){
                         callBackSuccess();
                         createToastMessage({type:TOAST_SUCCESS, message: t('modal:deleteCompleted')});
+                        setFlag(!flag)
                     }
                 }
             }catch (err) {
                 console.log(err)
-                setFlag(!flag)
             } finally {
-                setFlag(!flag)  
+                setBackDropLoading(false)
             }
-        }
-        handleRemove()
+        } 
+        return ConfirmAlert(t('medicine:confirmDeleteMedicineUnit'),
+        t('modal:noThrowBack'),t('modal:yes'),t('modal:cancel'),
+        ()=>{
+            setBackDropLoading(true)
+            handleRemove()
+        }, () => { return; })
     }
 
     return {
