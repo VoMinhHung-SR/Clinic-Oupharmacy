@@ -6,39 +6,39 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ERROR_CLOUDINARY } from "../../../../lib/constants";
 import { formatNumberCurrency } from "../../../../lib/utils/helper";
-const MedicineUnitLineItem = ({data}) => {
+const MedicineUnitLineItem = ({data, removeMedicine}) => {
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
 
     const { t } = useTranslation(["examinations", "common", "modal"]);
     
-    const medicine = data
+    const medicineUnit = data
     return (
-        <TableRow key={medicine.id}
+        <TableRow key={medicineUnit.id}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
       >
         <TableCell component="th" scope="row">
-          <img src={medicine.image_path} height={40} width={40}
-          alt={`${medicine.image}-${medicine.id}`} />
+          <img src={medicineUnit.image_path} height={40} width={40}
+          alt={`${medicineUnit.image}-${medicineUnit.id}`} />
         </TableCell>
         <TableCell align="left">
      
           <Typography className="ou-table-truncate-text-container ou-flex">
             <span>
-              {medicine.medicine.name}
+              {medicineUnit.medicine.name}
             </span>
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography>{medicine.in_stock}</Typography>
+          <Typography>{medicineUnit.in_stock}</Typography>
         </TableCell >
         <TableCell align="center"> 
-            <Typography>{formatNumberCurrency(medicine.price)}</Typography>
+            <Typography>{formatNumberCurrency(medicineUnit.price)}</Typography>
           </TableCell>
           <TableCell align="center"> 
-            <Typography>{medicine.packaging}</Typography>
+            <Typography>{medicineUnit.packaging}</Typography>
           </TableCell>
           <TableCell align="center">
-          <Typography>{medicine.category.name}</Typography>
+          <Typography>{medicineUnit.category.name}</Typography>
         </TableCell>
       
         <TableCell align="center">
@@ -67,7 +67,7 @@ const MedicineUnitLineItem = ({data}) => {
                       color="error"
                       className=" !ou-min-w-[68px]  !ou-min-h-[40px] !ou-py-2 !ou-mx-2"
                       size="small"
-                      onClick={()=>handleOpenModal()}
+                      onClick={()=>removeMedicine(medicineUnit.medicine.id, medicineUnit.id, () => {})}
                     >
                       <DeleteIcon/>
                     </Button>

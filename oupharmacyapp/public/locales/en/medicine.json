@@ -14,6 +14,6 @@
     "effect": "Medicine effect",
     "contraindications": "Medicine contraindication",
     "uploadMedicineImage": "Upload medicine image",
-    
+    "confirmDeleteMedicineUnit":"Confirm to delete this medicine unit",
     "resultOfTotal": "({{result}} results)"
 }
