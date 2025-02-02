@@ -131,11 +131,37 @@ const useMedicine = () => {
         }, () => { return; })
     }
 
+    const updateMedicine = (data, medicineID, medicineUnitID, callBackSuccess, setError) => {
+        const handleMedicine = async () => {
+            try{
+                setBackDropLoading(true)
+        
+                    
+           }catch(err){
+                console.log(err)
+                if (err) {
+                    const data = err.response.data;
+                    setBackDropLoading(false)
+                    if (data.name)
+                        setError("name", {
+                            type: "custom",
+                            message: t('yup-validate:yupMedicineExist'),
+                        });
+                    
+                    createToastMessage({type:TOAST_ERROR, message:t("modal:updateFailed")})
+                }
+            }finally{
+                setBackDropLoading(false)
+                setFlag(!flag)
+            }
+        }
+        handleMedicine()
+    }
     return {
         page,
         imageUrl,
         medicines,
-        pagination,
+        pagination, updateMedicine,
         selectedImage, removeMedicine,
         medicineLoading, backdropLoading,
         setSelectedImage, setImageUrl,
