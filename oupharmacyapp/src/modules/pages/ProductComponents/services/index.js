@@ -7,7 +7,6 @@ export const fetchCreateMedicine = async ({name, effect, contraindications}) => 
 
 export const fetchCreateMedicineUnit = async (medicineUnitData) => {
     const res = await APIs.post(endpoints['medicine-units'], medicineUnitData)
-
     return res;
 }
 

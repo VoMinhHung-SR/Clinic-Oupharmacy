@@ -16,7 +16,8 @@ import BackdropLoading from "../../../modules/common/components/BackdropLoading"
 
 const MedicineList = () => {
     const {page, pagination, handleChangePage, selectedImage, setSelectedImage, imageUrl, 
-    setImageUrl, medicineLoading, medicines, addMedicine, backdropLoading, removeMedicine} = useMedicine()
+    setImageUrl, medicineLoading, medicines, updateMedicine,
+    addMedicine, backdropLoading, removeMedicine} = useMedicine()
 
     const {categories, isLoading} = useCategory()
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
@@ -31,7 +32,7 @@ const MedicineList = () => {
       defaultValues: {
           name: ""
       }
-  })
+    })
 
   useEffect(() => {
         if (selectedImage) {
@@ -106,6 +107,7 @@ const MedicineList = () => {
                   {!medicineLoading && medicines.length > 0 && medicines.map(medicine => (
                       <MedicineUnitLineItem 
                       key={`medicine-unit-${medicine.id}`}  
+                      categories={categories} updateMedicine={updateMedicine}
                       data={medicine} removeMedicine={removeMedicine}/>
                   ))}
 
