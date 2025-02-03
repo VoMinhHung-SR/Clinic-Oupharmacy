@@ -21,11 +21,14 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
 
     const methods = useForm({
       mode: "onSubmit",
-      resolver: yupResolver(medicineUnitSchema),
-      defaultValues: {
-          name: ""
-      }
+      resolver: yupResolver(medicineUnitSchema)
     })
+    const handleExitEditModal = () => {
+      handleCloseModal()
+      methods.reset()
+      setSelectedImage(null)
+      setImageUrl(null)
+    }
 
     useEffect(() => {
             if (selectedImage) {
@@ -102,13 +105,13 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
           title={t('medicine:updateMedicine')}
           className="ou-w-[800px]"
           open={isOpen}
-          onClose={handleCloseModal}
+          onClose={handleExitEditModal}
           content={
             <Box className="ou-p-8">
                 <form onSubmit={methods.handleSubmit((data) =>  
                 updateMedicine({...data, image: selectedImage},
-                  medicineUnit.medicine.id, medicineUnit.id,
-                  () => {methods.reset(); handleCloseModal()}, methods.setError))}>
+                  medicineUnit.medicine.id, medicineUnit.id, 
+                  handleExitEditModal, methods.setError))}>
                     <h3 className="ou-text-center ou-pb-3 ou-text-xl">
                       {t('medicine:medicineInfo')}
                       <Divider/>
@@ -118,6 +121,7 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
                         <TextField
                             className="ou-w-full"
                             variant="outlined"
+                            defaultValue={medicineUnit.medicine.name}
                             label={t('medicine:medicineName')}
                             error={methods.formState.errors.name}
                             {...methods.register("name")} 
@@ -134,14 +138,14 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
                               autoComplete="given-name"
                               multiline
                               rows={2}
-                              id="effect"
-                              name="effect"
+                              defaultValue={medicineUnit.medicine.effect}
                               type="text"
                               label={t('medicine:effect')}
                               error={methods.formState.errors.effect}
                               {...methods.register("effect")}
                           />
-                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.effect?.message}</p>) : <></>}
+                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                            {methods.formState.errors.effect?.message}</p>) : <></>}
                         </FormControl>
 
                         <FormControl fullWidth className="!ou-mb-3">
@@ -151,14 +155,14 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
                               autoComplete="given-name"
                               multiline
                               rows={2}
-                              id="contraindications"
-                              name="contraindications"
+                              defaultValue={medicineUnit.medicine.contraindications}
                               type="text"
                               label={t('medicine:contraindications')}
                               error={methods.formState.errors.contraindications}
                               {...methods.register("contraindications")}
                           />
-                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.contraindications?.message}</p>) : <></>}
+                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                            {methods.formState.errors.contraindications?.message}</p>) : <></>}
                         </FormControl>
 
                       <h3 className="ou-text-center ou-pb-3 ou-text-xl">
@@ -176,7 +180,8 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
                             error={methods.formState.errors.price}
                             {...methods.register("price")} 
                           />
-                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.price?.message}</p>) : <></>}
+                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                            {methods.formState.errors.price?.message}</p>) : <></>}
                         </FormControl> 
                         <FormControl className="ou-w-[50%]">
                           <TextField
@@ -186,7 +191,8 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
                               error={methods.formState.errors.inStock}
                               {...methods.register("inStock")} 
                           />
-                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.inStock?.message}</p>) : <></>}
+                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                            {methods.formState.errors.inStock?.message}</p>) : <></>}
                         </FormControl>
                       
                       </div>
@@ -199,7 +205,8 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
                               error={methods.formState.errors.packaging}
                               {...methods.register("packaging")} 
                           />
-                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.packaging?.message}</p>) : <></>}
+                          {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                            {methods.formState.errors.packaging?.message}</p>) : <></>}
 
                         </FormControl>
                         
@@ -209,10 +216,13 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
                                   className="ou-w-full"
                                     id="form__addMedicine_category"      
                                     name="category"
+                                    defaultValue={medicineUnit.category && medicineUnit.category.id}
                                     label={t('medicine:category')}
                                     {...methods.register("category")} 
                                 >
-                                  {categories && categories.map(c =><MenuItem key={`medicine-update-cate-${c.id}`} value={c.id}>{c.name}</MenuItem> )}
+                                  {categories && categories.map(c =>
+                                    <MenuItem key={`medicine-update-cate-${c.id}`} value={c.id}>{c.name}</MenuItem> 
+                                  )}
                                 </Select>
                           {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
                             {methods.formState.errors.category?.message}</p>) : <></>} 
