@@ -9,6 +9,7 @@
     "category": "Category",
     "errMedicinesNull": "No medicines available.",
     "addMedicine": "Add medicine",
+    "updateMedicine": "Update medicine",
     "medicineInfo": "Medicine Information",
     "medicineInStock": "Medicine Stock Information",
     "effect": "Medicine effect",

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { fetchMedicinesUnit } from "../../modules/common/components/card/PrescriptionDetailCard/services"
 import { useSearchParams } from "react-router-dom";
-import { fetchCreateMedicine, fetchCreateMedicineUnit, fetchDeletedMedicine, fetchDeletedMedicineUnit } from "../../modules/pages/ProductComponents/services";
+import { fetchCreateMedicine, fetchCreateMedicineUnit, fetchDeletedMedicine, fetchDeletedMedicineUnit, fetchUpdateMedicine, fetchUpdateMedicineUnit } from "../../modules/pages/ProductComponents/services";
 import createToastMessage from "../utils/createToastMessage";
 import { TOAST_ERROR, TOAST_SUCCESS } from "../constants";
 import { useTranslation } from "react-i18next";
@@ -64,7 +64,6 @@ const useMedicine = () => {
             try{
                 setBackDropLoading(true)
             
-                console.log(data)
                 const resMedicine = await fetchCreateMedicine({
                     name: data.name, effect: data.effect, contraindications: data.contraindications})
 
@@ -105,6 +104,7 @@ const useMedicine = () => {
         }
         handleMedicine()
     }
+
     const removeMedicine = (medicineID, medicineUnitID, callBackSuccess) => {
         const handleRemove = async () => {
             try{
@@ -131,11 +131,54 @@ const useMedicine = () => {
         }, () => { return; })
     }
 
+    const updateMedicine = (data, medicineID, medicineUnitID, callBackSuccess, setError) => {
+        const handleMedicine = async () => {
+            try{
+                setBackDropLoading(true)
+                const resMedicine = await fetchUpdateMedicine(medicineID,{
+                    name: data.name, effect: data.effect, contraindications: data.contraindications})
+
+                 if(resMedicine.status === 200){
+
+                    let medicineFormData = new FormData()
+                    medicineFormData.append("price", data.price)
+                    medicineFormData.append("in_stock", data.inStock)
+                    medicineFormData.append("image", data.image)
+                    medicineFormData.append("packaging", data.packaging)
+                    medicineFormData.append("medicine", resMedicine.data.id)
+                    medicineFormData.append("category", data.category)
+                    
+                    const resMedicineUnit = await fetchUpdateMedicineUnit(medicineUnitID, medicineFormData)
+                    if(resMedicineUnit.status === 200){
+                        callBackSuccess()
+                        createToastMessage({type:TOAST_SUCCESS, message: t('modal:updateSuccess')});
+                    }
+                }
+           }catch(err){
+                console.log(err)
+                if (err) {
+                    const data = err.response.data;
+                    setBackDropLoading(false)
+                    if (data.name)
+                        setError("name", {
+                            type: "custom",
+                            message: t('yup-validate:yupMedicineExist'),
+                        });
+                    
+                    createToastMessage({type:TOAST_ERROR, message:t("modal:updateFailed")})
+                }
+            }finally{
+                setBackDropLoading(false)
+                setFlag(!flag)
+            }
+        }
+        handleMedicine()
+    }
     return {
         page,
         imageUrl,
         medicines,
-        pagination,
+        pagination, updateMedicine,
         selectedImage, removeMedicine,
         medicineLoading, backdropLoading,
         setSelectedImage, setImageUrl,
