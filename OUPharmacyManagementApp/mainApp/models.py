@@ -157,7 +157,6 @@ class Examination(BaseModel):
 class Diagnosis(BaseModel):
     sign = models.CharField(max_length=254, null=False, blank=False)
     diagnosed = models.CharField(max_length=254, null=False, blank=False)
-
     examination = models.ForeignKey(Examination, on_delete=models.CASCADE, blank=False, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.SET_NULL, null=True)
