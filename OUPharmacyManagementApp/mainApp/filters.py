@@ -44,6 +44,19 @@ class ExaminationFilter(django_filters.FilterSet):
         else:
             return queryset.filter(diagnosis__isnull=True)
 
+class MedicineUnitFilter(django_filters.FilterSet):
+    kw = django_filters.CharFilter(field_name="medicine__name")
+    status = django_filters.BooleanFilter(field_name="mail_status")
+
+    class Meta:
+        model = MedicineUnit
+        fields = ('kw', 'status')
+
+    def filter_has_diagnosis(self, queryset, name, value):
+        if value:
+            return queryset.filter(diagnosis__isnull=False)
+        else:
+            return queryset.filter(diagnosis__isnull=True)
 
 class DiagnosisFilter(django_filters.FilterSet):
     has_prescription = django_filters.BooleanFilter(method='filter_has_prescription')
