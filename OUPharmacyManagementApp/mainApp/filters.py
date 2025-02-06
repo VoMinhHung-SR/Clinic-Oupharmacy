@@ -46,17 +46,13 @@ class ExaminationFilter(django_filters.FilterSet):
 
 class MedicineUnitFilter(django_filters.FilterSet):
     kw = django_filters.CharFilter(field_name="medicine__name")
-    status = django_filters.BooleanFilter(field_name="mail_status")
+    category_id = django_filters.NumberFilter(field_name="category__id") # For category name filter
+    price_min = django_filters.NumberFilter(field_name="price", lookup_expr='gte')  # For minimum price filter
+    price_max = django_filters.NumberFilter(field_name="price", lookup_expr='lte')  # For maximum price filter
 
     class Meta:
         model = MedicineUnit
-        fields = ('kw', 'status')
-
-    def filter_has_diagnosis(self, queryset, name, value):
-        if value:
-            return queryset.filter(diagnosis__isnull=False)
-        else:
-            return queryset.filter(diagnosis__isnull=True)
+        fields = ['kw', 'category_kw', 'price_min', 'price_max']
 
 class DiagnosisFilter(django_filters.FilterSet):
     has_prescription = django_filters.BooleanFilter(method='filter_has_prescription')
