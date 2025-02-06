@@ -36,7 +36,7 @@ from rest_framework import views
 from rest_framework import filters
 
 from .constant import MAX_EXAMINATION_PER_DAY, ROLE_DOCTOR, ROLE_NURSE
-from .filters import ExaminationFilter, RecipientsFilter, DiagnosisFilter
+from .filters import ExaminationFilter, RecipientsFilter, DiagnosisFilter, MedicineUnitFilter
 from .permissions import *
 from django.core.mail import send_mail, EmailMessage
 from rest_framework.decorators import action, api_view, permission_classes
@@ -539,7 +539,9 @@ class MedicineUnitViewSet(viewsets.ViewSet, generics.ListAPIView, generics.Retri
     serializer_class = MedicineUnitSerializer
     pagination_class = MedicineUnitPagination
     parser_classes = [JSONParser, MultiPartParser]
-
+    ordering_fields = '__all__'
+    filterset_class = MedicineUnitFilter
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
 
 class DiagnosisViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView,
                        generics.UpdateAPIView, generics.CreateAPIView, generics.DestroyAPIView):
