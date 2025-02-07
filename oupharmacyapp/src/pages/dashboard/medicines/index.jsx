@@ -13,10 +13,11 @@ import useCategory from "../../../modules/pages/CategoriesComponents/hooks/useCa
 import { useEffect } from "react";
 import SchemaModels from "../../../lib/schema";
 import BackdropLoading from "../../../modules/common/components/BackdropLoading";
+import MedicineFilter from "../../../modules/common/components/FIlterBar/MedicineFilter";
 
 const MedicineList = () => {
     const {page, pagination, handleChangePage, selectedImage, setSelectedImage, imageUrl, 
-    setImageUrl, medicineLoading, medicines, updateMedicine,
+    setImageUrl, medicineLoading, medicines, updateMedicine, handleOnSubmitFilter, paramsFilter,
     addMedicine, backdropLoading, removeMedicine} = useMedicine()
 
     const {categories, isLoading} = useCategory()
@@ -76,6 +77,9 @@ const MedicineList = () => {
                         <AddCircleOutlineIcon className="ou-mr-1"/> {t('medicine:addMedicine')}
                     </Button>
                 </div>
+                    {/* Filter area */}
+                  <MedicineFilter onSubmit={handleOnSubmitFilter} kw={paramsFilter.kw}
+                  categories={categories} cateFilter={paramsFilter.cate}/>
               </div>
               
               {/* Content area */}

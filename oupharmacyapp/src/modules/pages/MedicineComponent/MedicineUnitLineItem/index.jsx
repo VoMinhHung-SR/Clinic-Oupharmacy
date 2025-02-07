@@ -45,8 +45,8 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
             <img src={medicineUnit.image_path} height={40} width={40}
             alt={`${medicineUnit.image}-${medicineUnit.id}`} />
           </TableCell>
+         
           <TableCell align="left">
-      
             <Typography className="ou-table-truncate-text-container ou-flex">
               <span>
                 {medicineUnit.medicine.name}
