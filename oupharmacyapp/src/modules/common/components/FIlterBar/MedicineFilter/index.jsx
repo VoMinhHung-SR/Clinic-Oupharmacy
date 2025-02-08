@@ -21,15 +21,13 @@ const MedicineFilter = (props) => {
                 <form onSubmit={methods.handleSubmit((data) => props.onSubmit(data))} 
                 className='ou-flex ou-items-center ou-mt-5 ou-mb-3'>
                     <FormControl className='!ou-min-w-[100px] !ou-mr-3'>
-                        <InputLabel id="medicineUnit_filter_cateLabel">{t('examinations:cateFilter')}</InputLabel>
+                        <InputLabel>{t('medicine:category')}</InputLabel>
                             <Select
-                                id="medicineUnit_filter_cate_select"      
-                                name="cate"
-                                label={('medicine:category')}
+                                label={t('medicine:category')}
                                 defaultValue={props.cateFilter ? props.cateFilter : 0}
                                 {...methods.register("cate")} 
                             >
-                                <MenuItem value={0}>{t('examinations:all')}</MenuItem>
+                                <MenuItem value={0}>{t('medicine:all')}</MenuItem>
                                 {categories && categories.map(c =>
                                     <MenuItem key={`medicineUnit_filter_cate_${c.id}_select`} 
                                     value={c.id}>{c.name}</MenuItem>
@@ -41,7 +39,7 @@ const MedicineFilter = (props) => {
                         <TextField
                             required={false}
                             variant="outlined"
-                            label={t('medicine:filterUserLabel')}
+                            label={t('medicine:medicineName')}
                             {...methods.register("kw")} 
                         />
 

@@ -98,7 +98,6 @@ const useExaminationConfirm = () =>{
 
 
     // Handle on children elements
-
     const [loadingState, setLoadingState] = useState({});
     const [disableOtherCards, setDisableOtherCards] = useState(false);
 

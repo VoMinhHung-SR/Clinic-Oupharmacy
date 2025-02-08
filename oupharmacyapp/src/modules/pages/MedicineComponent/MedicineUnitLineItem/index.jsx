@@ -69,7 +69,7 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
           <TableCell align="center">
             <Box   className="ou-flex ou-justify-center ou-items-center">
               <Typography>
-                <Tooltip followCursor title={t("detail")} >
+                <Tooltip followCursor title={t("common:seeDetail")} >
                   <span>
                     <Button
                         variant="contained"
