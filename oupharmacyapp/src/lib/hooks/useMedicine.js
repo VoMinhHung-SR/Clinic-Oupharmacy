@@ -56,7 +56,7 @@ const useMedicine = () => {
                 `&kw=${paramsFilter.kw === '' ? '' : paramsFilter.kw}`+
                 `&cate=${paramsFilter.cate === 0 ? '' : paramsFilter.cate}`
 
-                querySample === "" ? querySample += '?' + queryParams : querySample += queryParams
+                querySample += querySample.includes("?") ? queryParams : "?" + queryParams
 
                 const res = await fetchMedicinesUnit(querySample)
                 if (res.status === 200) {
