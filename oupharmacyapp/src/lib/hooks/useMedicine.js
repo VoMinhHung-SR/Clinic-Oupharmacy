@@ -6,6 +6,7 @@ import createToastMessage from "../utils/createToastMessage";
 import { TOAST_ERROR, TOAST_SUCCESS } from "../constants";
 import { useTranslation } from "react-i18next";
 import { ConfirmAlert } from "../../config/sweetAlert2";
+import { goToTop } from "../utils/helper";
 
 const useMedicine = () => {
     const [medicines, setMedicines] = useState([])
@@ -19,6 +20,12 @@ const useMedicine = () => {
     // ====== QuerySet ======
     const [q] = useSearchParams();
 
+    const [filterCount, setFilterCount] = useState(0);
+    const [paramsFilter, setParamsFilter] = useState({
+        kw: '',
+        cate: 0
+    })
+
     // ====== Pagination ======
     const [pagination, setPagination] = useState({ count: 0, sizeNumber: 0 });
     const [page, setPage] = useState(1);
@@ -26,19 +33,30 @@ const useMedicine = () => {
     const handleChangePage = (event, value) => {
         if(page === value)
             return
+        goToTop();
         setMedicineLoading(true);
         setMedicines([]);
         setPage(value);
     };
 
+    const handleOnSubmitFilter = (value) => {
+        setMedicineLoading(true);
+        setParamsFilter(value)
+        setFilterCount(Object.values(value).filter(v => v !== 0 && v !== '').length);
+        setPage(1);
+        setFlag(!flag)
+    }
+
     useEffect(() => {
         const loadMedicines = async () => {
-            try{
-                let query = q.toString();
+            try{ 
+                let querySample = q.toString();
                 
-                let querySample = query
-                
-                querySample === "" ? (querySample += `page=${page}`) : (querySample += `&page${page}`)
+                const queryParams = `page=${page}`+
+                `&kw=${paramsFilter.kw === '' ? '' : paramsFilter.kw}`+
+                `&cate=${paramsFilter.cate === 0 ? '' : paramsFilter.cate}`
+
+                querySample += querySample.includes("?") ? queryParams : "?" + queryParams
 
                 const res = await fetchMedicinesUnit(querySample)
                 if (res.status === 200) {
@@ -175,9 +193,9 @@ const useMedicine = () => {
         handleMedicine()
     }
     return {
-        page,
-        imageUrl,
-        medicines,
+        page, filterCount,
+        imageUrl, paramsFilter,
+        medicines, handleOnSubmitFilter,
         pagination, updateMedicine,
         selectedImage, removeMedicine,
         medicineLoading, backdropLoading,

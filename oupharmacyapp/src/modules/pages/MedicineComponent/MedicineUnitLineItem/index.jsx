@@ -45,8 +45,8 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
             <img src={medicineUnit.image_path} height={40} width={40}
             alt={`${medicineUnit.image}-${medicineUnit.id}`} />
           </TableCell>
+         
           <TableCell align="left">
-      
             <Typography className="ou-table-truncate-text-container ou-flex">
               <span>
                 {medicineUnit.medicine.name}
@@ -69,7 +69,7 @@ const MedicineUnitLineItem = ({data, removeMedicine, categories, updateMedicine}
           <TableCell align="center">
             <Box   className="ou-flex ou-justify-center ou-items-center">
               <Typography>
-                <Tooltip followCursor title={t("detail")} >
+                <Tooltip followCursor title={t("common:seeDetail")} >
                   <span>
                     <Button
                         variant="contained"

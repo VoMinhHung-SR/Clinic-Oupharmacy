@@ -3,7 +3,7 @@ import { authApi, endpoints } from "../../../../../../config/APIs"
 // To: get arraylist medicineUnit[{medicineUnitObj},{medicineUnitObj}]
 // this served for autocompled field
 export const fetchMedicinesUnit = async (query) =>{
-    const res = await authApi().get(`${endpoints['medicine-units']}?${query}`)
+    const res = await authApi().get(`${endpoints['medicine-units']}${query}`)
     return res;
 }
 // To: create prescribing before create create prescriptionDetail

@@ -20,7 +20,6 @@ const useExaminationConfirm = () =>{
     
     const [filterCount, setFilterCount] = useState(0);
     const [paramsFilter, setParamsFilter] = useState({
-        // id: 0,
         mailStatus:0,
         createdDate:0,
         kw: '',
@@ -99,7 +98,6 @@ const useExaminationConfirm = () =>{
 
 
     // Handle on children elements
-
     const [loadingState, setLoadingState] = useState({});
     const [disableOtherCards, setDisableOtherCards] = useState(false);
 
