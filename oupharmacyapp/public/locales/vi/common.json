@@ -57,5 +57,7 @@
     "diagnosedNotify" : "Phiếu khám của bạn đã được chẩn đoán bởi bác sĩ",
 
     "seeDetail": "Xem chi tiết",
-    "basicInformation": "Thông tin cơ bản"
+    "basicInformation": "Thông tin cơ bản",
+    "asc": "Tăng dần",
+    "desc": "Giảm dần"
 }
