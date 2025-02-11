@@ -23,7 +23,8 @@ const useMedicine = () => {
     const [filterCount, setFilterCount] = useState(0);
     const [paramsFilter, setParamsFilter] = useState({
         kw: '',
-        cate: 0
+        cate: 0,
+        price: "all"
     })
 
     // ====== Pagination ======
@@ -54,7 +55,8 @@ const useMedicine = () => {
                 
                 const queryParams = `page=${page}`+
                 `&kw=${paramsFilter.kw === '' ? '' : paramsFilter.kw}`+
-                `&cate=${paramsFilter.cate === 0 ? '' : paramsFilter.cate}`
+                `&cate=${paramsFilter.cate === 0 ? '' : paramsFilter.cate}`+
+                `&price=${paramsFilter.price}`
 
                 querySample += querySample.includes("?") ? queryParams : "?" + queryParams
 
@@ -103,7 +105,6 @@ const useMedicine = () => {
                 }
                     
            }catch(err){
-                console.log(err)
                 if (err) {
                     const data = err.response.data;
                     setBackDropLoading(false)

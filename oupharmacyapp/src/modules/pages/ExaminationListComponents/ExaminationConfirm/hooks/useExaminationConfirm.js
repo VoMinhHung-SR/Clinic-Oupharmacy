@@ -62,7 +62,6 @@ const useExaminationConfirm = () =>{
     useEffect(()=>{
         const loadExamination = async () => {
             try{
-
                 let querySample = q.toString();
                 
                 const queryParams = `page=${page}`+
@@ -119,7 +118,6 @@ const useExaminationConfirm = () =>{
           } finally {
             setLoadingState((prevState) => ({ ...prevState, [examinationID]: false })); // set loading state for this card
             setDisableOtherCards(false); // enable other cards
-            // callback(); // call the original callback function
           }
         };
       };
