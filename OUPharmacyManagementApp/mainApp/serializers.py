@@ -54,8 +54,6 @@ class CommonLocationSerializer(ModelSerializer):
 
 
 class UserSerializer(ModelSerializer):
-    # role = UserRoleSerializer()
-    # location = CommonLocationSerializer()
 
     def create(self, validated_data):
         user = User(**validated_data)
@@ -90,11 +88,6 @@ class UserSerializer(ModelSerializer):
     avatar_path = serializers.SerializerMethodField(source='avatar')
 
     def get_avatar_path(self, obj):
-        # request = self.context['request']
-        # if obj.avatar and not obj.avatar.name.startswith("/static"):
-        #     path = '/static/%s' % obj.avatar.name
-        #
-        #     return request.build_absolute_uri(pathF)
         if obj.avatar:
             path = "{cloud_context}{image_name}".format(cloud_context=cloud_context,
                                                         image_name=obj.avatar)

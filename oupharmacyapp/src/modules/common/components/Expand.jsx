@@ -2,11 +2,6 @@ import { Box, Button, Fade } from "@mui/material";
 import { useState } from "react";
 
 const ExpandCloseComponent = (props) => {
-    // const [expanded, setExpanded] = useState(false);
-
-    // const toggleExpanded = () => {
-    //     setExpanded(!expanded);
-    //   };
 
     const content = props.expanded ? (
         <div>

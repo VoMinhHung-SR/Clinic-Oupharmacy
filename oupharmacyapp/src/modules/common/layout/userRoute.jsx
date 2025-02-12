@@ -13,7 +13,6 @@ const ProtectedUserRoute = () => {
     const {t, ready} = useTranslation(['common','modal']);
     const {user} = useContext(UserContext);
 
-    // const [user] = useContext(userContext);
     const router = useNavigate()
    
      //TODO: add skeletons here
