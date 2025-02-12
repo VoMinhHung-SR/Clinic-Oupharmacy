@@ -7,10 +7,10 @@ const CustomModal = (props) => {
 
     const handleDialogClose = (event, reason) => {
         if (!isClosingDropOutside && reason === 'backdropClick') {
-            return; // Prevent closing if clicking outside and isClosingDropOutside is false
+            return; 
         }
         if (onClose) {
-            onClose(event, reason); // Call the custom onClose function
+            onClose(event, reason); 
         }
     };  
     return (
