@@ -4,6 +4,7 @@ from rest_framework import routers
 from .admin import admin, admin_site, MainAppAdminSite
 from . import admin_views
 from .services import statistic_views
+from .viewsets import BillViewSet, DoctorScheduleViewSet
 
 router = routers.DefaultRouter()
 router.register("users", views.UserViewSet, basename="user")
@@ -16,9 +17,10 @@ router.register("prescribing", views.PrescribingViewSet, basename="prescribing")
 router.register("prescription-details", views.PrescriptionDetailViewSet, basename="prescription-detail")
 router.register("medicines", views.MedicineViewSet, basename="medicine")
 router.register("medicine-units", views.MedicineUnitViewSet, basename="medicine-unit")
-router.register("bills", views.BillViewSet, basename="bill")
+router.register("bills", BillViewSet, basename="bill")
 router.register("common-districts", views.CommonDistrictViewSet, basename="common-districts")
 router.register("common-locations", views.CommonLocationViewSet, basename="common-location")
+router.register("doctor-schedules", DoctorScheduleViewSet, basename="doctor-schedule")
 router.register("doctor-availability", views.DoctorAvailabilityViewSet, basename="doctor-availability")
 urlpatterns = [
     path('', include(router.urls)),

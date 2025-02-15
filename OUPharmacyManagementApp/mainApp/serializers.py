@@ -143,12 +143,20 @@ class MedicineUnitSerializer(ModelSerializer):
         representation['category'] = CategorySerializer(instance.category).data
         return representation
 
+class DoctorScheduleSerializer(ModelSerializer):
+    class Meta:
+        model = DoctorSchedule
+        exclude = []
+
+class TimeSlot(ModelSerializer):
+    class Meta:
+        model = TimeSlot
+        exclude = []
 
 class PatientSerializer(ModelSerializer):
     class Meta:
         model = Patient
         exclude = ["created_date", "updated_date"]
-
 
 class DiagnosisStatusSerializer(serializers.ModelSerializer):
     class Meta:
