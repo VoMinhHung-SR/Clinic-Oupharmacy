@@ -14,7 +14,7 @@ from rest_framework import viewsets, generics
 
 from mainApp.models import Bill, Prescribing
 from mainApp.serializers import BillSerializer
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
 

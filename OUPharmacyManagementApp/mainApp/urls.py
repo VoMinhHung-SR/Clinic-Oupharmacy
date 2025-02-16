@@ -4,7 +4,7 @@ from rest_framework import routers
 from .admin import admin, admin_site, MainAppAdminSite
 from . import admin_views
 from .services import statistic_views
-from .viewsets import BillViewSet, DoctorScheduleViewSet
+from .viewsets import *
 
 router = routers.DefaultRouter()
 router.register("users", views.UserViewSet, basename="user")
@@ -21,7 +21,8 @@ router.register("bills", BillViewSet, basename="bill")
 router.register("common-districts", views.CommonDistrictViewSet, basename="common-districts")
 router.register("common-locations", views.CommonLocationViewSet, basename="common-location")
 router.register("doctor-schedules", DoctorScheduleViewSet, basename="doctor-schedule")
-router.register("doctor-availability", views.DoctorAvailabilityViewSet, basename="doctor-availability")
+router.register("time-slots", TimeSlotViewSet, basename="time-slot")
+# router.register("doctor-availability", views.DoctorAvailabilityViewSet, basename="doctor-availability")
 urlpatterns = [
     path('', include(router.urls)),
     path('oauth2-info/', views.AuthInfo.as_view()),

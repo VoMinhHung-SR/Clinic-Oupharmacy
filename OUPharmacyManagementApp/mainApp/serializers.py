@@ -148,7 +148,7 @@ class DoctorScheduleSerializer(ModelSerializer):
         model = DoctorSchedule
         exclude = []
 
-class TimeSlot(ModelSerializer):
+class TimeSlotSerializer(ModelSerializer):
     class Meta:
         model = TimeSlot
         exclude = []
@@ -168,21 +168,21 @@ class ExaminationSerializer(ModelSerializer):
 
     patient = PatientSerializer(read_only=True)
     user = UserSerializer()
-    doctor_info = serializers.SerializerMethodField(source="doctor_availability")
+    schedule_appointment = serializers.SerializerMethodField(source="time_slot")
     diagnosis_info = DiagnosisStatusSerializer(many=True, read_only=True, source='diagnosis_set')
 
-    def get_doctor_info(self, obj):
-        doctor = obj.doctor_availability
-        if doctor:
-            doctor_info = doctor.doctor
+    def get_schedule_appointment(self, obj):
+        doctor_schedule = obj.time_slot.schedule #Schedule
+        if doctor_schedule:
+            doctor_info = doctor_schedule.doctor
             if doctor_info:
                 return {
-                    'id': obj.doctor_availability.id,
-                    'email': doctor_info.email,
-                    'day': obj.doctor_availability.day,
+                    'id': obj.time_slot.id, #ID of appointment
+                    'day': doctor_schedule.date,
+                    'start_time': obj.time_slot.start_time,
+                    'end_time': obj.time_slot.end_time,
                     'doctor_id': doctor_info.id,
-                    'start_time': doctor.start_time,
-                    'end_time': doctor.end_time,
+                    'email': doctor_info.email,
                     'first_name': doctor_info.first_name,
                     'last_name': doctor_info.last_name
                 }
@@ -196,12 +196,12 @@ class ExaminationSerializer(ModelSerializer):
     class Meta:
         model = Examination
         fields = ["id", "active", "created_date", "updated_date", "description", 'mail_status',
-                  'doctor_availability', 'user', 'patient', 'patient_id', 'wage',
-                  'reminder_email', 'doctor_info', 'diagnosis_info']
+                  'time_slot', 'user', 'patient', 'patient_id', 'wage',
+                  'reminder_email', 'schedule_appointment', 'diagnosis_info']
         exclude = []
         extra_kwargs = {
-            'doctor_info': {'read_only': 'true'},
-            'doctor_availability': {'write_only': 'true'}
+            'schedule_appointment': {'read_only': 'true'},
+            'time_slot': {'write_only': 'true'}
         }
 
 

@@ -148,6 +148,10 @@ class DoctorScheduleAdmin(admin.ModelAdmin):
             kwargs["queryset"] = User.objects.filter(role__name="ROLE_DOCTOR")
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+class TimeSlotAdmin(admin.ModelAdmin):
+    list_display = ['id', 'schedule', 'start_time', 'end_time', 'is_available']
+    list_filter = ['schedule', 'is_available']
+
 class DoctorAvailabilityAdmin(admin.ModelAdmin):
     list_display = ['id', 'day', 'start_time', 'end_time', 'doctor']
     list_filter = ['doctor', 'day']
@@ -296,6 +300,7 @@ admin_site.register(User, UserAdmin)
 admin_site.register(UserRole, UserRoleAdmin)
 # admin_site.register(DoctorAvailability, DoctorAvailabilityAdmin)
 admin_site.register(DoctorSchedule, DoctorScheduleAdmin)
+admin_site.register(TimeSlot, TimeSlotAdmin)
 
 admin_site.register(IntervalSchedule)
 admin_site.register(CrontabSchedule, CrontabScheduleAdmin)
