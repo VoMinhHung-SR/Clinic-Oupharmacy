@@ -104,7 +104,7 @@ class User(AbstractUser):
         return self.is_admin
 
     def __str__(self):
-        return self.email
+        return f"{self.title} {self.first_name} {self.last_name} ({self.email})"
 
 
 class Patient(BaseModel):

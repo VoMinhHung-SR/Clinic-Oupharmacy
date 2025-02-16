@@ -11,8 +11,6 @@ from crypt import methods
 from datetime import timedelta
 from pickle import FALSE
 
-from django.db.models.functions import TruncDate
-from django.db.models.functions.datetime import TruncMonth
 from django.utils import timezone
 import requests
 import hmac
@@ -21,31 +19,27 @@ from time import time
 import random
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import Count, DateTimeField
-from django.http import HttpResponseRedirect
+from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets, generics
-from rest_framework import permissions
 from rest_framework import views
 
 from rest_framework import filters
 
 from .constant import MAX_EXAMINATION_PER_DAY, ROLE_DOCTOR, ROLE_NURSE
-from .filters import ExaminationFilter, RecipientsFilter, DiagnosisFilter, MedicineUnitFilter
+from .filters import ExaminationFilter, DiagnosisFilter, MedicineUnitFilter, RecipientsFilter
 from .permissions import *
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMessage
 from rest_framework.decorators import action, api_view, permission_classes
 from .serializers import *
 from .paginator import BasePagination, ExaminationPaginator, MedicineUnitPagination
 from rest_framework.parsers import MultiPartParser
 from rest_framework.parsers import JSONParser
-from apscheduler.schedulers.background import BackgroundScheduler
-import requests
-from .tasks import job_send_email_re_examination, load_waiting_room
+from .tasks import  load_waiting_room
 
 # Create your views here.
 wageBooking = 20000
