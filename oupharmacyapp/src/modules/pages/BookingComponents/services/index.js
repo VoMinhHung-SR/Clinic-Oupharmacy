@@ -15,7 +15,8 @@ export const fetchPatientExist = async (email) => {
 }
 
 export const fetchGetDoctorAvailability = async (date, doctor) => {
-    const res = await authApi().post(endpoints['get-doctor-availability'], {date,doctor})
+    // const res = await authApi().post(endpoints['get-doctor-availability'], {date,doctor})
+    const res = await authApi().post(endpoints['doctor-schedules-by-date'], {date,doctor})
     return res;
 }
 

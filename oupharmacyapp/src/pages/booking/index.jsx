@@ -150,9 +150,12 @@ const Booking = () => {
         return (
             <div> 
                 <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent={"center"}>
-                    {patientList && patientList.map(p => <PatientCard patientData={p} 
-                    callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} 
-                    isSelected={patientSelected && patientSelected.id === p.id}/>)}
+                    {patientList && patientList.map(p => <div className="ou-mb-3">
+                                <PatientCard patientData={p} 
+                            callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} 
+                            isSelected={patientSelected && patientSelected.id === p.id}/>
+                    
+                        </div>)}
                 </Grid>
             </div>
         )
