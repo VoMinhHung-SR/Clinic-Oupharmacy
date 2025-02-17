@@ -66,8 +66,7 @@ const BookingForm = ({doctorInfo}) => {
 
             
     }
-    
-    
+
     const renderPatientInformationForm = (slideRight) => {
         if(!slideRight)
             return  (<>

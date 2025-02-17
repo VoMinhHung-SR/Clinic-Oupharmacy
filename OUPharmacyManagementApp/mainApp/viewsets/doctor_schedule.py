@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from mainApp.models import DoctorSchedule, TimeSlot
 from mainApp.serializers import DoctorScheduleSerializer, TimeSlotSerializer
 from rest_framework.parsers import JSONParser, MultiPartParser
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import action
 class DoctorScheduleViewSet(viewsets.ViewSet, generics.CreateAPIView,
                   generics.DestroyAPIView, generics.RetrieveAPIView,
                   generics.UpdateAPIView, generics.ListAPIView):
