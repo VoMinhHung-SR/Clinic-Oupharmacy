@@ -32,8 +32,6 @@ const useDoctorAvailability = () => {
             .required(t('yupDescriptionRequired'))
             .max(254, t('yupDescriptionMaxLength'))
             .matches(REGEX_NOTE, t('yupDescriptionInvalid')),
-
-        // doctor: Yup.string().required(t('required')),
         
         selectedTime: Yup.string()
             .required(t('yupCreatedTimeRequired')),
@@ -118,22 +116,20 @@ const useDoctorAvailability = () => {
             return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
             
     
-        // const createdDate = handleTimeChange(data.selectedDate, data.selectedTime);
-
-        const checkingPatientEmail = async () => {
-            const res = await fetchPatientExist({email:data.email})
-            // Happy case: Patient exists
-            if(res.status === 200){
-                createDoctorWorkingTime(res.data.id)
-            }
-            // Patient doest exist
-            if (res === -1){
-                createDoctorWorkingTime(-1)
-            }
-        }
+        // const checkingPatientEmail = async () => {
+        //     const res = await fetchPatientExist({email:data.email})
+        //     // Happy case: Patient exists
+        //     if(res.status === 200){
+        //         createDoctorWorkingTime(res.data.id)
+        //     }
+        //     // Patient doest exist
+        //     if (res === -1){
+        //         createDoctorWorkingTime(-1)
+        //     }
+        // }
 
 
-        const createDoctorWorkingTime = async (patientID) => {
+        const createDoctorWorkingTime = async () => {
             try{
                 const { start_time, end_time } = splitTime(data.selectedTime);
                 const requestData = {
@@ -147,7 +143,6 @@ const useDoctorAvailability = () => {
                 
                 if(res.status === 201){
                     handleOnSubmit(res.data.id)
-                    // return createToastMessage({message:"OKE",type:TOAST_SUCCESS})
                 }
             }catch(err){
                 console.log(err)
@@ -155,22 +150,20 @@ const useDoctorAvailability = () => {
 
         }
 
-        const handleOnSubmit = async (doctorWorkingTime) => {
+        const handleOnSubmit = async (timeSlot) => {
             // Update done or created patient info
             const res = await fetchCreateOrUpdatePatient(patientData.id, patientData);
             
-
             const selectedStartTime = data.selectedTime.split(' - ')[0]; // Extract the first start time
             const combinedDateTime = moment(data.selectedDate + ' ' + selectedStartTime, 'YYYY-MM-DD HH:mm');
             const formattedDateTime = combinedDateTime.format('YYYY-MM-DD HH:mm:ss');
             
-
             if(res.status === 200 || res.status === 201){
                 const examinationData = {
                     patient: res.data.id,
                     description: data.description,
                     created_date: new Date(formattedDateTime),
-                    doctor_availability: doctorWorkingTime
+                    time_slot: timeSlot
                 }
                 const resExamination = await fetchCreateExamination(examinationData);
                 if(resExamination.status === 201){
@@ -194,7 +187,8 @@ const useDoctorAvailability = () => {
         return ConfirmAlert(t('booking:confirmBooking'),t('modal:noThrowBack'),t('modal:yes'),t('modal:cancel'),
         // this is callback function when user confirmed "Yes"
         ()=>{
-            checkingPatientEmail()
+            console.log(data)
+            // checkingPatientEmail()
         }, () => { return; })
     }
 

@@ -37,6 +37,8 @@ export let endpoints = {
     // Doctor-Schedule
     'doctor-schedules': '/doctor-schedules/',
     'doctor-schedules-by-date': '/doctor-schedules/schedule/',
+    // Time-slot
+    'time-slots': '/time-slots/',
     // Patient
     'get-patient-by-email':'/patients/get-patient-by-email/',
     'patient':'/patients/',
