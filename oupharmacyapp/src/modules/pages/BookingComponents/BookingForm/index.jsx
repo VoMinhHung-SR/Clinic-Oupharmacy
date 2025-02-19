@@ -12,38 +12,48 @@ import { useContext, useEffect } from "react"
 import CustomCollapseListItemButton from "../../../common/components/collapse/ListItemButton"
 import BookingContext from "../../../../lib/context/BookingContext"
 import StethoscopeIcon from "../../../../lib/icon/StethoscopeIcon"
-
+import SchemaModels from "../../../../lib/schema"
 const BookingForm = ({doctorInfo}) => {
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal', 'home'])
 
     const doctor = doctorInfo;
     const {patientSelected, actionUpState} = useContext(BookingContext)
-    const {timeNotAvailable, isLoading, setDate, slideRight, handleSlideChange, setDoctorID,
-        formAddExaminationSchema, onSubmit} = useDoctorAvailability();
+    const {timeNotAvailable, isLoading, setDate, slideRight, 
+        handleSlideChange, setDoctorID, onSubmit} = useDoctorAvailability();
+    
+    const { timeSlotSchema } = SchemaModels()
 
     useEffect(()=>{setDoctorID(doctor.id)},[doctor.id])
 
-    const handleDateChange = (event) => {
-        setDate(event.target.value);
-        methods.setValue("selectedDate", event.target.value); // Updated field name 
-        methods.trigger("selectedDate"); // Trigger validation for the field
-        // Reset time to empty string when the date changes
-        if (methods.getValues('selectedTime')) {
-            methods.setValue('selectedTime', ''); // Reset the time to an empty string
-            methods.trigger('selectedTime'); // Trigger validation for the selectedTime field
-        }
-    };
-
     const methods = useForm({
         mode:"obSubmit", 
-        resolver: yupResolver(formAddExaminationSchema),
+        resolver: yupResolver(timeSlotSchema),
         defaultValues:{
             description:"",
             selectedDate:"",
-            selectedTime: "",
+            selectedTime: {},
             doctor: doctor.id ? doctor.id : "",
         }
     })
+
+    const handleDateChange = (event) => {
+        const selectedDate = event.target.value;
+        const minDate = moment(CURRENT_DATE).add(1, 'days').format('YYYY-MM-DD');
+        const maxDate = moment(CURRENT_DATE).add(30, 'days').format('YYYY-MM-DD');
+
+        if (selectedDate < minDate || selectedDate > maxDate) {
+            return methods.setError("selectedDate", {
+                type: "manual",
+                message: t('yup-validate:yupCreatedMustBeInRange', {minDate: minDate, maxDate: maxDate})
+            });
+        } else {
+            methods.clearErrors("selectedDate");
+        }
+
+        setDate(selectedDate);
+        methods.setValue("selectedDate", selectedDate);
+        methods.trigger("selectedDate");
+    };
     
     if (tReady)
         return <Box sx={{ minHeight: "300px" }}>
@@ -53,7 +63,6 @@ const BookingForm = ({doctorInfo}) => {
     </Box>;
 
     const disableButton = () => {
- 
         return <Button variant="contained" 
             color="primary" 
             type="button" 
@@ -94,30 +103,29 @@ const BookingForm = ({doctorInfo}) => {
                                 }}
                                 inputProps={{
                                     min: moment(CURRENT_DATE).add(1, 'days').format('YYYY-MM-DD'),
+                                    max: moment(CURRENT_DATE).add(30, 'days').format('YYYY-MM-DD'),
                                 }}
                                 onChange={handleDateChange}
                                 />
-
-                                {methods.formState.errors.selectedDate && (
-                                <p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
-                                    {methods.formState.errors.selectedDate.message}
-                                </p>
-                                )}
+                                {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                                    {methods.formState.errors.selectedDate?.message}</p>) : <></>}
+                                
                                 {(doctor && timeNotAvailable && methods.getValues('selectedDate')) && (
                                     <Grid item xs={12} className={clsx("!ou-mt-6")}>
-                                    <DoctorAvailabilityTime 
-                                        disabledTimes={timeNotAvailable} 
-                                        onChange={(event)=> {methods.setValue('selectedTime', event.target.value), 
-                                        methods.trigger("selectedTime");}}
+                                     <DoctorAvailabilityTime 
+                                        schedule={timeNotAvailable} 
+                                        onChange={(selectedTimeData) => {
+                                            methods.setValue('selectedTime', selectedTimeData);
+                                            methods.trigger("selectedTime");
+                                        }}
                                         isLoading={isLoading}
                                         defaultValue={methods.getValues('selectedTime')}
                                         />
                                 </Grid>)}
                         </Grid>
-
                         </>
                         
-                }Q
+                    }
                 />                    
             </>)
         return (<>
@@ -158,7 +166,8 @@ const BookingForm = ({doctorInfo}) => {
                     <div className="ou-w-[100%]">
                         <form onSubmit={methods.handleSubmit((data)=> onSubmit(data, patientSelected,() => {
                             methods.reset(); actionUpState();},
-                            methods.setError()))} className="ou-m-auto ou-px-5"> 
+                            methods.setError()))
+                        } className="ou-m-auto ou-px-5"> 
                             {/* Patient Form required */}
                             {renderPatientInformationForm(slideRight)}
                             {/* Area button */}

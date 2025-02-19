@@ -1,13 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Autocomplete, Box, Button, Container, FormControl, Grid, InputAdornment, InputLabel, MenuItem, 
+import { Autocomplete, Box, Button, Container, FormControl, Grid, Input, InputAdornment, InputLabel, MenuItem, 
     OutlinedInput, Paper, Select, TextField, Typography, createFilterOptions } from "@mui/material"
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Loading from "../../../common/components/Loading";
 import useFormAddExamination from "./hooks/useFormAddExamination"
 import { CURRENT_DATE } from "../../../../lib/constants";
-import moment, { min } from "moment";
-import { TimePicker } from "@mui/x-date-pickers";
+import moment from "moment";
 import BackdropLoading from "../../../common/components/BackdropLoading";
 import clsx from "clsx";
 import { useSelector } from "react-redux";
@@ -16,14 +15,9 @@ import DoctorAvailabilityTime from "../DoctorAvailabilityTime";
 const FormAddExamination = (props) => {
 
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal'])
-    const {onSubmit, openBackdrop, date, shouldDisableTime, examinations, setDoctor, timeNotAvailable,
+    const {onSubmit, openBackdrop, date, setDoctor, timeNotAvailable,
         doctor,setDate, formAddExaminationSchema, isLoading} = useFormAddExamination();
 
-    const handleDateChange = (event) => {
-        setDate(event.target.value);
-        methods.setValue("selectedDate", event.target.value); // Updated field name
-        methods.trigger("selectedDate"); // Trigger validation for the field
-    };
     const methods = useForm({
         mode:"obSubmit", 
         resolver: yupResolver(formAddExaminationSchema),
@@ -41,8 +35,27 @@ const FormAddExamination = (props) => {
             gender:0
         }
     })
-    const shouldRenderTimePicker = !!date; 
 
+    const handleDateChange = (event) => {
+        const selectedDate = event.target.value;
+        const minDate = moment(CURRENT_DATE).add(1, 'days').format('YYYY-MM-DD');
+        const maxDate = moment(CURRENT_DATE).add(30, 'days').format('YYYY-MM-DD');
+    
+        if (selectedDate < minDate || selectedDate > maxDate) {
+            methods.setError("selectedDate", {
+                type: "manual",
+                message: `Date must be between ${minDate} and ${maxDate}`,
+            });
+        } else {
+            methods.clearErrors("selectedDate");
+        }
+    
+        setDate(selectedDate);
+        methods.setValue("selectedDate", selectedDate);
+        methods.trigger("selectedDate");
+    };
+    
+    const shouldRenderTimePicker = !!date; 
     
     const { allConfig } = useSelector((state) => state.config);
     const filterOptions = createFilterOptions({
@@ -88,11 +101,9 @@ const FormAddExamination = (props) => {
                                     />
                                     {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.description?.message}</p>) : <></>}
                                 </FormControl>
-                            </Grid>
-                 
-                            
-                                    <Grid item xs={shouldRenderTimePicker ? 6 : 12} className="!ou-mt-6 ou-pr-2">
-                                        <TextField
+                            </Grid>   
+                                <Grid item xs={shouldRenderTimePicker ? 6 : 12} className="!ou-mt-6 ou-pr-2">
+                                    <TextField
                                         fullWidth
                                         id="selectedDate"
                                         name="selectedDate"
@@ -103,56 +114,49 @@ const FormAddExamination = (props) => {
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                        inputProps={{
-                                            min: moment(CURRENT_DATE).add(1, 'days').format('YYYY-MM-DD'),
-                                        }}
                                         onChange={handleDateChange}
-                                        />
-                                        {methods.formState.errors.selectedDate && (
-                                        <p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
-                                            {methods.formState.errors.selectedDate.message}
-                                        </p>
-                                        )}
-                                    </Grid>
-                                    {shouldRenderTimePicker && (
-                                        <>
-                                          <Grid item xs={6} className={clsx("!ou-mt-6 ou-pl-2")}>
-                                           
-                                                <Autocomplete
-                                                    id="doctor"
-                                                    options={allConfig.doctors}
-                                                    getOptionLabel={(option) => `${t('Dr')} ${option.first_name + " " +option.last_name}`}
-                                                    filterOptions={filterOptions}
-                                                    isOptionEqualToValue={(option, value) => option.id === value.id}
-                                            
-                                                    noOptionsText={t('noDoctorFound')}
-                                                    onChange={(event, value) => {
-                                                        setDoctor(value.id)
-                                                        methods.setValue('doctor', value.id)
-                                                    }}
-                                                    renderInput={(params) => <TextField {...params} label={t('doctor')} 
-                        
-                                                        error={methods.formState.errors.doctor?.message}
-                                                        name="doctors"
-                                                    />}
-                                                />
-                                                {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
-                                                    {methods.formState.errors.doctor?.message}</p>) : <></>}
-                                         
-                                        </Grid>
-                                        { (doctor && timeNotAvailable) && (<Grid item xs={12} className={clsx("!ou-mt-6 ou-pl-2")}>
-                                            <DoctorAvailabilityTime disabledTimes={timeNotAvailable} 
-                                            onChange={(event)=> methods.setValue('selectedTime', event.target.value)}
-                                            isLoading={isLoading}/>
-                                        </Grid>)
-                                        }
-                                       
-                                        </>
-                                      
+                                    />
+                                    {methods.formState.errors.selectedDate && (
+                                    <p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                                        {methods.formState.errors.selectedDate.message}
+                                    </p>
                                     )}
-                                  
-                                
-                                
+                                </Grid>
+                                {shouldRenderTimePicker && (
+                                    <>
+                                        <Grid item xs={6} className={clsx("!ou-mt-6 ou-pl-2")}>
+                                        
+                                            <Autocomplete
+                                                id="doctor"
+                                                options={allConfig.doctors}
+                                                getOptionLabel={(option) => `${t('Dr')} ${option.first_name + " " +option.last_name}`}
+                                                filterOptions={filterOptions}
+                                                isOptionEqualToValue={(option, value) => option.id === value.id}
+                                                noOptionsText={t('noDoctorFound')}
+                                                onChange={(event, value) => {
+                                                    setDoctor(value.id)
+                                                    methods.setValue('doctor', value.id)
+                                                }}
+                                                renderInput={(params) => <TextField {...params} label={t('doctor')} 
+                    
+                                                    error={methods.formState.errors.doctor?.message}
+                                                    name="doctors"
+                                                />}
+                                            />
+                                            {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                                                {methods.formState.errors.doctor?.message}</p>) : <></>}
+                                        
+                                    </Grid>
+                                    { (doctor && timeNotAvailable) && (<Grid item xs={12} className={clsx("!ou-mt-6 ou-pl-2")}>
+                                        <DoctorAvailabilityTime schedule={timeNotAvailable} 
+                                        onChange={(event)=> methods.setValue('selectedTime', event.target.value)}
+                                        isLoading={isLoading}/>
+                                    </Grid>)
+                                    }
+                                    
+                                    </>
+                                    
+                                )}             
                         </Grid>
                                             
                         <h5 className="ou-text-center ou-mt-8 ou-text-2xl">{t('patientInfo')}</h5>
@@ -319,11 +323,9 @@ const FormAddExamination = (props) => {
                                 </Typography>
                             </Grid>
                         </Grid>
-                    </form>
+                </form>
              
                 </Box>
-                  
-
             </div>
         </>
     )

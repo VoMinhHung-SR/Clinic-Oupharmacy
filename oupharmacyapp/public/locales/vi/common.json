@@ -59,5 +59,7 @@
     "seeDetail": "Xem chi tiết",
     "basicInformation": "Thông tin cơ bản",
     "asc": "Tăng dần",
-    "desc": "Giảm dần"
+    "desc": "Giảm dần",
+    "morning": "Buổi sáng",
+    "afternoon": "Buổi chiều"
 }

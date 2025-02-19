@@ -39,6 +39,7 @@
     "yupDescriptionInvalid":"Invalid description",
 
     "yupCreatedDateRequired":"Created date was required",
+    "yupCreatedDateMustBeInRange": "Date must be between {{minDate}} and {{maxDate}}",
 
     "yupCreatedTimeRequired":"Time was required",
     "yupCreatedTimeInvalid": "Invalid Time",
