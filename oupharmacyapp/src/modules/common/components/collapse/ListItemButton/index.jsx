@@ -2,7 +2,6 @@ import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText } from 
 import useCollapse from "../hooks/useCollapse";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
 import Loading from "../../Loading";
 
 const CustomCollapseListItemButton = ({title, content, loading, isOpen}) => {
@@ -15,7 +14,7 @@ const CustomCollapseListItemButton = ({title, content, loading, isOpen}) => {
             </ListItemButton>
 
             <Collapse in={open} timeout="auto" unmountOnExit>
-                {loading ? <Box><Loading/></Box> 
+                {loading ? <Box className="!ou-my-5"><Loading/></Box> 
                 : <List component="div" disablePadding>
                 <ListItemText sx={{ pl: 4 }}>
                     <ListItemText primary={content? content : "Content"} />

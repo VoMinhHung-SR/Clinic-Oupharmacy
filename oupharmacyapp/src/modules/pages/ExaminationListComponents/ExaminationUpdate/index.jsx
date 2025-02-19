@@ -105,6 +105,7 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                         }}
                                         inputProps={{
                                             min: moment(CURRENT_DATE).add(1, 'days').format('YYYY-MM-DD'),
+                                            max: moment(CURRENT_DATE).add(30, 'days').format('YYYY-MM-DD')  ,
                                         }}
                                         onChange={handleDateChange}
                                         />
@@ -142,7 +143,7 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                         </Grid>
 
                                         {(doctor && timeNotAvailable) && (<Grid item xs={12} className={clsx("!ou-mt-6 ou-pl-2")}>
-                                            <DoctorAvailabilityTime disabledTimes={timeNotAvailable} 
+                                            <DoctorAvailabilityTime schedule={timeNotAvailable} 
                                             selectedStartTime={examination?.doctor_info?.start_time}
                                             selectedEndTime={examination?.doctor_info?.end_time}
                                             onChange={(event)=> methods.setValue('selectedTime', event.target.value)}

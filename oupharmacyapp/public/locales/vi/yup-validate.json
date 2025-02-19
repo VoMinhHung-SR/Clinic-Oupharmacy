@@ -39,6 +39,7 @@
     "yupDescriptionInvalid":"Mô tả không hợp lệ",
 
     "yupCreatedDateRequired":"Ngày tạo không được phép để trống",
+    "yupCreatedDateMustBeInRange": "Ngày phải nằm trong khoảng {{minDate}} và {{maxDate}}",
 
     "yupCreatedTimeRequired":"Thời gian không được để trống",
     "yupCreatedTimeInvalid": "Thời gian không hợp lệ",

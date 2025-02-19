@@ -58,5 +58,7 @@
     "seeDetail": "See detail",
     "basicInformation": "Basic Information",
     "asc": "Ascending",
-    "desc": "Descending"
+    "desc": "Descending",
+    "morning": "Morning",
+    "afternoon": "Afternoon"
 }
