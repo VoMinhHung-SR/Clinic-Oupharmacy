@@ -167,8 +167,8 @@ class UserRoleAdmin(admin.ModelAdmin):
 
 
 class ExaminationAdmin(admin.ModelAdmin):
-    list_display = ['description', 'created_date', 'patient']
-    list_filter = ['patient']
+    list_display = ['description', 'created_date', 'patient', 'time_slot']
+    list_filter = ['patient', 'time_slot']
 
 
 class MedicineAdmin(admin.ModelAdmin):

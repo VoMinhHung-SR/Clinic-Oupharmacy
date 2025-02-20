@@ -4,13 +4,13 @@ from rest_framework import routers
 from .admin import admin, admin_site, MainAppAdminSite
 from . import admin_views
 from .services import statistic_views
-from .viewsets import *
+from .viewsets import ExaminationViewSet, BillViewSet, DoctorScheduleViewSet, TimeSlotViewSet
 
 router = routers.DefaultRouter()
 router.register("users", views.UserViewSet, basename="user")
 router.register("roles", views.UserRoleViewSet, basename="role")
 router.register("categories", views.CategoryViewSet, basename="category")
-router.register("examinations", views.ExaminationViewSet, basename="examination")
+router.register("examinations", ExaminationViewSet, basename="examination")
 router.register("patients", views.PatientViewSet, basename="patient")
 router.register("diagnosis", views.DiagnosisViewSet, basename="diagnosis")
 router.register("prescribing", views.PrescribingViewSet, basename="prescribing")

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, CardHeader, Collapse, Container, Divider, FormControl, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Paper, Select, TextField } from "@mui/material"
+import { Avatar, Box, Button, Container, Divider, FormControl, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Paper, Select, TextField } from "@mui/material"
 import moment from "moment"
 import { CURRENT_DATE } from "../../../../lib/constants"
 import DoctorAvailabilityTime from "../DoctorAvailabilityTime"
@@ -38,13 +38,13 @@ const BookingForm = ({doctorInfo}) => {
 
     const handleDateChange = (event) => {
         const selectedDate = event.target.value;
-        const minDate = moment(CURRENT_DATE).add(1, 'days').format('YYYY-MM-DD');
+        const minDate = moment(CURRENT_DATE).add(0, 'days').format('YYYY-MM-DD');
         const maxDate = moment(CURRENT_DATE).add(30, 'days').format('YYYY-MM-DD');
 
         if (selectedDate < minDate || selectedDate > maxDate) {
             return methods.setError("selectedDate", {
                 type: "manual",
-                message: t('yup-validate:yupCreatedMustBeInRange', {minDate: minDate, maxDate: maxDate})
+                message: t('yup-validate:yupCreatedDateMustBeInRange', {minDate: minDate, maxDate: maxDate})
             });
         } else {
             methods.clearErrors("selectedDate");
@@ -102,7 +102,7 @@ const BookingForm = ({doctorInfo}) => {
                                     shrink: true,
                                 }}
                                 inputProps={{
-                                    min: moment(CURRENT_DATE).add(1, 'days').format('YYYY-MM-DD'),
+                                    min: moment(CURRENT_DATE).add(0, 'days').format('YYYY-MM-DD'),
                                     max: moment(CURRENT_DATE).add(30, 'days').format('YYYY-MM-DD'),
                                 }}
                                 onChange={handleDateChange}
