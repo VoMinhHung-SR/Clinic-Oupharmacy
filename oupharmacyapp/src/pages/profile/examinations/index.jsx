@@ -98,7 +98,7 @@ export default ExaminationList
 
 
 export const OwnerExaminationUpdate = ({e, handleDeleteExamination}) => {
-    const {t,ready} = useTranslation(['examinations','common'])  
+    const {t} = useTranslation(['examinations','common'])  
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal(); 
     return (
         <>
@@ -118,7 +118,7 @@ export const OwnerExaminationUpdate = ({e, handleDeleteExamination}) => {
             </Typography>
         </TableCell>
         <TableCell align="center">
-            <Typography>{e.doctor_info.day ? <span>{moment(e.doctor_info.day).format("DD/MM/YYYY")}</span> 
+            <Typography>{e.schedule_appointment.day ? <span>{moment(e.schedule_appointment.day).format("DD/MM/YYYY")}</span> 
                       :  <span>{moment(e.created_date).format("DD/MM/YYYY")}</span> }</Typography>
         </TableCell>
         <TableCell align="center">{e.mail_status === true ? t('sent') : t('noSent')}</TableCell>

@@ -3,8 +3,7 @@ import { fetchCreateTimeSlot, fetchGetDoctorAvailability } from "../../services"
 import useDebounce from "../../../../../lib/hooks/useDebounce";
 import moment from "moment";
 import { fetchCreateExamination, fetchCreateOrUpdatePatient, fetchExamDateData } from "../../FormAddExamination/services";
-import * as Yup from 'yup';
-import { REGEX_NOTE, TOAST_SUCCESS } from "../../../../../lib/constants";
+import { TOAST_SUCCESS } from "../../../../../lib/constants";
 import { useTranslation } from "react-i18next";
 import { ConfirmAlert, ErrorAlert } from "../../../../../config/sweetAlert2";
 import createToastMessage from "../../../../../lib/utils/createToastMessage";
@@ -130,7 +129,7 @@ const useDoctorAvailability = () => {
                 const examinationData = {
                     patient: res.data.id,
                     description: data.description,
-                    // created_date: new Date(data.selectedDate),
+                    created_date: new Date(data.selectedDate),
                     time_slot: timeSlot
                 }
                 const resExamination = await fetchCreateExamination(examinationData);
@@ -153,7 +152,6 @@ const useDoctorAvailability = () => {
         }
         
         return ConfirmAlert(t('booking:confirmBooking'),t('modal:noThrowBack'),t('modal:yes'),t('modal:cancel'),
-        // this is callback function when user confirmed "Yes"
         ()=>{
             createDoctorWorkingTime()
         }, () => { return; })
