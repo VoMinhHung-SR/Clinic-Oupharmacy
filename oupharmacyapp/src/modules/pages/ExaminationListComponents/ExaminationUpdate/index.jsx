@@ -34,14 +34,14 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
         defaultValues:{
             description: examination?.description || "",
             selectedDate:  moment(examination?.created_date).format("YYYY-MM-DD") || "",
-            selectedTime: formatSelectedTime(examination?.doctor_info?.start_time, examination?.doctor_info?.end_time) || "",
+            selectedTime: formatSelectedTime(examination?.schedule_appointment?.start_time, examination?.schedule_appointment?.end_time) || "",
             doctor: examination?.doctor_info?.doctor_id || "",
             firstName: examination?.patient?.first_name || "",
             lastName: examination?.patient?.last_name || "",
             email: examination.patient?.email || "",
             phoneNumber: examination?.patient?.phone_number || "",
             address: examination?.patient?.address || "",
-            dateOfBirth: moment(examination?.patient?.date_of_birth).format("YYYY-MM-DD") || "",
+            dateOfBirth: moment( examination?.patient?.date_of_birth).format("YYYY-MM-DD") || "",
             gender: examination?.patient?.gender || 0
         }
     })
@@ -311,13 +311,11 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                     gutterBottom
                                     style={{ textDecoration: "inherit" }}
                                     color="grey.700"
-                                >
-                                    
+                                >      
                                 </Typography>
                             </Grid>
                         </Grid>
                     </form>
-             
                 </Box>
         </>
     )
