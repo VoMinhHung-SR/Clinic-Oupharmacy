@@ -172,20 +172,21 @@ class ExaminationSerializer(ModelSerializer):
     diagnosis_info = DiagnosisStatusSerializer(many=True, read_only=True, source='diagnosis_set')
 
     def get_schedule_appointment(self, obj):
-        doctor_schedule = obj.time_slot.schedule #Schedule
-        if doctor_schedule:
-            doctor_info = doctor_schedule.doctor
-            if doctor_info:
-                return {
-                    'id': obj.time_slot.id, #ID of appointment
-                    'day': doctor_schedule.date,
-                    'start_time': obj.time_slot.start_time,
-                    'end_time': obj.time_slot.end_time,
-                    'doctor_id': doctor_info.id,
-                    'email': doctor_info.email,
-                    'first_name': doctor_info.first_name,
-                    'last_name': doctor_info.last_name
-                }
+        if obj.time_slot:
+            doctor_schedule = obj.time_slot.schedule  # Schedule
+            if doctor_schedule:
+                doctor_info = doctor_schedule.doctor
+                if doctor_info:
+                    return {
+                        'id': obj.time_slot.id,  # ID of appointment
+                        'day': doctor_schedule.date,
+                        'start_time': obj.time_slot.start_time,
+                        'end_time': obj.time_slot.end_time,
+                        'doctor_id': doctor_info.id,
+                        'email': doctor_info.email,
+                        'first_name': doctor_info.first_name,
+                        'last_name': doctor_info.last_name
+                    }
         return {}
 
     def to_internal_value(self, data):
