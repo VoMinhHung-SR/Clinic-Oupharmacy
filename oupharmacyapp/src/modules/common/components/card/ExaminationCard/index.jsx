@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PaidIcon from "@mui/icons-material/Paid";
 import SendIcon from "@mui/icons-material/Send";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -21,10 +21,10 @@ import useCustomModal from "../../../../../lib/hooks/useCustomModal";
 import ExaminationDetailCard from "../ExaminationDetailCard";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { ErrorAlert } from "../../../../../config/sweetAlert2";
-const ExaminationCard = ({examinationData, user, callback, disableOtherCards, loading, sendEmailConfirm}) => {
+const ExaminationCard = ({examinationData, user, disableOtherCards, loading, sendEmailConfirm}) => {
   const { t } = useTranslation(["examinations", "common", "modal", "examination-detail"]);
 
-  const {id, description, created_date, mail_status, doctor_info, diagnosis_info} = examinationData
+  const {id, description, created_date, mail_status, schedule_appointment, diagnosis_info} = examinationData
   const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal();
   const router = useNavigate()
 
@@ -35,10 +35,10 @@ const ExaminationCard = ({examinationData, user, callback, disableOtherCards, lo
   const navigate = () => {
     if (user.role === ROLE_NURSE)
         return router (`/dashboard/payments/examinations/${examinationData.id}`)
-    if(user.role === ROLE_DOCTOR && user.id === examinationData.doctor_info.doctor_id){
+    if(user.role === ROLE_DOCTOR && user.id === examinationData.schedule_appointment.doctor_id){
       return router(`/dashboard/examinations/${examinationData.id}/diagnosis`)
     }
-    if(user.role === ROLE_DOCTOR && user.id !== examinationData.doctor_info.doctor_id)
+    if(user.role === ROLE_DOCTOR && user.id !== examinationData.schedule_appointment.doctor_id)
       return ErrorAlert(t('modal:errPrescribingNotOwner'), t('modal:pleaseTryAgain'), t('modal:ok'));
     return
   }
@@ -126,7 +126,7 @@ const ExaminationCard = ({examinationData, user, callback, disableOtherCards, lo
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography>{doctor_info.day ? <span>{moment(new Date(doctor_info.day)).format("DD/MM/YYYY")}</span>
+          <Typography>{schedule_appointment.day ? <span>{moment(new Date(schedule_appointment.day)).format("DD/MM/YYYY")}</span>
           : <span>{moment(created_date).format("DD/MM/YYYY")}</span>}</Typography>
         </TableCell>
         {mail_status ? (
@@ -144,7 +144,7 @@ const ExaminationCard = ({examinationData, user, callback, disableOtherCards, lo
           <Typography>{examinationData?.user?.email ? examinationData.user.email : "undefined"}</Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography>{examinationData?.doctor_info?.first_name + " " + examinationData?.doctor_info?.last_name}</Typography>
+          <Typography>{examinationData?.schedule_appointment?.first_name + " " + examinationData?.schedule_appointment?.last_name}</Typography>
         </TableCell>
         <TableCell align="center">
           <Box   className="ou-flex ou-justify-center ou-items-center">
@@ -166,11 +166,9 @@ const ExaminationCard = ({examinationData, user, callback, disableOtherCards, lo
               </Tooltip>
             </Typography>
           </Box>
-       
         </TableCell>
       </TableRow>
       
-
       <CustomModal
         className="ou-w-[900px]"
         open={isOpen}
