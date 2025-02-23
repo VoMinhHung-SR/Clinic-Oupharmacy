@@ -42,3 +42,34 @@ class DoctorScheduleViewSet(viewsets.ViewSet, generics.CreateAPIView,
                     status=status.HTTP_200_OK
                 )
         return Response(data=[], status=status.HTTP_200_OK)
+
+ @action(methods=['post'], detail=False, url_path='create-weekly-schedule')
+    def create_weekly_schedule(self, request):
+        doctor_id = request.data.get('doctorID')
+        weekly_schedule = request.data.get('weekly_schedule')
+
+        if not doctor_id or not weekly_schedule:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={"errMsg": "Missing required parameters"})
+
+        try:
+            for date_str, sessions in weekly_schedule.items():
+                current_date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+                for session_info in sessions:
+                    session = session_info.get('session')
+                    is_off = session_info.get('is_off', False)
+                    if is_off:
+                        continue
+
+                    DoctorSchedule.objects.create(
+                        doctor_id=doctor_id,
+                        date=current_date,
+                        session=session,
+                        is_off=is_off
+                    )
+
+            return Response(status=status.HTTP_201_CREATED, data={"msg": "Weekly schedule created successfully"})
+        except Exception as error:
+            print(error)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            data={"errMsg": "Error creating weekly schedule"})
