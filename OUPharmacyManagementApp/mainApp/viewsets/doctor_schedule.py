@@ -43,7 +43,7 @@ class DoctorScheduleViewSet(viewsets.ViewSet, generics.CreateAPIView,
                 )
         return Response(data=[], status=status.HTTP_200_OK)
 
- @action(methods=['post'], detail=False, url_path='create-weekly-schedule')
+    @action(methods=['post'], detail=False, url_path='create-weekly-schedule')
     def create_weekly_schedule(self, request):
         doctor_id = request.data.get('doctorID')
         weekly_schedule = request.data.get('weekly_schedule')

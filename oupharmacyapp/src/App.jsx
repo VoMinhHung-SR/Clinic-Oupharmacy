@@ -51,6 +51,7 @@ import DashboardLayout from './modules/common/layout/dashboard'
 import DashBoard from './pages/dashboard'
 import CategoryList from './pages/dashboard/categories'
 import MedicineList from './pages/dashboard/medicines'
+import DoctorSchedules from './pages/dashboard/doctor-schedules'
 
 export const userContext = createContext()
 const queryClient = new QueryClient()
@@ -124,7 +125,8 @@ function App() {
                                   {/* Accepted user.role = (ROLE_NURSE || ROLE_DOCTOR) */}
                                   <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR, ROLE_NURSE]} />}>
                                     <Route path='/dashboard/examinations' element={<Examinations/>}/> 
-                                    <Route path='/dashboard/categories' element={<CategoryList/>}/> 
+                                    <Route path='/dashboard/categories' element={<CategoryList/>}/>
+                                    <Route path='/dashboard/doctor-schedules' element={<DoctorSchedules/>}/>  
                                     <Route path='/dashboard/medicines' element={<MedicineList/>}/> 
                                   </Route>
 
