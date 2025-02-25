@@ -174,7 +174,7 @@ const NavDashboard = () => {
 
     const renderPage = (routingRole, role) => {
         return routingRole && routingRole.map(item => (
-            <ListItemButton onClick={() => handleNav(role, item.link)}>
+            <ListItemButton key={"dashboard"+item.name} onClick={() => handleNav(role, item.link)}>
                 <ListItemIcon >
                   {item.icon && item.icon}
                 </ListItemIcon>

@@ -10,7 +10,6 @@ import { collection, query, where } from "firebase/firestore";
 
 const useRecipient = (members) => {
     const {user} = useContext(UserContext);
-    // const [user] = useContext(userContext);
     // get ID
     const recipientId = getRecipientId(members, user.id)
 
