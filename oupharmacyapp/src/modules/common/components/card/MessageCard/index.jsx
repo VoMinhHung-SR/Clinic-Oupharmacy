@@ -6,7 +6,6 @@ import UserContext from "../../../../../lib/context/UserContext"
 
 const MessageCard = ({message}) => {
     const {user} = useContext(UserContext)
-    // const [user] = useContext(userContext);
     if (message) {
         return (<>
             {message.user === user.id ?

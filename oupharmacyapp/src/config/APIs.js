@@ -37,6 +37,8 @@ export let endpoints = {
     // Doctor-Schedule
     'doctor-schedules': '/doctor-schedules/',
     'doctor-schedules-by-date': '/doctor-schedules/schedule/',
+    'doctor-schedule-weekly': '/doctor-schedules/create-weekly-schedule/',
+    'doctor-schedule-detail':(doctorScheduleID) => `/doctor-schedules/${doctorScheduleID}/`,
     // Time-slot
     'time-slots': '/time-slots/',
     // Patient
@@ -73,6 +75,7 @@ export let endpoints = {
     //Medicine Units
     'medicine-units':'/medicine-units/',
     'medicine-units-detail':(medicineUnitID) =>  `/medicine-units/${medicineUnitID}/`,
+    
     // Bill
     'bill':'/bills/',
     'receipt':'/bills/get-bill-by-pres/',
