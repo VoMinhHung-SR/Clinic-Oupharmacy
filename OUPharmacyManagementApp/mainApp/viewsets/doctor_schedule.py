@@ -55,7 +55,7 @@ class DoctorScheduleViewSet(viewsets.ViewSet, generics.CreateAPIView,
         try:
             for date_str, sessions in weekly_schedule.items():
                 current_date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-                for session_info in sessions:
+                for session_name, session_info in sessions.items():
                     session = session_info.get('session')
                     is_off = session_info.get('is_off', False)
                     if is_off:

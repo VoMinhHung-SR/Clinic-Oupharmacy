@@ -7,5 +7,6 @@
     "saturday": "Thứ 7",
     "sunday": "Chủ nhật",
     "morning": "Buổi sáng",
-    "afternoon": "Buổi chiều"
+    "afternoon": "Buổi chiều",
+    "confirmCreateSchedule": "Xác nhận tạo lịch tuần này?"
 }

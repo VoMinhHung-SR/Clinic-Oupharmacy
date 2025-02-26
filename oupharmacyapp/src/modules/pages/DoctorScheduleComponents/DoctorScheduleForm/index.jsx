@@ -3,9 +3,13 @@ import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import moment from 'moment';
 import { ROLE_DOCTOR } from '../../../../lib/constants';
+import useDoctorSchedule from '../hooks/useDoctorSchedule';
 
 const DoctorScheduleForm = ({ doctor }) => {
-  const methods = useForm({
+
+    const {onSubmit} = useDoctorSchedule();
+
+    const methods = useForm({
         mode: "onSubmit",
         defaultValues: {
             doctorID: doctor.id,
@@ -21,11 +25,7 @@ const DoctorScheduleForm = ({ doctor }) => {
     
     const sessions = ['morning', 'afternoon'];
     const today = moment();
-    const startOfWeek = today.clone().startOf('isoWeek'); 
-
-    const onSubmit = data => {
-        console.log(data);
-    };
+    const startOfWeek = today.clone().startOf('isoWeek');   
 
     return (
         <Box>
@@ -74,7 +74,7 @@ const DoctorScheduleForm = ({ doctor }) => {
                     </TableBody>
                 </Table>
                 {
-                    doctor.role.name === ROLE_DOCTOR ? <>
+                    doctor.role === ROLE_DOCTOR ? <>
                         <div className='ou-text-right'>
                             <Button type="submit" variant='contained' color='success' 
                             className='!ou-mx-3 !ou-my-2'>{t('common:submit')}</Button>
