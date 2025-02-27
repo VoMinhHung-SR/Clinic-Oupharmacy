@@ -21,7 +21,7 @@ const DoctorScheduleForm = ({ doctor }) => {
     
     const days = [t('doctor-schedule:monday'), t('doctor-schedule:tuesday'), 
         t('doctor-schedule:wednesday'), t('doctor-schedule:thursday'),
-        t('doctor-schedule:friday'), t('doctor-schedule:saturday'),  t('doctor-schedule:sunday')];
+        t('doctor-schedule:friday'), t('doctor-schedule:saturday')];
     
     const sessions = ['morning', 'afternoon'];
     const today = moment();

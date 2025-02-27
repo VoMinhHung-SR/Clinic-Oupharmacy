@@ -106,7 +106,6 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.title} {self.first_name} {self.last_name} ({self.email})"
 
-
 class Patient(BaseModel):
     # 0 , 1, 2
     male, female, secret = range(3)

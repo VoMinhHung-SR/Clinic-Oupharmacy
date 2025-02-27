@@ -8,5 +8,6 @@
     "sunday": "Sunday",
     "morning": "Morning",
     "afternoon": "Afternoon",
+    "appointments": "Appointments",
     "confirmCreateSchedule": "Confirm to create this week schedule?"
 }
