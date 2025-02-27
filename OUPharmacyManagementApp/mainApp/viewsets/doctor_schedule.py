@@ -1,7 +1,7 @@
 import datetime
 from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
-from mainApp.models import DoctorSchedule, TimeSlot
+from mainApp.models import DoctorSchedule, TimeSlot, User
 from mainApp.serializers import DoctorScheduleSerializer, TimeSlotSerializer
 from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.decorators import action
@@ -73,3 +73,24 @@ class DoctorScheduleViewSet(viewsets.ViewSet, generics.CreateAPIView,
             print(error)
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data={"errMsg": "Error creating weekly schedule"})
+
+    @action(methods=['get'], detail=False, url_path='doctor-stats')
+    def get_doctor_stats(self, request):
+        doctors = User.objects.filter(role='doctor')
+        doctor_stats = []
+
+        for doctor in doctors:
+            schedules = DoctorSchedule.objects.filter(doctor=doctor)
+            schedule_counts = [schedules.filter(date__week_day=i).count() for i in range(1, 8)]
+            doctor_stats.append({
+                'label': doctor.name,
+                'data': schedule_counts
+            })
+
+        total_counts = [sum(day_counts) for day_counts in zip(*[stat['data'] for stat in doctor_stats])]
+        doctor_stats.append({
+            'label': 'Tổng số phiếu đặt lịch',
+            'data': total_counts
+        })
+
+        return Response(data=doctor_stats, status=status.HTTP_200_OK)

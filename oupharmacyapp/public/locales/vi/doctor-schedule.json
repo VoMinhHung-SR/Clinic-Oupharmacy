@@ -6,7 +6,9 @@
     "friday": "Thứ 6",
     "saturday": "Thứ 7",
     "sunday": "Chủ nhật",
+    "weekly": "Ngày trong tuần",
     "morning": "Buổi sáng",
     "afternoon": "Buổi chiều",
+    "appointments": "Lịch hẹn",
     "confirmCreateSchedule": "Xác nhận tạo lịch tuần này?"
 }
