@@ -250,8 +250,8 @@ OUPharmacy xin chúc bạn một ngày tốt lành và thật nhiều sức kh�
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-    @action(methods=['get'], detail=False, url_path='get-list-exam-today')
-    def get_list_exam_today(self, request):
+    # @action(methods=['get'], detail=False, url_path='get-list-exam-today')
+    # def get_list_exam_today(self, request):
         try:
             now = datetime.datetime.now()
             today = now.replace(hour=0, minute=0, second=0, microsecond=0).astimezone(pytz.utc)

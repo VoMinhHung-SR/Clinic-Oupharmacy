@@ -1,4 +1,5 @@
 {
+    "doctor-schedule": "Doctor Schedule",
     "monday": "Monday",
     "tuesday": "Tuesday",
     "wednesday": "Wednesday",
@@ -9,5 +10,8 @@
     "morning": "Morning",
     "afternoon": "Afternoon",
     "appointments": "Appointments",
+    "year": "Year",
+    "week": "Week",
+    "doctorScheduleTitle": "Doctor Weekly Schedule Statistics",
     "confirmCreateSchedule": "Confirm to create this week schedule?"
 }

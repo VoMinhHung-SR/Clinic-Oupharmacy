@@ -40,7 +40,6 @@ const useExaminationList = () => {
                     setExaminationList(data.results)
                     setPagination({
                         count: data.count,
-                        // data show number: x = 30
                         sizeNumber: Math.ceil(data.count / 10),
                     });
                   

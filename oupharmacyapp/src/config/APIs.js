@@ -37,7 +37,8 @@ export let endpoints = {
     // Doctor-Schedule
     'doctor-schedules': '/doctor-schedules/',
     'doctor-schedules-by-date': '/doctor-schedules/schedule/',
-    'doctor-schedule-weekly': '/doctor-schedules/create-weekly-schedule/',
+    'doctor-create-schedule-weekly': '/doctor-schedules/create-weekly-schedule/',
+    'doctor-stats': '/doctor-schedules/doctor-stats/',
     'doctor-schedule-detail':(doctorScheduleID) => `/doctor-schedules/${doctorScheduleID}/`,
     // Time-slot
     'time-slots': '/time-slots/',
@@ -49,7 +50,7 @@ export let endpoints = {
     // Examination
     'examination':'/examinations/',
     'get-total-exams': '/examinations/get-total-exams/', // Get total exams today or input "date"
-    'get-list-exam-today':'/examinations/get-list-exam-today/',
+    // 'get-list-exam-today':'/examinations/get-list-exam-today/',
     'examination-detail': (examinationId) => `/examinations/${examinationId}/`,
     'send-mail': (examinationId) => `/examinations/${examinationId}/send_mail/`,
     'send-email-remind1': (examinationId) => `/examinations/${examinationId}/send_email_remind1/`, // Email remind go to OUPharmacy
