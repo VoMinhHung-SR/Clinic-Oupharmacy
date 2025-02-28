@@ -1,4 +1,5 @@
 import datetime
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
 from mainApp.models import DoctorSchedule, TimeSlot, User
@@ -76,21 +77,45 @@ class DoctorScheduleViewSet(viewsets.ViewSet, generics.CreateAPIView,
 
     @action(methods=['get'], detail=False, url_path='doctor-stats')
     def get_doctor_stats(self, request):
-        doctors = User.objects.filter(role='doctor')
-        doctor_stats = []
+        week_str = request.query_params.get('week')
+        if not week_str:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"errMsg": "Missing required parameter: week"})
 
-        for doctor in doctors:
-            schedules = DoctorSchedule.objects.filter(doctor=doctor)
-            schedule_counts = [schedules.filter(date__week_day=i).count() for i in range(1, 8)]
+        try:
+            week_start = datetime.datetime.strptime(week_str + '-1', '%G-W%V-%u').date()
+        except ValueError:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"errMsg": "Invalid week format. Use YYYY-Www"})
+
+        try:
+            doctors = User.objects.filter(role__name='ROLE_DOCTOR').all()
+            doctor_stats = []
+            total_counts = [0] * 7
+
+            for doctor in doctors:
+                schedule_counts = [0] * 7
+                for i in range(7):
+                    day = week_start + datetime.timedelta(days=i)
+                    time_slot_count = TimeSlot.objects.filter(schedule__doctor=doctor, schedule__date=day).count()
+                    schedule_counts[i] = time_slot_count
+                    total_counts[i] += time_slot_count
+
+                doctor_stats.append({
+                    'label': f"Dr. {doctor.first_name} {doctor.last_name}",
+                    'data': schedule_counts
+                })
+
             doctor_stats.append({
-                'label': doctor.name,
-                'data': schedule_counts
+                'label': 'Total Appointments',
+                'data': total_counts
             })
 
-        total_counts = [sum(day_counts) for day_counts in zip(*[stat['data'] for stat in doctor_stats])]
-        doctor_stats.append({
-            'label': 'Tổng số phiếu đặt lịch',
-            'data': total_counts
-        })
+            return Response(data=doctor_stats, status=status.HTTP_200_OK)
 
-        return Response(data=doctor_stats, status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"errMsg": "Doctor or schedule not found"})
+
+        except ValidationError as ve:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"errMsg": str(ve)})
+
+        except Exception as e:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"errMsg": "Internal server error"})

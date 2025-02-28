@@ -145,16 +145,16 @@ const Booking = () => {
     // or choosing create with exist patient  
     const renderSecondState = () => {
         if (isAddNewPatient)
-            return  <FormAddPatient onCallbackSuccess={createPatientSuccess}/>
+            return  <FormAddPatient onCallbackSuccess={(patientData) =>  
+                createPatientSuccess(patientData)}/>
         
         return (
             <div> 
                 <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent={"center"}>
                     {patientList && patientList.map(p => <div className="ou-mb-3">
-                                <PatientCard patientData={p} 
+                        <PatientCard patientData={p} 
                             callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} 
                             isSelected={patientSelected && patientSelected.id === p.id}/>
-                    
                         </div>)}
                 </Grid>
             </div>
