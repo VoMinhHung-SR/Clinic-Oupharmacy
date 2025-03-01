@@ -1,5 +1,4 @@
 import { Box, Button, Container, Grid, Paper, Typography } from "@mui/material"
-import moment from "moment"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router"
 import { Helmet } from "react-helmet"

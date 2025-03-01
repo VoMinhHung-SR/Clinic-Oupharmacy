@@ -233,24 +233,6 @@ class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView, generics.UpdateAPI
     queryset = Category.objects.filter(active=True)
     serializer_class = CategorySerializer
 
-
-class MedicineViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView,
-                      generics.UpdateAPIView, generics.CreateAPIView, generics.DestroyAPIView):
-    queryset = Medicine.objects.filter(active=True)
-    serializer_class = MedicineSerializer
-    pagination_class = BasePagination
-
-
-class MedicineUnitViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView,
-                          generics.UpdateAPIView, generics.CreateAPIView, generics.DestroyAPIView):
-    queryset = MedicineUnit.objects.filter(active=True).order_by('medicine__name')
-    serializer_class = MedicineUnitSerializer
-    pagination_class = MedicineUnitPagination
-    parser_classes = [JSONParser, MultiPartParser]
-    ordering_fields = '__all__'
-    filterset_class = MedicineUnitFilter
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
-
 class DiagnosisViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView,
                        generics.UpdateAPIView, generics.CreateAPIView, generics.DestroyAPIView):
     queryset = Diagnosis.objects.filter(active=True).order_by('-created_date')

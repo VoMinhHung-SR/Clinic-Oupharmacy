@@ -1,13 +1,3 @@
-import { doc, onSnapshot } from "firebase/firestore";
-import APIs, { endpoints } from "../../../../config/APIs"
-import { db } from "../../../../config/firebase";
-import moment from "moment";
-import { APP_ENV } from "../../../../lib/constants";
-
-export const fetchListExaminationToday = async () => {
-    const res = await APIs.get(endpoints['get-list-exam-today'])
-    return res;
-}
 
 // TODO: Remove
 // export const generateQueryGetExamsListPerDay = (date) => {

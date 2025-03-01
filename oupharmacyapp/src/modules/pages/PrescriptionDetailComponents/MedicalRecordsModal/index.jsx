@@ -41,7 +41,6 @@ const MedicalRecordsModal = ({patientID}) => {
                     size="small"
                     onClick={()=>handleOpenModal()}
                 >
-                    {/* {t('common:seeDetail')} */}
                     {t('medicalRecords')}
                 </Button>
         

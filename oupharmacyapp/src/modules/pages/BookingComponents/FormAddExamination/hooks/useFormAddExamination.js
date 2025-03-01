@@ -80,7 +80,6 @@ const useFormAddExamination = () => {
           } catch (error) {
             console.error(error);
           }finally {
-            // setOpenBackdrop(false)
             setIsLoading(false)
           }
         };
@@ -93,7 +92,6 @@ const useFormAddExamination = () => {
             } catch( err){
                 console.log(err)
             }finally {
-                // setOpenBackdrop(false)
                 setIsLoading(false)
               }
         }
@@ -104,11 +102,9 @@ const useFormAddExamination = () => {
         }
         if (debouncedValue) {
             setIsLoading(true)
-          getExaminationData(debouncedValue);
+            getExaminationData(debouncedValue);
         }
       }, [debouncedValue, debouncedValueDoctor]);
-
-
 
 
     const shouldDisableTime = (time) => {
@@ -141,8 +137,6 @@ const useFormAddExamination = () => {
         if(data === undefined)
             return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
     
-    
-        // const createdDate = handleTimeChange(data.selectedDate, data.selectedTime);
         const patientData = {
             first_name: data.firstName,
             last_name: data.lastName,
@@ -227,9 +221,7 @@ const useFormAddExamination = () => {
     const onUpdateSubmit = async (examinationID, patientID, data, callback, doctorAvailabilityID) => {
         if(data === undefined)
             return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
-    
-    
-        // const createdDate = handleTimeChange(data.selectedDate, data.selectedTime);
+        
         const patientData = {
             first_name: data.firstName,
             last_name: data.lastName,
@@ -250,6 +242,7 @@ const useFormAddExamination = () => {
                 return ErrorAlert("Da co loi xay ra",  "", "OKE")
             }
         } 
+
         const createDoctorWorkingTime = async () => {
             try{
 

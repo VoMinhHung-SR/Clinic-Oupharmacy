@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authApi, endpoints } from "../../config/APIs";
 
-
-
 const getUserInfo = createAsyncThunk(
     'user/getUserInfo',
     async (_, thunkAPI) => {
@@ -16,7 +14,6 @@ const getUserInfo = createAsyncThunk(
     }
   );
   
-
   const removeUserInfo = createAsyncThunk(
     'user/removeUserInfo',
     async (accessToken, thunkAPI) => {
