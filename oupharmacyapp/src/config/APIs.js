@@ -50,7 +50,6 @@ export let endpoints = {
     // Examination
     'examination':'/examinations/',
     'get-total-exams': '/examinations/get-total-exams/', // Get total exams today or input "date"
-    // 'get-list-exam-today':'/examinations/get-list-exam-today/',
     'examination-detail': (examinationId) => `/examinations/${examinationId}/`,
     'send-mail': (examinationId) => `/examinations/${examinationId}/send_mail/`,
     'send-email-remind1': (examinationId) => `/examinations/${examinationId}/send_email_remind1/`, // Email remind go to OUPharmacy

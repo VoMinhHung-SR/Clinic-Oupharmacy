@@ -25,10 +25,8 @@ const Examinations = () => {
     handleChangePage,
     examinationList,
     isLoadingExamination,
-    isRequestSuccessful,
     page,
     paramsFilter,
-    filterCount,
     handleChangeFlag,
     handleOnSubmitFilter,
     disableOtherCards, handleSendEmailConfirm, loadingState
@@ -54,7 +52,7 @@ const Examinations = () => {
   return (
     <>
       <Helmet>
-          <title>Examinations</title>
+          <title>{t('common:examinations')}</title>
       </Helmet>
           <Box className="ou-flex ou-justify-center ou-flex-col" >
           <TableContainer component={Paper} elevation={4}>
@@ -70,7 +68,6 @@ const Examinations = () => {
                     mailStatus={paramsFilter.mailStatus} createdDate={paramsFilter.createdDate} 
                     kw={paramsFilter.kw} hasDiagnosis={paramsFilter.hasDiagnosis}
               />
-            
             </div>
             
             {/* Content area */}
@@ -98,9 +95,8 @@ const Examinations = () => {
                       <Box className="ou-text-center ou-p-10">
                           <Loading/>
                       </Box>
-                    </TableCell>
+                  </TableCell>
                 }
-
                 {
                   !isLoadingExamination && 
                   examinationList.length > 0 && examinationList.map((e) => (

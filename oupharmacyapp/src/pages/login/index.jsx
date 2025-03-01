@@ -97,28 +97,6 @@ const Login = () =>{
                                 {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.username?.message}</p>) : <></>}
                             </Grid>
                             <Grid item xs={12} style={{margin:"16px 0"}}>
-                                {/* <TextField
-                                    fullWidth
-                                    autoComplete="given-name"
-                                    id="password"
-                                    name="password"
-                                    type={showPassword ? 'text' : 'password'}
-                                    label={t('password')}
-                                    error={methods.formState.errors.password}
-                                    {...methods.register("password")}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleTogglePassword}
-                              
-                                            edge="end"
-                                            >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                /> */}
                                 <FormControl variant="outlined" fullWidth>
                                 {methods.formState.errors.password?.message ? (
                                     <InputLabel className="!ou-text-red-600" htmlFor="outlined-adornment-password">
