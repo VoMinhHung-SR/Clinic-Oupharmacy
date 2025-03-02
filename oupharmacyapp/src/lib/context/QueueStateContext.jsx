@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useRef, useState } from "react";
-import { fetchListExaminationToday } from "../../modules/pages/WaittingRoomComponents/services";
+// import { fetchListExaminationToday } from "../../modules/pages/WaittingRoomComponents/services";
 
 export const QueueStateContext = createContext({});
 
@@ -27,7 +27,7 @@ export const QueueStateProvider = ({ children }) => {
 
   useEffect(() => {
     const loadListExamToday = async () => {
-      const res = await fetchListExaminationToday();
+      // const res = await fetchListExaminationToday();
       try {
         if (res.status === 200) {
           setQueue(res.data);

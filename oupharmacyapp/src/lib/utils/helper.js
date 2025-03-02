@@ -1,7 +1,7 @@
 import { FieldPath, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
 import { db } from "../../config/firebase"
 import moment from "moment";
-import { fetchListExaminationToday } from "../../modules/pages/WaittingRoomComponents/services";
+// import { fetchListExaminationToday } from "../../modules/pages/WaittingRoomComponents/services";
 import axios from "axios";
 import APIs, { endpoints } from "../../config/APIs";
 import { loadDistanceFromUser } from "../services";
@@ -10,16 +10,15 @@ import { APP_ENV, CURRENT_DATE } from "../constants";
 // it will return a user Id (recipient message in room chat) not current user
 export const getRecipientId = (member ,currentUserId) => member.find(userId => userId !== currentUserId)
 
-export const getTotalListExamPerDay = async () => {
-  try{
-    const res = await fetchListExaminationToday() 
-    if(res.status === 200)
-      return res.data.length()
-  }catch(err){
-    return -1;
-  }
-  
-}
+// export const getTotalListExamPerDay = async () => {
+//   try{
+//     const res = await fetchListExaminationToday() 
+//     if(res.status === 200)
+//       return res.data.length()
+//   }catch(err){
+//     return -1;
+//   }
+// }
 
 export const formatNumber = (num) => {
   const options = {

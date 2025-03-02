@@ -8,8 +8,7 @@ from datetime import datetime, time
 from random import random
 
 from django.http.response import HttpResponseRedirect
-from rest_framework.decorators import action, api_view, permission_classes
-from django.http.multipartparser import MultiPartParser
+from rest_framework.decorators import action
 from rest_framework import viewsets, generics
 
 from mainApp.models import Bill, Prescribing

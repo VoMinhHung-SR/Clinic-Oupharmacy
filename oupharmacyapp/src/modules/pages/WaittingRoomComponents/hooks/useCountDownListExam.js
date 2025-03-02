@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react"
-import { fetchListExaminationToday } from "../services"
+// import { fetchListExaminationToday } from "../services"
 
 const useCountDownListExam = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [examinationList, setExaminationList] = useState([]) 
     useEffect(()=> {
         const loadListExamToday = async () =>{
-            const res = await fetchListExaminationToday();
+            // const res = await fetchListExaminationToday();
             try{
                 if(res.status === 200){
                     setIsLoading(false)
