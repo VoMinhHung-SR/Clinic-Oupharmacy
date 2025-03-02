@@ -1,26 +1,7 @@
-import datetime
-import http
-import math
-import os
-import uuid
-import json
-import urllib.request
-import urllib
-from collections import deque
-from crypt import methods
-from datetime import timedelta
-from pickle import FALSE
 
-from django.utils import timezone
-import requests
-import hmac
-import hashlib
-from time import time
-import random
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Count
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -28,148 +9,18 @@ from rest_framework import status
 from rest_framework import viewsets, generics
 from rest_framework import views
 
-from rest_framework import filters
-
-from .constant import MAX_EXAMINATION_PER_DAY, ROLE_DOCTOR, ROLE_NURSE
-from .filters import ExaminationFilter, DiagnosisFilter, MedicineUnitFilter, RecipientsFilter
-from .permissions import *
-from django.core.mail import EmailMessage
+from .constant import ROLE_DOCTOR, ROLE_NURSE
 from rest_framework.decorators import action, api_view, permission_classes
 from .serializers import *
-from .paginator import BasePagination, ExaminationPaginator, MedicineUnitPagination
 from rest_framework.parsers import MultiPartParser
 from rest_framework.parsers import JSONParser
-from .tasks import  load_waiting_room
 
 # Create your views here.
 wageBooking = 20000
 
-
 class AuthInfo(APIView):
     def get(self, request):
         return Response(settings.OAUTH2_INFO, status=status.HTTP_200_OK)
-
-
-class CommonLocationViewSet(viewsets.ViewSet, generics.RetrieveAPIView, generics.ListAPIView,
-                            generics.CreateAPIView, generics.DestroyAPIView, generics.UpdateAPIView):
-    queryset = CommonLocation.objects.all()
-    serializer_class = CommonLocationSerializer
-    parser_classes = [JSONParser, MultiPartParser]
-
-
-class CommonDistrictViewSet(viewsets.ViewSet):
-    serializers = CommonDistrictSerializer
-
-    @action(methods=['post'], detail=False, url_path='get-by-city')
-    def get_by_city(self, request):
-        try:
-            districts = CommonDistrict.objects.filter(city_id=request.data.get('city')).all()
-        except Exception as ex:
-            return Response(data={"errMgs": "District have some errors"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return Response(data=CommonDistrictSerializer(districts, many=True).data,
-                        status=status.HTTP_200_OK)
-
-
-class UserViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAPIView,
-                  generics.UpdateAPIView, generics.ListAPIView):
-    queryset = User.objects.filter(is_active=True)
-    serializer_class = UserSerializer
-    parser_classes = [JSONParser, MultiPartParser, ]
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
-    filterset_class = RecipientsFilter
-
-    def get_permissions(self):
-        if self.action in ['get_current_user']:
-            return [permissions.IsAuthenticated()]
-        if self.action in ['update', 'partial_update', 'get_patients', 'change_password']:
-            return [UserPermission()]
-        if self.action in ['get_examinations']:
-            return [OwnerExaminationPermission()]
-        return [permissions.AllowAny()]
-
-    def get_queryset(self):
-        queryset = self.queryset
-        kw = self.request.query_params.get('kw')
-        if kw:
-            queryset = queryset.filter(username__icontains=kw)
-        return queryset
-
-    @action(methods=['get'], detail=False, url_path='current-user')
-    def get_current_user(self, request):
-        return Response(self.serializer_class(request.user, context={'request': request}).data,
-                        status=status.HTTP_200_OK)
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    @action(methods=['get'], detail=True, url_path='booking-list', pagination_class=ExaminationPaginator)
-    def get_examinations(self, request, pk):
-        examinations = Examination.objects.filter(user=pk).all()
-        paginator = ExaminationPaginator()
-        page_size = request.query_params.get('page_size',
-                                             10)  # Set the default page size to 10 if not specified in the URL
-        paginator.page_size = page_size
-        result_page = paginator.paginate_queryset(examinations, request)
-        serializer = ExaminationSerializer(result_page, context={'request': request}, many=True)
-        return paginator.get_paginated_response(serializer.data)
-
-    @action(methods=['get'], detail=True, url_path='location-info')
-    def get_user_location_info(self, request, pk):
-        user = self.get_object()
-        location_id = user.location_id
-        try:
-            location = CommonLocation.objects.get(id=location_id)
-            # Access the location properties
-            print(location.address, location.id)
-            return Response(status=status.HTTP_200_OK, data=CommonLocationSerializer(location).data)
-        except CommonLocation.DoesNotExist:
-            # Handle the case when the location with the given ID doesn't exist
-            return Response(status=status.HTTP_404_NOT_FOUND, data=[])
-
-    @action(methods=['get'], detail=False, url_path='demo')
-    def demo (self, request):
-        try:
-            # job_send_email_re_examination.delay()
-            load_waiting_room.delay()
-            # res = requests.get('https://rsapi.goong.io/Direction', params={
-            #     'origin': '10.816905962180005,106.6786961439645',
-            #     'destination': '10.793500150986223,106.67777364026149',
-            #     'vehicle': 'car',
-            #     'api_key': 'SGj019RWMrUGpd9XYy7qmSeRYbbvEFkOaPnmB49N'
-            # })
-        except Exception as ex:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=[])
-        return Response(status=status.HTTP_200_OK, data=[])
-
-    @action(methods=['post'], detail=True, url_path='change-password')
-    def change_password(self, request, pk):
-        user = self.get_object()
-        try:
-            new_password = request.data.get('new_password')
-            user.set_password(new_password)
-            user.save()
-        except Exception as ex:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return Response(status=status.HTTP_200_OK)
-
-    @action(methods=['get'], detail=True, url_path='get-patients')
-    def get_patients(self, request, pk):
-        user = self.get_object()
-        try:
-            patients = Patient.objects.filter(user=user).all()
-        except Exception as ex:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=[])
-
-        if patients:
-            return Response(
-                data=PatientSerializer(patients, context={'request': request}, many=True).data,
-                status=status.HTTP_200_OK)
-        return Response(data=[], status=status.HTTP_200_OK)
 
 class DoctorAvailabilityViewSet(viewsets.ViewSet, generics.ListAPIView, generics.DestroyAPIView,
                          generics.UpdateAPIView, generics.RetrieveAPIView, generics.CreateAPIView):
@@ -197,87 +48,6 @@ class DoctorAvailabilityViewSet(viewsets.ViewSet, generics.ListAPIView, generics
             return Response(data=DoctorAvailabilitySerializer(doctor_data, context={'request': request}, many=True).data,
                             status=status.HTTP_200_OK)
         return Response(data=[], status=status.HTTP_200_OK)
-
-
-class PatientViewSet(viewsets.ViewSet, generics.ListAPIView, generics.CreateAPIView,
-                     generics.RetrieveAPIView, generics.UpdateAPIView):
-    queryset = Patient.objects.filter(active=True)
-    serializer_class = PatientSerializer
-    pagination_class = BasePagination
-    parser_classes = [JSONParser, MultiPartParser, ]
-
-    @action(methods=['post'], detail=False, url_path='get-patient-by-email')
-    def get_patient_by_email(self, request):
-        user = request.user
-        if user:
-            try:
-                email = request.data.get('email')
-            except:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            if email:
-                try:
-                    patient = Patient.objects.get(email=email)
-                except Patient.DoesNotExist:
-                    return Response(data={"patient": None},
-                                    status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-                return Response(PatientSerializer(patient, context={'request': request}).data,
-                                status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        return Response(data={"errMgs": "User not found"},
-                        status=status.HTTP_400_BAD_REQUEST)
-
-
-class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView, generics.UpdateAPIView,
-                      generics.CreateAPIView, generics.DestroyAPIView):
-    queryset = Category.objects.filter(active=True)
-    serializer_class = CategorySerializer
-
-class DiagnosisViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView,
-                       generics.UpdateAPIView, generics.CreateAPIView, generics.DestroyAPIView):
-    queryset = Diagnosis.objects.filter(active=True).order_by('-created_date')
-    serializer_class = DiagnosisSerializer
-    parser_classes = [JSONParser, MultiPartParser]
-    pagination_class = ExaminationPaginator
-    ordering_fields = '__all__'
-    filterset_class = DiagnosisFilter
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
-
-    def create(self, request, *args, **kwargs):
-        serializer = DiagnosisCRUDSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    @action(methods=['POST'], detail=False, url_path='get-medical-records')
-    def get_patient_medical_records(self, request):
-        try:
-            medical_records = Diagnosis.objects.filter(patient=int(request.data.get('patientId'))).all()\
-                .order_by('-created_date')
-        except Exception as ex:
-            print(ex)
-            return Response(data={"errMgs": "Can not get patient's medical records"},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        if medical_records:
-            return Response(data=DiagnosisSerializer(medical_records, context={'request': request}, many=True).data,
-                            status=status.HTTP_200_OK)
-        return Response(data=[], status=status.HTTP_200_OK)
-
-
-class PrescriptionDetailViewSet(viewsets.ViewSet, generics.RetrieveAPIView,
-                                generics.UpdateAPIView, generics.CreateAPIView, generics.DestroyAPIView):
-    queryset = PrescriptionDetail.objects.filter(active=True)
-    serializer_class = PrescriptionDetailCRUDSerializer
-    parser_classes = [JSONParser, MultiPartParser]
-
-    def get_parsers(self):
-        if getattr(self, 'swagger_fake_view', False):
-            return []
-
-        return super().get_parsers()
-
 
 class StatsView(views.APIView):
     def get(self, request):
@@ -317,9 +87,6 @@ class StatsView(views.APIView):
 
         return Response(data=stats, status=status.HTTP_200_OK)
 
-
-
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login_view(request):
@@ -341,43 +108,6 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return Response(status=status.HTTP_200_OK)
-
-
-class UserRoleViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView,
-                      generics.UpdateAPIView, generics.CreateAPIView, generics.DestroyAPIView):
-    queryset = UserRole.objects.filter(active=True)
-    serializer_class = UserRoleSerializer
-
-
-class PrescribingViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView,
-                         generics.UpdateAPIView, generics.CreateAPIView, generics.DestroyAPIView):
-    queryset = Prescribing.objects.filter(active=True)
-    serializer_class = PrescribingSerializer
-    pagination_class = ExaminationPaginator
-
-    @action(methods=['POST'], detail=False, url_path='get-by-diagnosis')
-    def get_by_diagnosis(self, request):
-        user = request.user
-        if user:
-            try:
-                prescribing = Prescribing.objects.filter(diagnosis=request.data.get('diagnosis')).all()
-            except:
-                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            if prescribing:
-                return Response(data=PrescribingSerializer(prescribing, many=True,
-                                context={'request': request}).data,
-                                status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_200_OK, data=[])
-        return Response(data={"errMgs": "User not found"},
-                        status=status.HTTP_400_BAD_REQUEST)
-
-    @action(methods=['get'], detail=True, url_path='get-pres-detail')
-    def get_prescription_detail(self, request, pk):
-        prescription_detail = PrescriptionDetail.objects.filter(prescribing=pk).all()
-
-        return Response(data=PrescriptionDetailSerializer(prescription_detail, many=True,
-                                                          context={'request': request}).data,
-                        status=status.HTTP_200_OK)
 
 @api_view(http_method_names=["GET"])
 def get_all_config(request):

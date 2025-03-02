@@ -29,11 +29,8 @@ import Loading from './modules/common/components/Loading'
 import { Box } from '@mui/material'
 import Demo from './pages/demo'
 import { getCookieValue } from './lib/utils/getCookieValue'
-import { getListExamToday, getTotalListExamPerDay, setListExamToday } from './lib/utils/helper'
-import { fetchListExaminationToday } from './modules/pages/WaittingRoomComponents/services'
-// import { jobMidnight } from './cron/job/at_midnight'
+import { getListExamToday, setListExamToday } from './lib/utils/helper'
 import { jobEveryMinutes } from './cron/job/every_minutes'
-import BackdropLoading from './modules/common/components/BackdropLoading'
 import ScrollToTop from './modules/common/components/ScrollToTop'
 import { OUPharmacyChatBot } from './chatbot'
 import Profile from './pages/profile'
@@ -81,7 +78,7 @@ function App() {
 
     return isLoading ? <Box className='ou-h-[100vh] ou-flex ou-place-content-center'><Loading/></Box> :
     <>
-    <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
         <I18nextProvider i18n={i18n}>
           <BrowserRouter>
             {/* <CookiesProvider> */}
@@ -169,12 +166,12 @@ function App() {
             </LocalizationProvider>
           </BrowserRouter>
         </I18nextProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
       <div>
         <ToastContainer
-            position="bottom-left"
-            theme='colored'
-          />
+          position="bottom-left"
+          theme='colored'
+        />
       </div>
       {/* <OUPharmacyChatBot/> */}
     </>  

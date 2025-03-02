@@ -8,13 +8,12 @@ from rest_framework.response import Response
 from django.core.mail import EmailMessage
 from mainApp.constant import MAX_EXAMINATION_PER_DAY
 from mainApp.filters import ExaminationFilter
-from mainApp.models import DoctorSchedule, TimeSlot, Examination, Patient, Diagnosis
+from mainApp.models import  TimeSlot, Examination, Patient, Diagnosis
 from mainApp.paginator import ExaminationPaginator
-from mainApp.serializers import DoctorScheduleSerializer, TimeSlotSerializer, ExaminationSerializer, \
-    DiagnosisSerializer, ExaminationsPairSerializer
-from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
+
+from mainApp.serializers import ExaminationSerializer, DiagnosisSerializer, ExaminationsPairSerializer
 
 # Create your views here.
 wageBooking = 20000
