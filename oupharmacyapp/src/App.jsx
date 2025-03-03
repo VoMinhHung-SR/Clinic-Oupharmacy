@@ -86,8 +86,7 @@ function App() {
               <UserProvider>    
                 <BookingProvider>
                   <PrescribingProvider>
-                    {/* <userContext.Provider value={[user, dispatch]}> */}
-                    <QueueStateProvider>
+                    {/* <QueueStateProvider> */}
                         <ScrollToTop />
                           <Routes>
                             <Route path='/' element={<Layout />}>
@@ -157,9 +156,8 @@ function App() {
                           <Route path="/register" element={<Register />} />
                           </Routes>
                         
-                    </QueueStateProvider>
-                        {/* </userContext.Provider> */}
-                      {/* </CookiesProvider> */}   
+                    {/* </QueueStateProvider> */}
+                    {/* </CookiesProvider> */}   
                   </PrescribingProvider>
                 </BookingProvider>
               </UserProvider>

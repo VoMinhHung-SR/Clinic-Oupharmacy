@@ -19,11 +19,6 @@ export const fetchGetDoctorAvailability = async (date, doctor) => {
     return res;
 }
 
-export const fetchCreateDoctorWorkingTime = async (data) => {
-    const res = await authApi().post(endpoints['doctor-availability'], data);
-    return res;
-}
-
 export const fetchGetPatients = async (userID) => {
     const res = await authApi().get(endpoints['user-patients'](userID))
     return res;

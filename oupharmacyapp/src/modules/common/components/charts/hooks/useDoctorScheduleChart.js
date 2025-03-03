@@ -8,43 +8,52 @@ const useDoctorScheduleChart = () => {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const now = moment();
     const [selectedWeek, setSelectedWeek] = useState(now.isoWeek());
+    const [weeksOfYear, setWeeksOfYear] = useState([]);
     
     const [q] = useSearchParams();
-    useEffect(()=> {
+
+    const generateWeeksOfYear = (year) => {
+        let totalWeeks = moment(`${year}-12-31`, "YYYY-MM-DD").isoWeeksInYear();
+        return Array.from({ length: totalWeeks }, (_, i) => i + 1);
+    };
+
+    useEffect(() => {
+        setWeeksOfYear(generateWeeksOfYear(selectedYear));
+    }, [selectedYear]);
+
+    useEffect(() => {
         const getScheduleWeekly = async () => {
-            try{
+            try {
                 let query = q.toString();
                 
                 let querySample = query 
-                querySample === "" ? 
-                (querySample += `week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`): 
-                (querySample += `&week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`);
+                    ? `${query}&week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`
+                    : `week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`;
             
-                const res = await fetchGetDoctorScheduleByWeek(querySample)
+                const res = await fetchGetDoctorScheduleByWeek(querySample);
                 if (res.status === 200) {
-                    setDataChart(res.data)
+                    setDataChart(res.data);
                 }
+            } catch (err) {
+                console.log(err);
+                setDataChart([]);
             }
-            catch (err) {
-                console.log(err)
-                setDataChart([])
-            }
-        }
+        };
         getScheduleWeekly();
-    }, [selectedYear, selectedWeek])
+    }, [selectedYear, selectedWeek]);
 
     const handleYearChange = (e) => {
-        setSelectedYear(e.target.value);
-    }
+        setSelectedYear(Number(e.target.value));
+    };
 
     const handleChangeWeek = (e) => {   
-        setSelectedWeek(e.target.value)
-    }
+        setSelectedWeek(Number(e.target.value));
+    };
 
     return {
-        dataChart, selectedWeek, selectedYear,
+        dataChart, selectedWeek, selectedYear, weeksOfYear,
         handleChangeWeek, handleYearChange
-    }   
-}
+    };
+};
 
 export default useDoctorScheduleChart;

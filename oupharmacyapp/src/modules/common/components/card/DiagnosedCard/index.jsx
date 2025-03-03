@@ -8,7 +8,6 @@ import PaidIcon from "@mui/icons-material/Paid";
 import { useTranslation } from "react-i18next";
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import { ErrorAlert } from "../../../../../config/sweetAlert2";
-import createToastMessage from "../../../../../lib/utils/createToastMessage";
 
 const DiagnosedCard = ({ diagnosedInfo, user }) => {
 
@@ -30,7 +29,7 @@ const DiagnosedCard = ({ diagnosedInfo, user }) => {
     }
 
     const handleOnClick = (id) => {
-      if (user.id !== diagnosedInfo.examination.doctor_info.doctor_id)
+      if (user.id !== diagnosedInfo.examination.schedule_appointment.doctor_id)
         return ErrorAlert(t('modal:errPrescribingNotOwner'), t('modal:pleaseTryAgain'), t('modal:ok'));
       else router(`/dashboard/prescribing/${id}`)
     }
