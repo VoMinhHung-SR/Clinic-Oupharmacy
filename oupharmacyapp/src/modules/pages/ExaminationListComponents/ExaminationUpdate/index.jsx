@@ -306,7 +306,7 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                             </Grid>
                         </Grid>
                     </form>
-                </Box>
+            </Box>
         </>
     )
 }

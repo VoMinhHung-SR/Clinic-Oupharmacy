@@ -98,7 +98,6 @@ class MainAppAdminSite(admin.AdminSite):
             "title": "OUPharmacy",
             "subtitle": None,
             "app_list": app_list,
-
             "patients": patients,
             "users": users,
             "data_examination": data_examination,
@@ -167,7 +166,7 @@ class UserRoleAdmin(admin.ModelAdmin):
 
 
 class ExaminationAdmin(admin.ModelAdmin):
-    list_display = ['description', 'created_date', 'patient', 'time_slot']
+    list_display = ['id', 'description', 'created_date', 'patient', 'time_slot']
     list_filter = ['patient', 'time_slot']
 
 

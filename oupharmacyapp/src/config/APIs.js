@@ -30,10 +30,6 @@ export let endpoints = {
     'get-user-location':(userId) => `/users/${userId}/location-info/`,
     'booking-list':(userId) => `/users/${userId}/booking-list/`,
     'change-password': (userId) => `/users/${userId}/change-password/`,
-    // Doctor 
-    'get-doctor-availability': '/doctor-availability/get-doctor-availability/',
-    'doctor-availability': "/doctor-availability/",
-    'doctor-availability-detail':(doctorAvailabilityID) => `/doctor-availability/${doctorAvailabilityID}/`,
     // Doctor-Schedule
     'doctor-schedules': '/doctor-schedules/',
     'doctor-schedules-by-date': '/doctor-schedules/schedule/',

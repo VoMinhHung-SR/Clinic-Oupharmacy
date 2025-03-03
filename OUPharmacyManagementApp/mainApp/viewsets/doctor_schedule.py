@@ -100,7 +100,7 @@ class DoctorScheduleViewSet(viewsets.ViewSet, generics.CreateAPIView,
                     total_counts[i] += time_slot_count
 
                 doctor_stats.append({
-                    'label': f"Dr. {doctor.first_name} {doctor.last_name}",
+                    'label': f"{doctor.first_name} {doctor.last_name}",
                     'data': schedule_counts
                 })
 

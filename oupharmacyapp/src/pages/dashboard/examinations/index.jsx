@@ -9,7 +9,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import Loading from "../../../modules/common/components/Loading";
@@ -65,8 +64,8 @@ const Examinations = () => {
 
               {/* Filter area */}
               <ExaminationFilter onSubmit={handleOnSubmitFilter} 
-                    mailStatus={paramsFilter.mailStatus} createdDate={paramsFilter.createdDate} 
-                    kw={paramsFilter.kw} hasDiagnosis={paramsFilter.hasDiagnosis}
+                mailStatus={paramsFilter.mailStatus} createdDate={paramsFilter.createdDate} 
+                kw={paramsFilter.kw} hasDiagnosis={paramsFilter.hasDiagnosis}
               />
             </div>
             
