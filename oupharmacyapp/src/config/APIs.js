@@ -30,10 +30,14 @@ export let endpoints = {
     'get-user-location':(userId) => `/users/${userId}/location-info/`,
     'booking-list':(userId) => `/users/${userId}/booking-list/`,
     'change-password': (userId) => `/users/${userId}/change-password/`,
-    // Doctor 
-    'get-doctor-availability': '/doctor-availability/get-doctor-availability/',
-    'doctor-availability': "/doctor-availability/",
-    'doctor-availability-detail':(doctorAvailabilityID) => `/doctor-availability/${doctorAvailabilityID}/`,
+    // Doctor-Schedule
+    'doctor-schedules': '/doctor-schedules/',
+    'doctor-schedules-by-date': '/doctor-schedules/schedule/',
+    'doctor-create-schedule-weekly': '/doctor-schedules/create-weekly-schedule/',
+    'doctor-stats': '/doctor-schedules/doctor-stats/',
+    'doctor-schedule-detail':(doctorScheduleID) => `/doctor-schedules/${doctorScheduleID}/`,
+    // Time-slot
+    'time-slots': '/time-slots/',
     // Patient
     'get-patient-by-email':'/patients/get-patient-by-email/',
     'patient':'/patients/',
@@ -42,7 +46,6 @@ export let endpoints = {
     // Examination
     'examination':'/examinations/',
     'get-total-exams': '/examinations/get-total-exams/', // Get total exams today or input "date"
-    'get-list-exam-today':'/examinations/get-list-exam-today/',
     'examination-detail': (examinationId) => `/examinations/${examinationId}/`,
     'send-mail': (examinationId) => `/examinations/${examinationId}/send_mail/`,
     'send-email-remind1': (examinationId) => `/examinations/${examinationId}/send_email_remind1/`, // Email remind go to OUPharmacy
@@ -68,6 +71,7 @@ export let endpoints = {
     //Medicine Units
     'medicine-units':'/medicine-units/',
     'medicine-units-detail':(medicineUnitID) =>  `/medicine-units/${medicineUnitID}/`,
+    
     // Bill
     'bill':'/bills/',
     'receipt':'/bills/get-bill-by-pres/',

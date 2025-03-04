@@ -1,20 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import { Divider } from '@mui/material';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const DoctorAvailabilityTime = ({ disabledTimes, isLoading, selectedStartTime, selectedEndTime, onChange, defaultValue }) => {
+const DoctorAvailabilityTime = ({ schedule, isLoading, selectedStartTime, selectedEndTime, onChange, defaultValue }) => {
+  const { t } = useTranslation(['common']);
+
   const [selectedTime, setSelectedTime] = useState({ start: selectedStartTime, end: selectedEndTime });
 
-  const renderRadioButtons = () => {
-    return Array.from({ length: 10 }, (_, index) => {
-      const startHour = `${(7 + index).toString().padStart(2, "0")}:00:00`;
-      const endHour = `${(8 + index).toString().padStart(2, "0")}:00:00`;
-      const label = `${(7 + index).toString().padStart(2, "0")}:00 - ${(8 + index).toString().padStart(2, "0")}:00`;
-      const isDisabled = disabledTimes.some(
-        (time) => time.start_time === startHour && time.end_time === endHour
+  const renderRadioButtons = (hours, session) => {
+    return hours.map((hour, index) => {
+      const startHour = `${hour.toString().padStart(2, "0")}:00:00`;
+      const endHour = `${(hour + 1).toString().padStart(2, "0")}:00:00`;
+      const label = `${hour.toString().padStart(2, "0")}:00 - ${(hour + 1).toString().padStart(2, "0")}:00`;
+
+      const scheduleItem = schedule.find(
+        (time) => time.session === session && time.is_off === false
+      );
+      const scheduleID = scheduleItem ? scheduleItem.id : null;
+
+      const isDisabled = scheduleItem === undefined || scheduleItem.time_slots.some(
+        (slot) => slot.start_time === startHour && slot.end_time === endHour
       );
       const isSelected = startHour === selectedTime.start && endHour === selectedTime.end;
       const shouldDisable = isDisabled && (!isSelected || !selectedStartTime || !selectedEndTime);
-      
       const isDefaultSelected = label === defaultValue;
+
       return (
         <label
           key={index}
@@ -23,7 +33,7 @@ const DoctorAvailabilityTime = ({ disabledTimes, isLoading, selectedStartTime, s
           <input
             type="radio"
             name="hour"
-            value={label}
+            value={`${label}|${scheduleID}`}
             className="ou-radio-input"
             disabled={shouldDisable}
             onChange={handleChange}
@@ -37,20 +47,40 @@ const DoctorAvailabilityTime = ({ disabledTimes, isLoading, selectedStartTime, s
 
   const handleChange = (event) => {
     const value = event.target.value;
-    const [start, end] = value.split(' - ').map((time) => time.trim());
-  
+    const [label, scheduleID] = value.split('|');
+    const [start, end] = label.split(' - ').map((time) => time.trim());
+
     const formatTime = (time) => {
       const [hours, minutes] = time.split(':');
       return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
     };
-  
-    setSelectedTime({ start: formatTime(start), end: formatTime(end) });
-    onChange(event);
+
+    const selectedTimeData = { start: formatTime(start), end: formatTime(end), scheduleID };
+    setSelectedTime(selectedTimeData);
+    onChange(selectedTimeData);
   };
 
+  const morningHours = Array.from({ length: 4 }, (_, index) => 8 + index); // 8-12
+  const afternoonHours = Array.from({ length: 4 }, (_, index) => 13 + index); // 13-17
+
   return (
-    <div className="ou-radio-container">
-      {!isLoading && renderRadioButtons()}
+    <div>
+      {!isLoading && (
+        <>
+          <div className="ou-mb-3">
+            <Divider className='ou-mb-2'>{t('common:morning')}</Divider>
+            <div className='ou-radio-container'>
+              {renderRadioButtons(morningHours, 'morning')}
+            </div>
+          </div>
+          <div className="ou-mb-3">
+            <Divider className='ou-mb-2'>{t('common:afternoon')}</Divider>
+            <div className='ou-radio-container'>
+              {renderRadioButtons(afternoonHours, 'afternoon')}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

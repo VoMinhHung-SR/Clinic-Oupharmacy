@@ -8,18 +8,18 @@ import DoctorAvailabilityTime from "../../BookingComponents/DoctorAvailabilityTi
 import { CURRENT_DATE } from "../../../../lib/constants";
 import moment from "moment";
 import clsx from "clsx";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { formatSelectedTime } from "../../../../lib/utils/helper";
 
 const ExaminationUpdate = ({examination,handleClose, ...props}) => {
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal', 'common'])
-    const {onUpdateSubmit, openBackdrop, date, shouldDisableTime, examinations, setDoctor, timeNotAvailable,
-        doctor,setDate, formAddExaminationSchema, isLoading} = useFormAddExamination();
+    const {onUpdateSubmit, date, setDoctor, timeNotAvailable,
+        doctor,setDate, isLoading} = useFormAddExamination();
 
     const handleDateChange = (event) => {
         setDate(event.target.value);
-        methods.setValue("selectedDate", event.target.value); // Updated field name
-        methods.trigger("selectedDate"); // Trigger validation for the field
+        methods.setValue("selectedDate", event.target.value);
+        methods.trigger("selectedDate");
     };
    useEffect(()=> { 
         if (examination.doctor_info) {
@@ -34,14 +34,14 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
         defaultValues:{
             description: examination?.description || "",
             selectedDate:  moment(examination?.created_date).format("YYYY-MM-DD") || "",
-            selectedTime: formatSelectedTime(examination?.doctor_info?.start_time, examination?.doctor_info?.end_time) || "",
+            selectedTime: formatSelectedTime(examination?.schedule_appointment?.start_time, examination?.schedule_appointment?.end_time) || "",
             doctor: examination?.doctor_info?.doctor_id || "",
             firstName: examination?.patient?.first_name || "",
             lastName: examination?.patient?.last_name || "",
             email: examination.patient?.email || "",
             phoneNumber: examination?.patient?.phone_number || "",
             address: examination?.patient?.address || "",
-            dateOfBirth: moment(examination?.patient?.date_of_birth).format("YYYY-MM-DD") || "",
+            dateOfBirth: moment( examination?.patient?.date_of_birth).format("YYYY-MM-DD") || "",
             gender: examination?.patient?.gender || 0
         }
     })
@@ -89,73 +89,66 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                     {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.description?.message}</p>) : <></>}
                                 </FormControl>
                             </Grid>
-                 
-                            
-                                    <Grid item xs={shouldRenderTimePicker ? 6 : 12} className="!ou-mt-6 ou-pr-2">
-                                        <TextField
-                                        fullWidth
-                                        id="selectedDate"
-                                        name="selectedDate"
-                                        type="date"
-                                        label={t('createdDate')}
-                                        {...methods.register("selectedDate")}
-                                        error={methods.formState.errors.selectedDate}
-                                        InputLabelProps={{
-                                            shrink: true,
+                            <Grid item xs={shouldRenderTimePicker ? 6 : 12} className="!ou-mt-6 ou-pr-2">
+                                <TextField
+                                fullWidth
+                                id="selectedDate"
+                                name="selectedDate"
+                                type="date"
+                                label={t('createdDate')}
+                                {...methods.register("selectedDate")}
+                                error={methods.formState.errors.selectedDate}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                inputProps={{
+                                    min: moment(CURRENT_DATE).add(1, 'days').format('YYYY-MM-DD'),
+                                    max: moment(CURRENT_DATE).add(30, 'days').format('YYYY-MM-DD')  ,
+                                }}
+                                onChange={handleDateChange}
+                                />
+                                {methods.formState.errors.selectedDate && (
+                                <p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                                    {methods.formState.errors.selectedDate.message}
+                                </p>
+                                )}
+                            </Grid>
+                            {/* {shouldRenderTimePicker && ( */}
+                            <>
+                                <Grid item xs={6} className={clsx("!ou-mt-6 ou-pl-2")}>  
+                                    <Autocomplete
+                                        id="doctor"
+                                        options={allConfig.doctors}
+                                        getOptionLabel={(option) => `${t('Dr')} ${option.first_name + " " +option.last_name}`}
+                                        filterOptions={filterOptions}
+                                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                                        defaultValue={allConfig.doctors.find((doctor) => doctor.id === examination?.doctor_info?.doctor_id)}
+                                        noOptionsText={t('noDoctorFound')}
+                                        onChange={(event, value) => {
+                                            setDoctor(value.id)
+                                            methods.setValue('doctor', value.id)
                                         }}
-                                        inputProps={{
-                                            min: moment(CURRENT_DATE).add(1, 'days').format('YYYY-MM-DD'),
-                                        }}
-                                        onChange={handleDateChange}
-                                        />
-                                        {methods.formState.errors.selectedDate && (
-                                        <p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
-                                            {methods.formState.errors.selectedDate.message}
-                                        </p>
-                                        )}
-                                    </Grid>
-                                    {/* {shouldRenderTimePicker && ( */}
-                                        <>
-                                          <Grid item xs={6} className={clsx("!ou-mt-6 ou-pl-2")}>
-                                           
-                                                <Autocomplete
-                                                    id="doctor"
-                                                    options={allConfig.doctors}
-                                                    getOptionLabel={(option) => `${t('Dr')} ${option.first_name + " " +option.last_name}`}
-                                                    filterOptions={filterOptions}
-                                                    isOptionEqualToValue={(option, value) => option.id === value.id}
-                                                    defaultValue={allConfig.doctors.find((doctor) => doctor.id === examination?.doctor_info?.doctor_id)}
-                                                    noOptionsText={t('noDoctorFound')}
-                                                    onChange={(event, value) => {
-                                                        setDoctor(value.id)
-                                                        methods.setValue('doctor', value.id)
-                                                    }}
-                                                    renderInput={(params) => <TextField {...params} label={t('doctor')} 
-                        
-                                                        error={methods.formState.errors.doctor?.message}
-                                                        name="doctors"
-                                                    />}
-                                                />
-                                                {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
-                                                    {methods.formState.errors.doctor?.message}</p>) : <></>}
-                                         
-                                        </Grid>
+                                        renderInput={(params) => <TextField {...params} label={t('doctor')} 
+            
+                                            error={methods.formState.errors.doctor?.message}
+                                            name="doctors"
+                                        />}
+                                    />
+                                    {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
+                                        {methods.formState.errors.doctor?.message}</p>) : <></>}
+                                
+                            </Grid>
 
-                                        {(doctor && timeNotAvailable) && (<Grid item xs={12} className={clsx("!ou-mt-6 ou-pl-2")}>
-                                            <DoctorAvailabilityTime disabledTimes={timeNotAvailable} 
-                                            selectedStartTime={examination?.doctor_info?.start_time}
-                                            selectedEndTime={examination?.doctor_info?.end_time}
-                                            onChange={(event)=> methods.setValue('selectedTime', event.target.value)}
-                                            isLoading={isLoading}/>
-                                        </Grid>)
-                                        }
-                                       
-                                        </>
-                                      
-                                    {/* )} */}
-                                  
-                                
-                                
+                            {(doctor && timeNotAvailable) && (<Grid item xs={12} className={clsx("!ou-mt-6 ou-pl-2")}>
+                                <DoctorAvailabilityTime schedule={timeNotAvailable} 
+                                selectedStartTime={examination?.doctor_info?.start_time}
+                                selectedEndTime={examination?.doctor_info?.end_time}
+                                onChange={(event)=> methods.setValue('selectedTime', event.target.value)}
+                                isLoading={isLoading}/>
+                            </Grid>)}
+                            
+                            </>
+                            {/* )} */}          
                         </Grid>
 
                         <h5 className="ou-text-center ou-mt-8 ou-text-2xl">{t('patientInfo')}</h5>
@@ -236,9 +229,7 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                     error={methods.formState.errors.address}
                                     {...methods.register("address")}                             
                                     />
-                                    {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.address?.message}</p>) : <></>}
-                                    
-                            </Grid>
+                                    {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.address?.message}</p>) : <></>}                            </Grid>
 
                         </Grid>
 
@@ -310,14 +301,12 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                     gutterBottom
                                     style={{ textDecoration: "inherit" }}
                                     color="grey.700"
-                                >
-                                    
+                                >      
                                 </Typography>
                             </Grid>
                         </Grid>
                     </form>
-             
-                </Box>
+            </Box>
         </>
     )
 }

@@ -1,10 +1,9 @@
-import { Avatar, Box, Grid, IconButton, InputLabel, OutlinedInput, Paper } from "@mui/material"
+import { Box, Grid, Paper } from "@mui/material"
 import BackdropLoading from "../../modules/common/components/BackdropLoading";
 import { useTranslation } from "react-i18next";
 import Loading from "../../modules/common/components/Loading";
 import useBooking from "../../modules/pages/BookingComponents/hooks/useBooking";
 import { Helmet } from "react-helmet";
-import DoctorProfileCard from "../../modules/common/components/card/DoctorProfileCard";
 import { useSelector } from "react-redux";
 import { useContext } from "react";
 import AddIcon from '@mui/icons-material/Add';
@@ -18,6 +17,7 @@ import PatientCard from "../../modules/common/components/card/PatientCard";
 import BookingProcess from "../../modules/pages/BookingComponents/BookingProcess";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useNavigate } from "react-router";
+import BookingForm from "../../modules/pages/BookingComponents/BookingForm";
 
 
 const Booking = () => {
@@ -145,14 +145,17 @@ const Booking = () => {
     // or choosing create with exist patient  
     const renderSecondState = () => {
         if (isAddNewPatient)
-            return  <FormAddPatient onCallbackSuccess={createPatientSuccess}/>
+            return  <FormAddPatient onCallbackSuccess={(patientData) =>  
+                createPatientSuccess(patientData)}/>
         
         return (
             <div> 
                 <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent={"center"}>
-                    {patientList && patientList.map(p => <PatientCard patientData={p} 
-                    callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} 
-                    isSelected={patientSelected && patientSelected.id === p.id}/>)}
+                    {patientList && patientList.map(p => <div className="ou-mb-3">
+                        <PatientCard patientData={p} 
+                            callBackOnClickCard={onCallbackPatientCardOnClick} key={"pa"+p.id} 
+                            isSelected={patientSelected && patientSelected.id === p.id}/>
+                        </div>)}
                 </Grid>
             </div>
         )
@@ -162,7 +165,7 @@ const Booking = () => {
     const renderThirdState = () => {
         return (<Box>
             {allConfig && allConfig.doctors ? allConfig.doctors.map((d)=> 
-                <DoctorProfileCard doctorInfo={d} key={d.id}/>) : <></>}
+                <BookingForm doctorInfo={d} key={d.id}/>) : <></>}
         </Box>)
     }
 

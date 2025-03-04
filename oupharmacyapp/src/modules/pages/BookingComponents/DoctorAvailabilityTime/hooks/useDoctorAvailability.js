@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react"
-import { fetchCreateDoctorWorkingTime, fetchGetDoctorAvailability, fetchPatientExist } from "../../services";
+import { fetchCreateTimeSlot, fetchGetDoctorAvailability } from "../../services";
 import useDebounce from "../../../../../lib/hooks/useDebounce";
 import moment from "moment";
 import { fetchCreateExamination, fetchCreateOrUpdatePatient, fetchExamDateData } from "../../FormAddExamination/services";
-import * as Yup from 'yup';
-import { REGEX_ADDRESS, REGEX_EMAIL, REGEX_NAME, REGEX_NOTE, REGEX_PHONE_NUMBER, TOAST_SUCCESS } from "../../../../../lib/constants";
+import { TOAST_SUCCESS } from "../../../../../lib/constants";
 import { useTranslation } from "react-i18next";
 import { ConfirmAlert, ErrorAlert } from "../../../../../config/sweetAlert2";
-import { splitTime } from "../../../../../lib/utils/helper";
 import createToastMessage from "../../../../../lib/utils/createToastMessage";
 
 const useDoctorAvailability = () => {
@@ -27,21 +25,6 @@ const useDoctorAvailability = () => {
     const [examinationDateData, setExaminationDateData] = useState([]);
     const [slideRight, setSlideRight] = useState(false)    
 
-    const formAddExaminationSchema = Yup.object().shape({
-        description: Yup.string().trim()
-            .required(t('yupDescriptionRequired'))
-            .max(254, t('yupDescriptionMaxLength'))
-            .matches(REGEX_NOTE, t('yupDescriptionInvalid')),
-
-        // doctor: Yup.string().required(t('required')),
-        
-        selectedTime: Yup.string()
-            .required(t('yupCreatedTimeRequired')),
-
-        selectedDate: Yup.string()
-            .required(t('yupCreatedDateRequired'))
-           
-    });
 
     const handleSlideChange= () => setSlideRight(!slideRight);
 
@@ -117,37 +100,20 @@ const useDoctorAvailability = () => {
         if(!patientData)
             return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
             
-    
-        // const createdDate = handleTimeChange(data.selectedDate, data.selectedTime);
 
-        const checkingPatientEmail = async () => {
-            const res = await fetchPatientExist({email:data.email})
-            // Happy case: Patient exists
-            if(res.status === 200){
-                createDoctorWorkingTime(res.data.id)
-            }
-            // Patient doest exist
-            if (res === -1){
-                createDoctorWorkingTime(-1)
-            }
-        }
-
-
-        const createDoctorWorkingTime = async (patientID) => {
+        const createDoctorWorkingTime = async () => {
             try{
-                const { start_time, end_time } = splitTime(data.selectedTime);
+                const { start, end, scheduleID } = data.selectedTime;
                 const requestData = {
-                    doctor: parseInt(data.doctor),
-                    day: data.selectedDate,
-                    start_time,
-                    end_time
+                    schedule: parseInt(scheduleID),
+                    start_time: start,
+                    end_time: end
                 };
                 
-                const res = await fetchCreateDoctorWorkingTime(requestData)
+                const res = await fetchCreateTimeSlot(requestData)
                 
                 if(res.status === 201){
                     handleOnSubmit(res.data.id)
-                    // return createToastMessage({message:"OKE",type:TOAST_SUCCESS})
                 }
             }catch(err){
                 console.log(err)
@@ -155,22 +121,16 @@ const useDoctorAvailability = () => {
 
         }
 
-        const handleOnSubmit = async (doctorWorkingTime) => {
+        const handleOnSubmit = async (timeSlot) => {
             // Update done or created patient info
             const res = await fetchCreateOrUpdatePatient(patientData.id, patientData);
-            
-
-            const selectedStartTime = data.selectedTime.split(' - ')[0]; // Extract the first start time
-            const combinedDateTime = moment(data.selectedDate + ' ' + selectedStartTime, 'YYYY-MM-DD HH:mm');
-            const formattedDateTime = combinedDateTime.format('YYYY-MM-DD HH:mm:ss');
-            
-
+         
             if(res.status === 200 || res.status === 201){
                 const examinationData = {
                     patient: res.data.id,
                     description: data.description,
-                    created_date: new Date(formattedDateTime),
-                    doctor_availability: doctorWorkingTime
+                    created_date: new Date(data.selectedDate),
+                    time_slot: timeSlot
                 }
                 const resExamination = await fetchCreateExamination(examinationData);
                 if(resExamination.status === 201){
@@ -192,9 +152,8 @@ const useDoctorAvailability = () => {
         }
         
         return ConfirmAlert(t('booking:confirmBooking'),t('modal:noThrowBack'),t('modal:yes'),t('modal:cancel'),
-        // this is callback function when user confirmed "Yes"
         ()=>{
-            checkingPatientEmail()
+            createDoctorWorkingTime()
         }, () => { return; })
     }
 
@@ -202,7 +161,7 @@ const useDoctorAvailability = () => {
     return {
         setDoctorID, doctorID, timeNotAvailable, onSubmit,
         isLoading, setDate, date, handleTimeChange,
-        setTime, time, shouldDisableTime, formAddExaminationSchema,
+        setTime, time, shouldDisableTime,
         slideRight, handleSlideChange
     }
 }

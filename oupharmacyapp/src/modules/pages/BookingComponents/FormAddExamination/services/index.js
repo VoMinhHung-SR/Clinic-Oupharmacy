@@ -26,8 +26,3 @@ export const fetchExamDateData = async (date) => {
     const res = await authApi().post(endpoints['get-total-exams'], { date: date });
     return res;
 }
-
-export const fetchDeleteDoctorAvailabilityTime = async (id) => {
-    const res = await authApi().delete(endpoints['doctor-availability-detail'](id))
-    return res
-} 

@@ -90,12 +90,12 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=20, null=False, blank=True)
     date_of_birth = models.DateTimeField(null=True)
     gender = models.PositiveIntegerField(choices=genders, default=male)
+    title = models.CharField(max_length=20, null=False, blank=True, default='')
     # Keep follow this format (UPPERCASE-ALL + PREFIX:ROLE_")
     # ex: (1:ROLE_USER; 2:ROLE_DOCTOR; 3:ROLE_NURSE)
     role = models.ForeignKey(UserRole, on_delete=models.SET_NULL, null=True)
     location = models.ForeignKey(CommonLocation, on_delete=models.SET_NULL, null=True)
     objects = UserManager()
-
     is_admin = models.BooleanField(default=False)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -104,8 +104,7 @@ class User(AbstractUser):
         return self.is_admin
 
     def __str__(self):
-        return self.email
-
+        return f"{self.title} {self.first_name} {self.last_name} ({self.email})"
 
 class Patient(BaseModel):
     # 0 , 1, 2
@@ -125,6 +124,25 @@ class Patient(BaseModel):
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
+class DoctorSchedule(models.Model):
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    session = models.CharField(
+        choices=[('morning', 'morning'), ('afternoon', 'afternoon')],
+        max_length=10
+    )
+    is_off = models.BooleanField(default=False)
+    def __str__(self):
+        return f"{self.doctor.title} {self.doctor} - {self.date} ({self.get_session_display()})"
+
+class TimeSlot(models.Model):
+    schedule = models.ForeignKey(DoctorSchedule, on_delete=models.CASCADE)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    is_available = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.schedule} ({self.start_time} - {self.end_time})"
 
 class DoctorAvailability(models.Model):
     doctor = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -147,10 +165,10 @@ class Examination(BaseModel):
     description = models.CharField(max_length=254, null=False, blank=False)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=False)
-    doctor_availability = models.ForeignKey(DoctorAvailability, on_delete=models.SET_NULL, null=True)
-
+    # doctor_availability = models.ForeignKey(DoctorAvailability, on_delete=models.SET_NULL, null=True)
+    time_slot = models.ForeignKey(TimeSlot, on_delete=models.SET_NULL, null=True)
     def __str__(self):
-        return self.description
+        return f"{self.patient} - {self.time_slot}"
 
 
 # Phieu chuan doan

@@ -54,8 +54,6 @@ class CommonLocationSerializer(ModelSerializer):
 
 
 class UserSerializer(ModelSerializer):
-    # role = UserRoleSerializer()
-    # location = CommonLocationSerializer()
 
     def create(self, validated_data):
         user = User(**validated_data)
@@ -90,11 +88,6 @@ class UserSerializer(ModelSerializer):
     avatar_path = serializers.SerializerMethodField(source='avatar')
 
     def get_avatar_path(self, obj):
-        # request = self.context['request']
-        # if obj.avatar and not obj.avatar.name.startswith("/static"):
-        #     path = '/static/%s' % obj.avatar.name
-        #
-        #     return request.build_absolute_uri(pathF)
         if obj.avatar:
             path = "{cloud_context}{image_name}".format(cloud_context=cloud_context,
                                                         image_name=obj.avatar)
@@ -150,12 +143,20 @@ class MedicineUnitSerializer(ModelSerializer):
         representation['category'] = CategorySerializer(instance.category).data
         return representation
 
+class DoctorScheduleSerializer(ModelSerializer):
+    class Meta:
+        model = DoctorSchedule
+        exclude = []
+
+class TimeSlotSerializer(ModelSerializer):
+    class Meta:
+        model = TimeSlot
+        exclude = []
 
 class PatientSerializer(ModelSerializer):
     class Meta:
         model = Patient
         exclude = ["created_date", "updated_date"]
-
 
 class DiagnosisStatusSerializer(serializers.ModelSerializer):
     class Meta:
@@ -167,24 +168,25 @@ class ExaminationSerializer(ModelSerializer):
 
     patient = PatientSerializer(read_only=True)
     user = UserSerializer()
-    doctor_info = serializers.SerializerMethodField(source="doctor_availability")
+    schedule_appointment = serializers.SerializerMethodField(source="time_slot")
     diagnosis_info = DiagnosisStatusSerializer(many=True, read_only=True, source='diagnosis_set')
 
-    def get_doctor_info(self, obj):
-        doctor = obj.doctor_availability
-        if doctor:
-            doctor_info = doctor.doctor
-            if doctor_info:
-                return {
-                    'id': obj.doctor_availability.id,
-                    'email': doctor_info.email,
-                    'day': obj.doctor_availability.day,
-                    'doctor_id': doctor_info.id,
-                    'start_time': doctor.start_time,
-                    'end_time': doctor.end_time,
-                    'first_name': doctor_info.first_name,
-                    'last_name': doctor_info.last_name
-                }
+    def get_schedule_appointment(self, obj):
+        if obj.time_slot:
+            doctor_schedule = obj.time_slot.schedule  # Schedule
+            if doctor_schedule:
+                doctor_info = doctor_schedule.doctor
+                if doctor_info:
+                    return {
+                        'id': obj.time_slot.id,  # ID of appointment
+                        'day': doctor_schedule.date,
+                        'start_time': obj.time_slot.start_time,
+                        'end_time': obj.time_slot.end_time,
+                        'doctor_id': doctor_info.id,
+                        'email': doctor_info.email,
+                        'first_name': doctor_info.first_name,
+                        'last_name': doctor_info.last_name
+                    }
         return {}
 
     def to_internal_value(self, data):
@@ -195,12 +197,12 @@ class ExaminationSerializer(ModelSerializer):
     class Meta:
         model = Examination
         fields = ["id", "active", "created_date", "updated_date", "description", 'mail_status',
-                  'doctor_availability', 'user', 'patient', 'patient_id', 'wage',
-                  'reminder_email', 'doctor_info', 'diagnosis_info']
+                  'time_slot', 'user', 'patient', 'patient_id', 'wage',
+                  'reminder_email', 'schedule_appointment', 'diagnosis_info']
         exclude = []
         extra_kwargs = {
-            'doctor_info': {'read_only': 'true'},
-            'doctor_availability': {'write_only': 'true'}
+            'schedule_appointment': {'read_only': 'true'},
+            'time_slot': {'write_only': 'true'}
         }
 
 

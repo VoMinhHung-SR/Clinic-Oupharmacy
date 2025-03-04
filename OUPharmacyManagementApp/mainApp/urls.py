@@ -1,25 +1,27 @@
 from django.urls import path, include
 from . import views
 from rest_framework import routers
-from .admin import admin, admin_site, MainAppAdminSite
+from .admin import admin_site
 from . import admin_views
 from .services import statistic_views
+from .viewsets import *
 
 router = routers.DefaultRouter()
-router.register("users", views.UserViewSet, basename="user")
-router.register("roles", views.UserRoleViewSet, basename="role")
-router.register("categories", views.CategoryViewSet, basename="category")
-router.register("examinations", views.ExaminationViewSet, basename="examination")
-router.register("patients", views.PatientViewSet, basename="patient")
-router.register("diagnosis", views.DiagnosisViewSet, basename="diagnosis")
-router.register("prescribing", views.PrescribingViewSet, basename="prescribing")
-router.register("prescription-details", views.PrescriptionDetailViewSet, basename="prescription-detail")
-router.register("medicines", views.MedicineViewSet, basename="medicine")
-router.register("medicine-units", views.MedicineUnitViewSet, basename="medicine-unit")
-router.register("bills", views.BillViewSet, basename="bill")
-router.register("common-districts", views.CommonDistrictViewSet, basename="common-districts")
-router.register("common-locations", views.CommonLocationViewSet, basename="common-location")
-router.register("doctor-availability", views.DoctorAvailabilityViewSet, basename="doctor-availability")
+router.register("users", UserViewSet, basename="user")
+router.register("roles", UserRoleViewSet, basename="role")
+router.register("categories", CategoryViewSet, basename="category")
+router.register("examinations", ExaminationViewSet, basename="examination")
+router.register("patients", PatientViewSet, basename="patient")
+router.register("diagnosis", DiagnosisViewSet, basename="diagnosis")
+router.register("prescribing", PrescribingViewSet, basename="prescribing")
+router.register("prescription-details", PrescriptionDetailViewSet, basename="prescription-detail")
+router.register("medicines", MedicineViewSet, basename="medicine")
+router.register("medicine-units", MedicineUnitViewSet, basename="medicine-unit")
+router.register("bills", BillViewSet, basename="bill")
+router.register("common-districts", CommonDistrictViewSet, basename="common-districts")
+router.register("common-locations", CommonLocationViewSet, basename="common-location")
+router.register("doctor-schedules", DoctorScheduleViewSet, basename="doctor-schedule")
+router.register("time-slots", TimeSlotViewSet, basename="time-slot")
 urlpatterns = [
     path('', include(router.urls)),
     path('oauth2-info/', views.AuthInfo.as_view()),

@@ -23,6 +23,7 @@
     "booking": "Đặt lịch",
     "products": "Sản phẩm",
     "examinations": "Phiếu khám",
+    "doctor-schedules": "Lịch khám",
     "prescribing": "Kê toa",
     "payments": "Thanh toán",
     "categories": "Doanh mục",
@@ -59,5 +60,7 @@
     "seeDetail": "Xem chi tiết",
     "basicInformation": "Thông tin cơ bản",
     "asc": "Tăng dần",
-    "desc": "Giảm dần"
+    "desc": "Giảm dần",
+    "morning": "Buổi sáng",
+    "afternoon": "Buổi chiều"
 }

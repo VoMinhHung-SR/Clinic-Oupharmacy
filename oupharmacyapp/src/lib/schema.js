@@ -79,8 +79,25 @@ const SchemaModels = () => {
            
     });
 
+    const timeSlotSchema = Yup.object().shape({
+            description: Yup.string().trim()
+                .required(t('yupDescriptionRequired'))
+                .max(254, t('yupDescriptionMaxLength'))
+                .matches(REGEX_NOTE, t('yupDescriptionInvalid')),
+            
+            selectedTime: Yup.object().shape({
+                scheduleID: Yup.string().required(t('yupCreatedTimeRequired')),
+                start: Yup.string().required(t('yupCreatedTimeRequired')),
+                end: Yup.string().required(t('yupCreatedTimeRequired'))
+            }),
+    
+            selectedDate: Yup.string()
+                .required(t('yupCreatedDateRequired'))
+               
+        });
+
     return {
-        medicineSubmitUpdateSchema,
+        medicineSubmitUpdateSchema, timeSlotSchema,
         addingPatientSchema, medicineUnitSchema
     }
 }

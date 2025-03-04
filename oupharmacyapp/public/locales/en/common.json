@@ -21,6 +21,7 @@
     "waitingRoom":"Waiting Room",
     "booking": "Booking",
     "products": "Products",
+    "doctor-schedules": "Doctor schedule",
     "examinations": "Examinations",
     "prescribing": "Prescribing",  
     "payments": "Payments",
@@ -58,5 +59,7 @@
     "seeDetail": "See detail",
     "basicInformation": "Basic Information",
     "asc": "Ascending",
-    "desc": "Descending"
+    "desc": "Descending",
+    "morning": "Morning",
+    "afternoon": "Afternoon"
 }

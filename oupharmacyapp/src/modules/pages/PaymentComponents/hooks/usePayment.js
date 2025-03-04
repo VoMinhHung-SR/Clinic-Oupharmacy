@@ -6,7 +6,6 @@ import UserContext from "../../../../lib/context/UserContext"
 
 const usePayment = () => {
     const {user} = useContext(UserContext)
-    // const [user] = useContext(userContext);
     const {examinationId} = useParams()
     const [isLoadingPrescriptionDetail, setIsloadingPrescriptionDetail] = useState(true)
     const [examinationDetail, setExaminationDetail] = useState([])

@@ -7,7 +7,6 @@ import UserContext from "../../../../lib/context/UserContext";
 
 const useDiagnosis = () => {
     const { examinationId } = useParams();
-    // const [user] = useContext(userContext)
     const {user} = useContext(UserContext);
     const [examinationDetail, setExaminationDetail] = useState([])
     const [isLoadingExamination, setIsLoadingExamination] = useState(true)

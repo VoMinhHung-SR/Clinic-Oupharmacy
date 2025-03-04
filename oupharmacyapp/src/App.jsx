@@ -29,11 +29,8 @@ import Loading from './modules/common/components/Loading'
 import { Box } from '@mui/material'
 import Demo from './pages/demo'
 import { getCookieValue } from './lib/utils/getCookieValue'
-import { getListExamToday, getTotalListExamPerDay, setListExamToday } from './lib/utils/helper'
-import { fetchListExaminationToday } from './modules/pages/WaittingRoomComponents/services'
-import { jobMidnight } from './cron/job/at_midnight'
+import { getListExamToday, setListExamToday } from './lib/utils/helper'
 import { jobEveryMinutes } from './cron/job/every_minutes'
-import BackdropLoading from './modules/common/components/BackdropLoading'
 import ScrollToTop from './modules/common/components/ScrollToTop'
 import { OUPharmacyChatBot } from './chatbot'
 import Profile from './pages/profile'
@@ -51,6 +48,7 @@ import DashboardLayout from './modules/common/layout/dashboard'
 import DashBoard from './pages/dashboard'
 import CategoryList from './pages/dashboard/categories'
 import MedicineList from './pages/dashboard/medicines'
+import DoctorSchedules from './pages/dashboard/doctor-schedules'
 
 export const userContext = createContext()
 const queryClient = new QueryClient()
@@ -80,7 +78,7 @@ function App() {
 
     return isLoading ? <Box className='ou-h-[100vh] ou-flex ou-place-content-center'><Loading/></Box> :
     <>
-    <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
         <I18nextProvider i18n={i18n}>
           <BrowserRouter>
             {/* <CookiesProvider> */}
@@ -88,8 +86,7 @@ function App() {
               <UserProvider>    
                 <BookingProvider>
                   <PrescribingProvider>
-                    {/* <userContext.Provider value={[user, dispatch]}> */}
-                    <QueueStateProvider>
+                    {/* <QueueStateProvider> */}
                         <ScrollToTop />
                           <Routes>
                             <Route path='/' element={<Layout />}>
@@ -124,7 +121,8 @@ function App() {
                                   {/* Accepted user.role = (ROLE_NURSE || ROLE_DOCTOR) */}
                                   <Route element={<ProtectedSpecialRoleRoute allowedRoles={[ROLE_DOCTOR, ROLE_NURSE]} />}>
                                     <Route path='/dashboard/examinations' element={<Examinations/>}/> 
-                                    <Route path='/dashboard/categories' element={<CategoryList/>}/> 
+                                    <Route path='/dashboard/categories' element={<CategoryList/>}/>
+                                    <Route path='/dashboard/doctor-schedules' element={<DoctorSchedules/>}/>  
                                     <Route path='/dashboard/medicines' element={<MedicineList/>}/> 
                                   </Route>
 
@@ -158,21 +156,20 @@ function App() {
                           <Route path="/register" element={<Register />} />
                           </Routes>
                         
-                    </QueueStateProvider>
-                        {/* </userContext.Provider> */}
-                      {/* </CookiesProvider> */}   
+                    {/* </QueueStateProvider> */}
+                    {/* </CookiesProvider> */}   
                   </PrescribingProvider>
                 </BookingProvider>
               </UserProvider>
             </LocalizationProvider>
           </BrowserRouter>
         </I18nextProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
       <div>
         <ToastContainer
-            position="bottom-left"
-            theme='colored'
-          />
+          position="bottom-left"
+          theme='colored'
+        />
       </div>
       {/* <OUPharmacyChatBot/> */}
     </>  

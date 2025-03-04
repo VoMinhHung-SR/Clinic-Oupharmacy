@@ -10,7 +10,6 @@ import UserContext from "../../../../lib/context/UserContext";
 
 const useUpdateLocation = () => {
     const {t} = useTranslation(['yup-validate','modal'])
-    // const [user] = useContext(userContext)
     const {user, updateUser} = useContext(UserContext)
     const [locationData, setLocationData] = useState([])
     

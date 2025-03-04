@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import SuccessfulAlert, { ConfirmAlert, ErrorAlert } from '../../../../../config/sweetAlert2';
 import { REGEX_ADDRESS, REGEX_EMAIL, REGEX_NAME, REGEX_NOTE, REGEX_PHONE_NUMBER, TOAST_ERROR, TOAST_SUCCESS } from '../../../../../lib/constants';
-import { fetchCreateExamination, fetchCreateOrUpdatePatient, fetchDeleteDoctorAvailabilityTime, fetchExamDateData, fetchUpdateExamination } from '../services';
+import { fetchCreateExamination, fetchCreateOrUpdatePatient, fetchExamDateData, fetchUpdateExamination } from '../services';
 import moment from 'moment';
 import useDebounce from '../../../../../lib/hooks/useDebounce';
-import { fetchCreateDoctorWorkingTime, fetchGetDoctorAvailability } from '../../services';
+import { fetchGetDoctorAvailability } from '../../services';
 import { splitTime } from '../../../../../lib/utils/helper';
 import createToastMessage from '../../../../../lib/utils/createToastMessage';
 
@@ -80,7 +80,6 @@ const useFormAddExamination = () => {
           } catch (error) {
             console.error(error);
           }finally {
-            // setOpenBackdrop(false)
             setIsLoading(false)
           }
         };
@@ -93,7 +92,6 @@ const useFormAddExamination = () => {
             } catch( err){
                 console.log(err)
             }finally {
-                // setOpenBackdrop(false)
                 setIsLoading(false)
               }
         }
@@ -104,11 +102,9 @@ const useFormAddExamination = () => {
         }
         if (debouncedValue) {
             setIsLoading(true)
-          getExaminationData(debouncedValue);
+            getExaminationData(debouncedValue);
         }
       }, [debouncedValue, debouncedValueDoctor]);
-
-
 
 
     const shouldDisableTime = (time) => {
@@ -141,8 +137,6 @@ const useFormAddExamination = () => {
         if(data === undefined)
             return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
     
-    
-        // const createdDate = handleTimeChange(data.selectedDate, data.selectedTime);
         const patientData = {
             first_name: data.firstName,
             last_name: data.lastName,
@@ -165,7 +159,7 @@ const useFormAddExamination = () => {
                     end_time
                 };
                 
-                const res = await fetchCreateDoctorWorkingTime(requestData)
+                // const res = await fetchCreateDoctorWorkingTime(requestData)
                 
                 if(res.status === 201){
                     handleOnSubmit(res.data.id)
@@ -227,9 +221,7 @@ const useFormAddExamination = () => {
     const onUpdateSubmit = async (examinationID, patientID, data, callback, doctorAvailabilityID) => {
         if(data === undefined)
             return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
-    
-    
-        // const createdDate = handleTimeChange(data.selectedDate, data.selectedTime);
+        
         const patientData = {
             first_name: data.firstName,
             last_name: data.lastName,
@@ -241,15 +233,16 @@ const useFormAddExamination = () => {
         }
 
 
-        const deleteCurrentDoctorWorkingTime = async (doctorAvailabilityID) =>{
-            try{
-                const res = await fetchDeleteDoctorAvailabilityTime(doctorAvailabilityID)
-                if(res.status === 204)
-                    return createDoctorWorkingTime()
-            }catch (err){
-                return ErrorAlert("Da co loi xay ra",  "", "OKE")
-            }
-        } 
+        // const deleteCurrentDoctorWorkingTime = async (doctorAvailabilityID) =>{
+        //     try{
+        //         const res = await fetchDeleteDoctorAvailabilityTime(doctorAvailabilityID)
+        //         if(res.status === 204)
+        //             return createDoctorWorkingTime()
+        //     }catch (err){
+        //         return ErrorAlert("Da co loi xay ra",  "", "OKE")
+        //     }
+        // } 
+
         const createDoctorWorkingTime = async () => {
             try{
 
@@ -262,7 +255,7 @@ const useFormAddExamination = () => {
                     end_time
                 };
                 
-                const res = await fetchCreateDoctorWorkingTime(requestData)
+                // const res = await fetchCreateDoctorWorkingTime(requestData)
                 
                 if(res.status === 201){
                     handleOnSubmit(res.data.id)
@@ -313,10 +306,10 @@ const useFormAddExamination = () => {
             setOpenBackdrop(false)
         }
         
-        if(doctorAvailabilityID){
-               return deleteCurrentDoctorWorkingTime(doctorAvailabilityID)
-        }
-        else 
+        // if(doctorAvailabilityID){
+        //        return deleteCurrentDoctorWorkingTime(doctorAvailabilityID)
+        // }
+        // else 
            return createDoctorWorkingTime()
     }
 

@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import MapGL from "../../../common/components/Mapbox";
 
 const AddressInfo = ({locationData}) => {
-    // const [user] = useContext(userContext)
     const { t, tReady } = useTranslation(['register', 'common']);
 const [viewport, setViewport] = useState({
         latitude: locationData.lat,

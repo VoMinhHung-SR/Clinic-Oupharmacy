@@ -8,8 +8,7 @@ import UserContext from "../../../../lib/context/UserContext";
 import { useTranslation } from "react-i18next";
 import createToastMessage from "../../../../lib/utils/createToastMessage";
 
-const useConversationList = () => {
-    // const [user] = useContext(userContext);
+const useConversationList = () => {    
     const {t} = useTranslation(['modal'])
     const {user} = useContext(UserContext);
     useEffect(()=>{

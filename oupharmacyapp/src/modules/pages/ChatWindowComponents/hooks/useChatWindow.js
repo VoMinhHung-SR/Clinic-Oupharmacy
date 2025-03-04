@@ -11,7 +11,6 @@ import { APP_ENV } from "../../../../lib/constants"
 import UserContext from "../../../../lib/context/UserContext"
 
 const useChatWindow = () => {
-    // const [user]=useContext(userContext)
     const {user} = useContext(UserContext)
     const {conversationId, recipientId} = useParams()
     const [recipient, setRecipient] = useState([])

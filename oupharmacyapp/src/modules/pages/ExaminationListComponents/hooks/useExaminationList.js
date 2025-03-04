@@ -8,7 +8,6 @@ import { goToTop } from "../../../../lib/utils/helper"
 import UserContext from "../../../../lib/context/UserContext"
 const useExaminationList = () => {
     const {user} = useContext(UserContext)
-    // const [user] = useContext(userContext);
     const [isLoading, setIsLoading] = useState(true)
     const [flag, setFlag] = useState(false)
     const [examinationList, setExaminationList] = useState([])
@@ -41,7 +40,6 @@ const useExaminationList = () => {
                     setExaminationList(data.results)
                     setPagination({
                         count: data.count,
-                        // data show number: x = 30
                         sizeNumber: Math.ceil(data.count / 10),
                     });
                   

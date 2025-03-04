@@ -32,6 +32,7 @@ import useNotification from '../../../../lib/hooks/useNotification';
 import NotificationButton from '../../components/button/Notification';
 import PillsIcon from '../../../../lib/icon/PillsIcon';
 import CategoryIcon from '@mui/icons-material/Category';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const drawerWidth = 240;
 
@@ -115,6 +116,12 @@ const NavDashboard = () => {
           name:t('examinations'),
           icon: <AssignmentIcon className='ou-text-white'/>,
           link: '/dashboard/examinations'
+        },
+        {  
+          id: 'doctor-schedules',
+          name:t('doctor-schedules'),
+          icon: <CalendarMonthIcon className='ou-text-white'/>,
+          link: '/dashboard/doctor-schedules'
         }
       ];
     const page_ROLE_DOCTOR = [ 
@@ -167,7 +174,7 @@ const NavDashboard = () => {
 
     const renderPage = (routingRole, role) => {
         return routingRole && routingRole.map(item => (
-            <ListItemButton onClick={() => handleNav(role, item.link)}>
+            <ListItemButton key={"dashboard"+item.name} onClick={() => handleNav(role, item.link)}>
                 <ListItemIcon >
                   {item.icon && item.icon}
                 </ListItemIcon>

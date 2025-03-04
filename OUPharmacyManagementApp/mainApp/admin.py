@@ -98,7 +98,6 @@ class MainAppAdminSite(admin.AdminSite):
             "title": "OUPharmacy",
             "subtitle": None,
             "app_list": app_list,
-
             "patients": patients,
             "users": users,
             "data_examination": data_examination,
@@ -139,6 +138,18 @@ class PatientAdmin(admin.ModelAdmin):
     list_display = ['id', 'first_name', 'last_name', 'phone_number', 'email', 'gender']
     list_filter = ['last_name']
 
+class DoctorScheduleAdmin(admin.ModelAdmin):
+    list_display = ['id', 'doctor', 'date', 'session', 'is_off']
+    list_filter = ['doctor', 'date', 'is_off']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "doctor":
+            kwargs["queryset"] = User.objects.filter(role__name="ROLE_DOCTOR")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+class TimeSlotAdmin(admin.ModelAdmin):
+    list_display = ['id', 'schedule', 'start_time', 'end_time', 'is_available']
+    list_filter = ['schedule', 'is_available']
 
 class DoctorAvailabilityAdmin(admin.ModelAdmin):
     list_display = ['id', 'day', 'start_time', 'end_time', 'doctor']
@@ -155,8 +166,8 @@ class UserRoleAdmin(admin.ModelAdmin):
 
 
 class ExaminationAdmin(admin.ModelAdmin):
-    list_display = ['description', 'created_date', 'patient']
-    list_filter = ['patient']
+    list_display = ['id', 'description', 'created_date', 'patient', 'time_slot']
+    list_filter = ['patient', 'time_slot']
 
 
 class MedicineAdmin(admin.ModelAdmin):
@@ -286,7 +297,9 @@ admin_site.register(PrescriptionDetail, PrescriptionDetailAdmin)
 admin_site.register(Patient, PatientAdmin)
 admin_site.register(User, UserAdmin)
 admin_site.register(UserRole, UserRoleAdmin)
-admin_site.register(DoctorAvailability, DoctorAvailabilityAdmin)
+# admin_site.register(DoctorAvailability, DoctorAvailabilityAdmin)
+admin_site.register(DoctorSchedule, DoctorScheduleAdmin)
+admin_site.register(TimeSlot, TimeSlotAdmin)
 
 admin_site.register(IntervalSchedule)
 admin_site.register(CrontabSchedule, CrontabScheduleAdmin)

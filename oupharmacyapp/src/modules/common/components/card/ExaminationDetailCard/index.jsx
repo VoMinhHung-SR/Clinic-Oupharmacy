@@ -3,13 +3,9 @@ import moment from "moment";
 import { useTranslation } from "react-i18next";
 import CustomCollapseListItemButton from "../../collapse/ListItemButton";
 import Loading from "../../Loading";
-import DiagnosisCard from "../DiagnosisCard";
 import useExaminationDetailCard from "./hooks/useExaminationDetailCard";
-import ListItemButton from "./ListItemButton";
 import MiniDiagnosisCard from "./MiniDiagnosisCard";
 import MiniPrescribingCard from "./MiniPrescribingCard";
-import { useSelector } from "react-redux";
-
 
 const ExaminationDetailCard = ({examinationData}) => {
     const { t, tReady } = useTranslation(["examination-detail"]);
@@ -51,7 +47,7 @@ const ExaminationDetailCard = ({examinationData}) => {
                       color="grey.700"
                     >
                       {t("createdDate")}:{" "}
-                      {examinationData.doctor_info.day ? <span>{moment(examinationData.doctor_info.day).format("DD/MM/YYYY")}</span> 
+                      {examinationData.schedule_appointment.day ? <span>{moment(examinationData.schedule_appointment.day).format("DD/MM/YYYY")}</span> 
                       :  <span>{moment(examinationData.created_date).format("DD/MM/YYYY")}</span> }
                     </Typography>
                   </Grid>
@@ -102,7 +98,7 @@ const ExaminationDetailCard = ({examinationData}) => {
                       color="grey.700"
                       className="ou-truncate"
                     >
-                      {t("userCreated")}: {examinationData.doctor_info.first_name + " " + examinationData.doctor_info.last_name}
+                      {t("doctor")}: {examinationData.schedule_appointment.first_name + " " + examinationData.schedule_appointment.last_name}
                     </Typography>
                   </Grid>
          

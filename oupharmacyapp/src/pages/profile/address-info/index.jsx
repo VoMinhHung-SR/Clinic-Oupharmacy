@@ -1,23 +1,15 @@
-import { Autocomplete, Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, Typography, createFilterOptions } from "@mui/material"
+import { Box, Button } from "@mui/material"
 import { Helmet } from "react-helmet";
-import { useForm } from "react-hook-form";
-import moment from "moment";
 import { useTranslation } from "react-i18next";
-import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
-import useUpdateLocation from "../../../modules/pages/ProfileComponents/hooks/useUpdateLocation";
-import MapGL from "../../../modules/common/components/Mapbox";
 import CustomModal from "../../../modules/common/components/Modal";
 import useCustomModal from "../../../lib/hooks/useCustomModal";
 import UpdateAddressInfo from "../../../modules/pages/ProfileComponents/UpdateAddressInfo";
 import AddressInfo from "../../../modules/pages/ProfileComponents/AddressInfo";
-import { userContext } from "../../../App";
 import UserContext from "../../../lib/context/UserContext";
 
 const ProfileAddressInfo = () => {
     const { t, tReady } = useTranslation(['register', 'common', 'yup-validate']);
-   
-    // const [user] = useContext(userContext)
     const {user} = useContext(UserContext);
 
     const { handleCloseModal, isOpen, handleOpenModal} = useCustomModal();

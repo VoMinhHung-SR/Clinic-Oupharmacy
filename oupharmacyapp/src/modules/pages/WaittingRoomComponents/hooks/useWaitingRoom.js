@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-import { generateQueryGetExamsListPerDay } from "../services";
 import moment from "moment";
 import { APP_ENV, CURRENT_DATE, TOAST_ERROR, TOAST_SUCCESS } from "../../../../lib/constants";
 import { useCollection } from "react-firebase-hooks/firestore";
