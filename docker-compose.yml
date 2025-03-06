@@ -25,14 +25,16 @@ services:
     depends_on:
       - db
     environment:
-      DEBUG: "True"
+      DEBUG: "FALSE"
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
     env_file:
       - ./OUPharmacyManagementApp/.env 
+      - ./.env
     expose: 
       - 8000
 
@@ -41,12 +43,13 @@ services:
     networks: 
       - oupharmacy_network
     env_file: 
-      ./OUPharmacyManagementApp/.env
+      - ./OUPharmacyManagementApp/.env
+      - ./.env
     container_name: mysql_container
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: Hung@123456
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
