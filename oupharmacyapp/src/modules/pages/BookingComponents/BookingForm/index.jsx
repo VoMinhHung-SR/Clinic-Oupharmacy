@@ -106,7 +106,7 @@ const BookingForm = ({doctorInfo}) => {
                                     max: moment(CURRENT_DATE).add(30, 'days').format('YYYY-MM-DD'),
                                 }}
                                 onChange={handleDateChange}
-                                />
+                            />
                                 {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">
                                     {methods.formState.errors.selectedDate?.message}</p>) : <></>}
                                 

@@ -1,4 +1,4 @@
-import { Box, Button, Container, Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Pagination, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import Loading from "../../../modules/common/components/Loading";
 import useExaminationList from "../../../modules/pages/ExaminationListComponents/hooks/useExaminationList"
@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CustomModal from "../../../modules/common/components/Modal";
 import ExaminationUpdate from "../../../modules/pages/ExaminationListComponents/ExaminationUpdate";
 import useCustomModal from "../../../lib/hooks/useCustomModal";
-import CustomCollapseListItemButton from "../../../modules/common/components/collapse/ListItemButton";
+
 const ExaminationList = () =>{
     const { isLoading, examinationList, handleDeleteExamination, 
         handleChangePage, page,pagination} = useExaminationList();
