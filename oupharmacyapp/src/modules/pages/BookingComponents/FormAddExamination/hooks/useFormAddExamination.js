@@ -6,7 +6,7 @@ import { REGEX_ADDRESS, REGEX_EMAIL, REGEX_NAME, REGEX_NOTE, REGEX_PHONE_NUMBER,
 import { fetchCreateExamination, fetchCreateOrUpdatePatient, fetchExamDateData, fetchUpdateExamination } from '../services';
 import moment from 'moment';
 import useDebounce from '../../../../../lib/hooks/useDebounce';
-import { fetchGetDoctorAvailability } from '../../services';
+import { fetchCreateTimeSlot, fetchDeleteTimeSlot, fetchGetDoctorAvailability } from '../../services';
 import { splitTime } from '../../../../../lib/utils/helper';
 import createToastMessage from '../../../../../lib/utils/createToastMessage';
 
@@ -70,6 +70,7 @@ const useFormAddExamination = () => {
 
     const debouncedValue = useDebounce(date,500)
     const debouncedValueDoctor = useDebounce(doctor, 500)
+
     useEffect(() => {
         const getExaminationData = async (date) => {
           try {
@@ -106,46 +107,19 @@ const useFormAddExamination = () => {
         }
       }, [debouncedValue, debouncedValueDoctor]);
 
-
-    const shouldDisableTime = (time) => {
-        const selectedDate = moment(debouncedValue).format('YYYY-MM-DD');
-        const disabledTimesFromData = examinations
-            .filter((e) => e.created_date.includes(selectedDate))
-            .map((e) => moment(e.created_date).format('HH:mm:ss'));
-
-        const isDisabledRange = (time.hour() >= 0 && time.hour() < 7) || (time.hour() > 17 && time.hour() <= 23);
-
-        return (
-            disabledTimesFromData.includes(time.format('HH:mm:ss')) || isDisabledRange
-        );
-    };
-
-
-    const handleTimeChange = (date, time) => {
-
-        const timeFormatted = new Date(time);
-        
-        const selectedDate = moment(date).format('YYYY-MM-DD');
-        const selectedTime = moment(timeFormatted).format('HH:mm:ss');
-
-        return new Date(`${selectedDate}T${selectedTime}`)
-    };
-    
-
-
-    const onSubmit = async (patientID, data, callback, setError) => {
+    const onUpdateSubmit = async (examinationID, patientID, data, callback, timeSlotID) => {
         if(data === undefined)
             return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
-    
-        const patientData = {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            email: data.email,
-            phone_number: data.phoneNumber,
-            date_of_birth: data.dateOfBirth,
-            address: data.address,
-            gender: data.gender
-        }
+
+        const deleteCurrentDoctorWorkingTime = async (timeSlotID) =>{
+            try{
+                const res = await fetchDeleteTimeSlot(timeSlotID)
+                if(res.status === 204)
+                    return createDoctorWorkingTime()
+            }catch (err){
+                return ErrorAlert("Da co loi xay ra",  "", "OKE")
+            }
+        } 
 
         const createDoctorWorkingTime = async () => {
             try{
@@ -159,7 +133,7 @@ const useFormAddExamination = () => {
                     end_time
                 };
                 
-                // const res = await fetchCreateDoctorWorkingTime(requestData)
+                const res = await fetchCreateTimeSlot(requestData)
                 
                 if(res.status === 201){
                     handleOnSubmit(res.data.id)
@@ -171,106 +145,11 @@ const useFormAddExamination = () => {
 
         }
 
-        const handleOnSubmit = async (doctorWorkingTime) => {
+        const handleOnSubmit = async (timeSlot) => {
             setOpenBackdrop(true)
             // Update done or created patient info
-            const res = await fetchCreateOrUpdatePatient(patientID, patientData);
-            
 
-            const selectedStartTime = data.selectedTime.split(' - ')[0]; // Extract the first start time
-            const combinedDateTime = moment(data.selectedDate + ' ' + selectedStartTime, 'YYYY-MM-DD HH:mm');
-            const formattedDateTime = combinedDateTime.format('YYYY-MM-DD HH:mm:ss');
-            
-
-            if(res.status === 200 || res.status === 201){
-                console.log(res)
-                const examinationData = {
-                    patient: res.data.id,
-                    description: data.description,
-                    created_date: new Date(formattedDateTime),
-                    doctor_availability: doctorWorkingTime
-                }
-                const resExamination = await fetchCreateExamination(examinationData);
-                if(resExamination.status === 201){
-                    createToastMessage({message:t('modal:createSuccess'), type:TOAST_SUCCESS})
-                    callback();
-                }
-                else{
-                    setOpenBackdrop(false)
-                    return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
-                }
-                if(resExamination.status === 500){
-                    setOpenBackdrop(false)
-                    return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
-                }
-            }
-            else{
-                setOpenBackdrop(false)
-                return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
-            }
-            setOpenBackdrop(false)
-        }
-        
-        return ConfirmAlert(t('booking:confirmBooking'),t('modal:noThrowBack'),t('modal:yes'),t('modal:cancel'),
-        // this is callback function when user confirmed "Yes"
-        ()=>{
-            createDoctorWorkingTime()
-        }, () => { return; })
-    }
-
-    const onUpdateSubmit = async (examinationID, patientID, data, callback, doctorAvailabilityID) => {
-        if(data === undefined)
-            return ErrorAlert(t('modal:errSomethingWentWrong'), t('modal:pleaseTryAgain'), t('modal:ok'));
-        
-        const patientData = {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            email: data.email,
-            phone_number: data.phoneNumber,
-            date_of_birth: data.dateOfBirth,
-            address: data.address,
-            gender: data.gender
-        }
-
-
-        // const deleteCurrentDoctorWorkingTime = async (doctorAvailabilityID) =>{
-        //     try{
-        //         const res = await fetchDeleteDoctorAvailabilityTime(doctorAvailabilityID)
-        //         if(res.status === 204)
-        //             return createDoctorWorkingTime()
-        //     }catch (err){
-        //         return ErrorAlert("Da co loi xay ra",  "", "OKE")
-        //     }
-        // } 
-
-        const createDoctorWorkingTime = async () => {
-            try{
-
-                const { start_time, end_time } = splitTime(data.selectedTime);
-    
-                const requestData = {
-                    doctor: parseInt(data.doctor),
-                    day: data.selectedDate,
-                    start_time,
-                    end_time
-                };
-                
-                // const res = await fetchCreateDoctorWorkingTime(requestData)
-                
-                if(res.status === 201){
-                    handleOnSubmit(res.data.id)
-                    // return createToastMessage({message:"OKE",type:TOAST_SUCCESS})
-                }
-            }catch(err){
-                console.log(err)
-            }
-
-        }
-
-        const handleOnSubmit = async (doctorWorkingTime) => {
-            setOpenBackdrop(true)
-            // Update done or created patient info
-            const res = await fetchCreateOrUpdatePatient(patientID, patientData);
+            // const res = await fetchCreateOrUpdatePatient(patientID, patientData);
             
 
             const selectedStartTime = data.selectedTime.split(' - ')[0]; // Extract the first start time
@@ -278,12 +157,13 @@ const useFormAddExamination = () => {
             const  formattedDateTime = combinedDateTime.format('YYYY-MM-DD HH:mm:ss');
             
 
-            if(res.status === 200 || res.status === 201){
+            // if(res.status === 200 || res.status === 201){
                 const examinationData = {
-                    patient: res.data.id,
+                    // patient: res.data.id,
+                    patient: patientID,
                     description: data.description,
                     created_date: new Date(formattedDateTime),
-                    doctor_availability: doctorWorkingTime
+                    time_slot: timeSlot
                 }
                 const resExamination = await fetchUpdateExamination(examinationID, examinationData);
                 if(resExamination.status === 200){
@@ -298,26 +178,25 @@ const useFormAddExamination = () => {
                     setOpenBackdrop(false)
                     return createToastMessage({message:t('modal:updateFailed'), type:TOAST_ERROR})
                 }
-            }
-            else{
-                setOpenBackdrop(false)
-                return  createToastMessage({message:t('modal:updateFailed'), type:TOAST_ERROR})
-            }
+            // }
+            // else{
+            //     setOpenBackdrop(false)
+            //     return  createToastMessage({message:t('modal:updateFailed'), type:TOAST_ERROR})
+            // }
             setOpenBackdrop(false)
         }
         
-        // if(doctorAvailabilityID){
-        //        return deleteCurrentDoctorWorkingTime(doctorAvailabilityID)
-        // }
-        // else 
+        if(timeSlotID){
+            return deleteCurrentDoctorWorkingTime(timeSlotID)
+        }
+        else 
            return createDoctorWorkingTime()
     }
 
     return {
-        openBackdrop, examinations, setDate, date, setDate,
-        onSubmit, setDoctor, doctor, timeNotAvailable, isLoading,
-        onUpdateSubmit,
-        formAddExaminationSchema, handleTimeChange, shouldDisableTime
+        openBackdrop, examinations, setDate, date, formAddExaminationSchema,
+        setDoctor, doctor, timeNotAvailable, isLoading, onUpdateSubmit
+        
     }
 }
 export default useFormAddExamination;

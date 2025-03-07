@@ -38,6 +38,7 @@ export let endpoints = {
     'doctor-schedule-detail':(doctorScheduleID) => `/doctor-schedules/${doctorScheduleID}/`,
     // Time-slot
     'time-slots': '/time-slots/',
+    'time-slot-detail':(timeSlotID) => `/time-slots/${timeSlotID}/`,
     // Patient
     'get-patient-by-email':'/patients/get-patient-by-email/',
     'patient':'/patients/',
