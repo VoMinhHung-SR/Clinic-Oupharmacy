@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, FormControl, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Paper, Select, TextField, Typography, createFilterOptions } from "@mui/material"
+import { Autocomplete, Box, Button, FormControl, Grid, InputLabel, OutlinedInput, Paper, TextField, Typography, createFilterOptions } from "@mui/material"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next";
 import useFormAddExamination from "../../BookingComponents/FormAddExamination/hooks/useFormAddExamination";
@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { formatSelectedTime } from "../../../../lib/utils/helper";
 import PatientCard from "../../../common/components/card/PatientCard";
 
-const ExaminationUpdate = ({examination,handleClose, ...props}) => {
+const ExaminationUpdate = ({examination, handleClose, onUpdateSuccess, ...props}) => {
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal', 'common'])
     const {onUpdateSubmit, setDoctor, timeNotAvailable,
         doctor,setDate, isLoading} = useFormAddExamination();
@@ -25,25 +25,18 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
    useEffect(()=> { 
         if (examination?.schedule_appointment) {
             setDate(moment(examination?.schedule_appointment.day).format("YYYY-MM-DD"))
-            setDoctor(examination.schedule_appointment.id)
+            setDoctor(examination.schedule_appointment.doctor_id)
         }
         
-    },[])
+    },[examination])
     const methods = useForm({
         mode:"obSubmit", 
-        // resolver: yupResolver(formAddExaminationSchema),
         defaultValues:{
             description: examination?.description || "",
-            selectedDate:  moment(examination?.created_date).format("YYYY-MM-DD") || "",
+            selectedDate:  moment(examination?.schedule_appointment?.day).format("YYYY-MM-DD") || "",
             selectedTime: formatSelectedTime(examination?.schedule_appointment?.start_time, examination?.schedule_appointment?.end_time) || "",
             doctor: examination?.schedule_appointment?.doctor_id || "",
-            firstName: examination?.patient?.first_name || "",
-            lastName: examination?.patient?.last_name || "",
-            email: examination.patient?.email || "",
-            phoneNumber: examination?.patient?.phone_number || "",
-            address: examination?.patient?.address || "",
-            dateOfBirth: moment( examination?.patient?.date_of_birth).format("YYYY-MM-DD") || "",
-            gender: examination?.patient?.gender || 0
+            patient: examination?.patient?.id || ""
         }
     })
 
@@ -67,8 +60,11 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
              <Box component={Paper} elevation={6}>
                 <form onSubmit={methods.handleSubmit((data)=> 
                 onUpdateSubmit(examination.id, examination?.patient?.id, data, ()=>{
-                    methods.setError(),handleClose()}, 
-                    examination?.schedule_appointment?.id))} 
+                    methods.setError();
+                    handleClose();
+                    onUpdateSuccess();
+                }, 
+                examination?.schedule_appointment?.id))} 
                     className="ou-m-auto ou-py-6 ou-px-10">
                         <h3 className="ou-text-center ou-text-2xl">{t('updateBooking')}</h3>
                         <Grid container justifyContent="flex">
@@ -142,15 +138,17 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                             </Grid>
 
                             {(doctor && timeNotAvailable) && (<Grid item xs={12} className={clsx("!ou-mt-6 ou-pl-2")}>
-                                <DoctorAvailabilityTime schedule={timeNotAvailable} 
-                                selectedStartTime={examination?.schedule_appointment?.start_time}
-                                selectedEndTime={examination?.schedule_appointment?.end_time}
-                                defaultValue={methods.getValues('selectedTime')}
-                                onChange={(selectedTimeData) => {
-                                    methods.setValue('selectedTime', selectedTimeData);
-                                    methods.trigger("selectedTime");
-                                }}
-                                isLoading={isLoading}/>
+                                <DoctorAvailabilityTime 
+                                    schedule={timeNotAvailable} 
+                                    selectedStartTime={methods.watch('selectedTime')?.start || examination?.schedule_appointment?.start_time}
+                                    selectedEndTime={methods.watch('selectedTime')?.end || examination?.schedule_appointment?.end_time}
+                                    defaultValue={methods.getValues('selectedTime')}
+                                    onChange={(selectedTimeData) => {
+                                        methods.setValue('selectedTime', selectedTimeData);
+                                        methods.trigger("selectedTime");
+                                    }}
+                                    isLoading={isLoading}
+                                />
                             </Grid>)}
                             
                             </>    
