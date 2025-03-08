@@ -13,7 +13,7 @@ import useCustomModal from "../../../lib/hooks/useCustomModal";
 
 const ExaminationList = () =>{
     const { isLoading, examinationList, handleDeleteExamination, 
-        handleChangePage, page,pagination} = useExaminationList();
+        handleChangePage, page,pagination, handleChangeFlag} = useExaminationList();
     const router = useNavigate();
  
     const {t,ready} = useTranslation(['examinations','common'])   
@@ -69,7 +69,9 @@ const ExaminationList = () =>{
                                 </TableHead>
                                 <TableBody>
                                     {examinationList.map(examination => (
-                                        <OwnerExaminationUpdate e={examination}   handleDeleteExamination={() => handleDeleteExamination(examination.id)}/>
+                                        <OwnerExaminationUpdate e={examination} key={`own-e-${examination.id}`} 
+                                        onUpdateSuccess={handleChangeFlag}
+                                        handleDeleteExamination={() => handleDeleteExamination(examination.id)}/>
                                     ))}
                                 </TableBody>
                             </Table>
@@ -97,7 +99,7 @@ const ExaminationList = () =>{
 export default ExaminationList
 
 
-export const OwnerExaminationUpdate = ({e, handleDeleteExamination}) => {
+export const OwnerExaminationUpdate = ({e, handleDeleteExamination, onUpdateSuccess}) => {
     const {t} = useTranslation(['examinations','common'])  
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal(); 
     return (
@@ -166,7 +168,8 @@ export const OwnerExaminationUpdate = ({e, handleDeleteExamination}) => {
             open={isOpen}
             onClose={handleCloseModal}
             content={<Box>
-                  <ExaminationUpdate examination={e} handleClose={handleCloseModal}/>
+                  <ExaminationUpdate examination={e} onUpdateSuccess={onUpdateSuccess}
+                  handleClose={handleCloseModal}/>
             </Box>}
             actions={[
             <Button key="cancel" onClick={handleCloseModal}>

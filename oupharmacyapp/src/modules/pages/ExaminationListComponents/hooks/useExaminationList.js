@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { userContext } from "../../../../App"
 import SuccessfulAlert, { ConfirmAlert, ErrorAlert } from "../../../../config/sweetAlert2"
 import { fetchDeleteAnExamination, fetchExaminationList } from "../services"
 import { useSearchParams } from "react-router-dom"
@@ -24,6 +23,7 @@ const useExaminationList = () => {
         setIsLoading(true)
         setPage(value)
     };
+    const handleChangeFlag = () => setFlag(!flag)
 
     useEffect(()=> {
         const loadExaminations = async (userID) =>{
@@ -81,7 +81,7 @@ const useExaminationList = () => {
         examinationList,
         isLoading,
         setExaminationList,
-        handleDeleteExamination,
+        handleDeleteExamination, handleChangeFlag,
         handleChangePage, pagination, page
     }
 }

@@ -3,11 +3,9 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import SuccessfulAlert, { ConfirmAlert, ErrorAlert } from '../../../../../config/sweetAlert2';
 import { REGEX_ADDRESS, REGEX_EMAIL, REGEX_NAME, REGEX_NOTE, REGEX_PHONE_NUMBER, TOAST_ERROR, TOAST_SUCCESS } from '../../../../../lib/constants';
-import { fetchCreateExamination, fetchCreateOrUpdatePatient, fetchExamDateData, fetchUpdateExamination } from '../services';
-import moment from 'moment';
+import { fetchExamDateData, fetchUpdateExamination } from '../services';
 import useDebounce from '../../../../../lib/hooks/useDebounce';
 import { fetchCreateTimeSlot, fetchDeleteTimeSlot, fetchGetDoctorAvailability } from '../../services';
-import { splitTime } from '../../../../../lib/utils/helper';
 import createToastMessage from '../../../../../lib/utils/createToastMessage';
 
 
@@ -23,35 +21,6 @@ const useFormAddExamination = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     const formAddExaminationSchema = Yup.object().shape({
-        firstName: Yup.string().trim()
-            .required(t('yupFirstNameRequired'))
-            .max(150, t('yupFirstNameMaxLength'))
-            .matches(REGEX_NAME, t('yupFirstNameInvalid')),
-
-        lastName: Yup.string().trim()
-            .required(t('yupLastNameRequired'))
-            .max(150, t('yupLastNameMaxLength'))
-            .matches(REGEX_NAME, t('yupLastNameInvalid')),
-
-        email: Yup.string().trim()
-            .required(t('yupEmailRequired'))
-            .max(254, t('yupEmailMaxLength'))
-            .matches(REGEX_EMAIL, t('yupEmailInvalid')),
-
-        phoneNumber: Yup.string().trim()
-            .required(t('yupPhoneNumberRequired'))
-            .matches(REGEX_PHONE_NUMBER, t('yupPhoneNumberInvalid')),
-            
-        address: Yup.string().trim()
-            .required(t('yupAddressRequired'))
-            .matches(REGEX_ADDRESS, t('yupAddressInvalid')),
-
-        dateOfBirth: Yup.string()
-            .required(t('yupDOBRequired')),
-
-        gender: Yup.string()
-        .required(t('yupGenderRequired')),
-    
         description: Yup.string().trim()
             .required(t('yupDescriptionRequired'))
             .max(254, t('yupDescriptionMaxLength'))
@@ -123,21 +92,17 @@ const useFormAddExamination = () => {
 
         const createDoctorWorkingTime = async () => {
             try{
-
-                const { start_time, end_time } = splitTime(data.selectedTime);
-    
+                const { start, end, scheduleID } = data.selectedTime;
                 const requestData = {
-                    doctor: parseInt(data.doctor),
-                    day: data.selectedDate,
-                    start_time,
-                    end_time
+                    schedule: parseInt(scheduleID),
+                    start_time: start,
+                    end_time: end
                 };
                 
                 const res = await fetchCreateTimeSlot(requestData)
                 
                 if(res.status === 201){
                     handleOnSubmit(res.data.id)
-                    // return createToastMessage({message:"OKE",type:TOAST_SUCCESS})
                 }
             }catch(err){
                 console.log(err)
@@ -146,43 +111,26 @@ const useFormAddExamination = () => {
         }
 
         const handleOnSubmit = async (timeSlot) => {
-            setOpenBackdrop(true)
-            // Update done or created patient info
-
-            // const res = await fetchCreateOrUpdatePatient(patientID, patientData);
-            
-
-            const selectedStartTime = data.selectedTime.split(' - ')[0]; // Extract the first start time
-            const combinedDateTime = moment(data.selectedDate + ' ' + selectedStartTime, 'YYYY-MM-DD HH:mm');
-            const  formattedDateTime = combinedDateTime.format('YYYY-MM-DD HH:mm:ss');
-            
-
-            // if(res.status === 200 || res.status === 201){
-                const examinationData = {
-                    // patient: res.data.id,
-                    patient: patientID,
-                    description: data.description,
-                    created_date: new Date(formattedDateTime),
-                    time_slot: timeSlot
-                }
-                const resExamination = await fetchUpdateExamination(examinationID, examinationData);
-                if(resExamination.status === 200){
-                    createToastMessage({message:t('modal:updateSuccess'), type:TOAST_SUCCESS})
-                    callback();
-                }
-                else{
-                    setOpenBackdrop(false)
-                    return  createToastMessage({message:t('modal:updateFailed'), type:TOAST_ERROR})
-                }
-                if(resExamination.status === 500){
-                    setOpenBackdrop(false)
-                    return createToastMessage({message:t('modal:updateFailed'), type:TOAST_ERROR})
-                }
-            // }
-            // else{
-            //     setOpenBackdrop(false)
-            //     return  createToastMessage({message:t('modal:updateFailed'), type:TOAST_ERROR})
-            // }
+            setOpenBackdrop(true)     
+            const examinationData = {
+                patient: patientID,
+                description: data.description,
+                created_date: new Date(data.selectedDate),
+                time_slot: timeSlot
+            }
+            const resExamination = await fetchUpdateExamination(examinationID, examinationData);
+            if(resExamination.status === 200){
+                createToastMessage({message:t('modal:updateSuccess'), type:TOAST_SUCCESS})
+                callback();
+            }
+            else{
+                setOpenBackdrop(false)
+                return  createToastMessage({message:t('modal:updateFailed'), type:TOAST_ERROR})
+            }
+            if(resExamination.status === 500){
+                setOpenBackdrop(false)
+                return createToastMessage({message:t('modal:updateFailed'), type:TOAST_ERROR})
+            }
             setOpenBackdrop(false)
         }
         
