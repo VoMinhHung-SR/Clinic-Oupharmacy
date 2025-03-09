@@ -28,3 +28,8 @@ export const fetchCreateTimeSlot = async (data) => {
     const res = await authApi().post(endpoints['time-slots'], data)
     return res;
 }
+
+export const fetchDeleteTimeSlot = async (timeSlotID) => {
+    const res = await authApi().delete(endpoints['time-slot-detail'](timeSlotID))
+    return res;
+}

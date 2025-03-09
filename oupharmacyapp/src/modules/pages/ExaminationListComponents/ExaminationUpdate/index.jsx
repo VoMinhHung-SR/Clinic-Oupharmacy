@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, FormControl, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Paper, Select, TextField, Typography, createFilterOptions } from "@mui/material"
+import { Autocomplete, Box, Button, FormControl, Grid, InputLabel, OutlinedInput, Paper, TextField, Typography, createFilterOptions } from "@mui/material"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next";
 import useFormAddExamination from "../../BookingComponents/FormAddExamination/hooks/useFormAddExamination";
@@ -10,10 +10,11 @@ import moment from "moment";
 import clsx from "clsx";
 import { useEffect } from "react";
 import { formatSelectedTime } from "../../../../lib/utils/helper";
+import PatientCard from "../../../common/components/card/PatientCard";
 
-const ExaminationUpdate = ({examination,handleClose, ...props}) => {
+const ExaminationUpdate = ({examination, handleClose, onUpdateSuccess, ...props}) => {
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal', 'common'])
-    const {onUpdateSubmit, date, setDoctor, timeNotAvailable,
+    const {onUpdateSubmit, setDoctor, timeNotAvailable,
         doctor,setDate, isLoading} = useFormAddExamination();
 
     const handleDateChange = (event) => {
@@ -22,30 +23,23 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
         methods.trigger("selectedDate");
     };
    useEffect(()=> { 
-        if (examination.doctor_info) {
-            setDate(moment(examination.created_date).format("YYYY-MM-DD"))
-            setDoctor(examination.doctor_info.id)
+        if (examination?.schedule_appointment) {
+            setDate(moment(examination?.schedule_appointment.day).format("YYYY-MM-DD"))
+            setDoctor(examination.schedule_appointment.doctor_id)
         }
         
-    },[])
+    },[examination])
     const methods = useForm({
         mode:"obSubmit", 
-        // resolver: yupResolver(formAddExaminationSchema),
         defaultValues:{
             description: examination?.description || "",
-            selectedDate:  moment(examination?.created_date).format("YYYY-MM-DD") || "",
+            selectedDate:  moment(examination?.schedule_appointment?.day).format("YYYY-MM-DD") || "",
             selectedTime: formatSelectedTime(examination?.schedule_appointment?.start_time, examination?.schedule_appointment?.end_time) || "",
-            doctor: examination?.doctor_info?.doctor_id || "",
-            firstName: examination?.patient?.first_name || "",
-            lastName: examination?.patient?.last_name || "",
-            email: examination.patient?.email || "",
-            phoneNumber: examination?.patient?.phone_number || "",
-            address: examination?.patient?.address || "",
-            dateOfBirth: moment( examination?.patient?.date_of_birth).format("YYYY-MM-DD") || "",
-            gender: examination?.patient?.gender || 0
+            doctor: examination?.schedule_appointment?.doctor_id || "",
+            patient: examination?.patient?.id || ""
         }
     })
-    const shouldRenderTimePicker = !!date; 
+
     const { allConfig } = useSelector((state) => state.config);
 
     const filterOptions = createFilterOptions({
@@ -66,7 +60,11 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
              <Box component={Paper} elevation={6}>
                 <form onSubmit={methods.handleSubmit((data)=> 
                 onUpdateSubmit(examination.id, examination?.patient?.id, data, ()=>{
-                    methods.setError(),handleClose()}, examination?.doctor_info?.id))} 
+                    methods.setError();
+                    handleClose();
+                    onUpdateSuccess();
+                }, 
+                examination?.schedule_appointment?.id))} 
                     className="ou-m-auto ou-py-6 ou-px-10">
                         <h3 className="ou-text-center ou-text-2xl">{t('updateBooking')}</h3>
                         <Grid container justifyContent="flex">
@@ -89,7 +87,8 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                     {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.description?.message}</p>) : <></>}
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={shouldRenderTimePicker ? 6 : 12} className="!ou-mt-6 ou-pr-2">
+
+                            <Grid item xs={6} className="!ou-mt-6 ou-pr-2">
                                 <TextField
                                 fullWidth
                                 id="selectedDate"
@@ -113,7 +112,6 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                 </p>
                                 )}
                             </Grid>
-                            {/* {shouldRenderTimePicker && ( */}
                             <>
                                 <Grid item xs={6} className={clsx("!ou-mt-6 ou-pl-2")}>  
                                     <Autocomplete
@@ -122,7 +120,7 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                         getOptionLabel={(option) => `${t('Dr')} ${option.first_name + " " +option.last_name}`}
                                         filterOptions={filterOptions}
                                         isOptionEqualToValue={(option, value) => option.id === value.id}
-                                        defaultValue={allConfig.doctors.find((doctor) => doctor.id === examination?.doctor_info?.doctor_id)}
+                                        defaultValue={allConfig.doctors.find((doctor) => doctor.id === examination?.schedule_appointment?.doctor_id)}
                                         noOptionsText={t('noDoctorFound')}
                                         onChange={(event, value) => {
                                             setDoctor(value.id)
@@ -140,140 +138,25 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                             </Grid>
 
                             {(doctor && timeNotAvailable) && (<Grid item xs={12} className={clsx("!ou-mt-6 ou-pl-2")}>
-                                <DoctorAvailabilityTime schedule={timeNotAvailable} 
-                                selectedStartTime={examination?.doctor_info?.start_time}
-                                selectedEndTime={examination?.doctor_info?.end_time}
-                                onChange={(event)=> methods.setValue('selectedTime', event.target.value)}
-                                isLoading={isLoading}/>
+                                <DoctorAvailabilityTime 
+                                    schedule={timeNotAvailable} 
+                                    selectedStartTime={methods.watch('selectedTime')?.start || examination?.schedule_appointment?.start_time}
+                                    selectedEndTime={methods.watch('selectedTime')?.end || examination?.schedule_appointment?.end_time}
+                                    defaultValue={methods.getValues('selectedTime')}
+                                    onChange={(selectedTimeData) => {
+                                        methods.setValue('selectedTime', selectedTimeData);
+                                        methods.trigger("selectedTime");
+                                    }}
+                                    isLoading={isLoading}
+                                />
                             </Grid>)}
                             
-                            </>
-                            {/* )} */}          
+                            </>    
                         </Grid>
 
-                        <h5 className="ou-text-center ou-mt-8 ou-text-2xl">{t('patientInfo')}</h5>
-                        <Grid container justifyContent="flex"  id={props.id}>
-                            <Grid item xs={6}  className="!ou-mt-6 ou-pr-2" >
-                                <TextField
-                                    fullWidth
-                                    autoComplete="given-name"
-                                    id="firstName"
-                                    name="firstName"
-                                    type="text"
-                                    label={t('firstName')}
-                                    error={methods.formState.errors.firstName}
-                                    {...methods.register("firstName")}
-                                />
-                                {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.firstName?.message}</p>) : <></>}                            </Grid>
-
-                            <Grid item xs={6} className="!ou-mt-6 ou-pl-2" >
-                                <TextField
-                                    fullWidth
-                                    autoComplete="given-name"
-                                    id="lastName"
-                                    name="lastName"
-                                    type="text"
-                                    label={t('lastName')}
-                                    error={methods.formState.errors.lastName}
-                                    {...methods.register("lastName")}
-                                />
-                                {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.lastName?.message}</p>) : <></>}
-                            </Grid>
-                        </Grid>
-
-                        <Grid container justifyContent="flex" >
-                            <Grid item xs={7} className="!ou-mt-6 ou-pr-2">
-                                <TextField
-                                    fullWidth
-                                    autoComplete="given-name"
-                                    id="email"
-                                    name="email"
-                                    type="text"
-                                    label={t('email')}
-                                    value={props.email}
-                                    error={methods.formState.errors.email}
-                                    {...methods.register("email")}
-                                    InputProps={{
-                                        readOnly: true,
-                                        startAdornment: <InputAdornment position="start"></InputAdornment>,
-                                    }}
-                                />
-                                {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.email?.message}</p>) : <></>}
-                            </Grid>
-                            <Grid item xs={5} className="!ou-mt-6 ou-pl-2">
-
-                                <TextField
-                                    fullWidth
-                                    autoComplete="given-name"
-                                    id="phoneNumber"
-                                    name="phoneNumber"
-                                    type="text"
-                                    label={t('phoneNumber')}
-                                    error={methods.formState.errors.phoneNumber}
-                                    {...methods.register("phoneNumber")}
-                                    />
-                                    {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.phoneNumber?.message}</p>) : <></>}
-                            </Grid>
-                        </Grid>
-                       
-                        <Grid container justifyContent="flex" style={{ "margin": "0 auto" }} >
-                            <Grid item xs={12} className="!ou-mt-6">
-                                <TextField
-                                    fullWidth
-                                    autoComplete="given-name"
-                                    id="address"
-                                    name="address"
-                                    type="text"
-                                    label={t('address')}
-                                    value={props.address}
-                                    error={methods.formState.errors.address}
-                                    {...methods.register("address")}                             
-                                    />
-                                    {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.address?.message}</p>) : <></>}                            </Grid>
-
-                        </Grid>
-
-                        <Grid container justifyContent="flex" style={{ "margin": "0 auto" }}>
-                            <Grid item xs={12} className="!ou-mt-6">
-                                <FormControl>
-                                    <TextField
-                                        id="dateOfBirth"
-                                        label={t('dateOfBirth')}
-                                        type="date"
-                                        name="dateOfBirth"
-                                        error={methods.formState.errors.dateOfBirth}
-                                        sx={{ width: 220 }}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                        style={{ "margin": "5px" }}
-                                        inputProps={{
-                                            max: moment(CURRENT_DATE).add(0, 'days').format('YYYY-MM-DD') ,
-                                        }}
-                                        {...methods.register("dateOfBirth")} 
-                                    />
-                                    {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.dateOfBirth?.message}</p>) : <></>}
-                                </FormControl>
-                                <FormControl sx={{ width: 220 }} style={{ "margin": "5px" }}>
-                                    <InputLabel id="demo-simple-select-label">{t('gender')}</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        name="gender"
-                                        error={methods.formState.errors.gender}
-                                        label={t('gender')}
-                                        defaultValue={0}
-                                        {...methods.register("gender")} 
-                                    >
-                                        <MenuItem value={0}>{t('man')}</MenuItem>
-                                        <MenuItem value={1}>{t('woman')}</MenuItem>
-                                        <MenuItem value={2}>{t('secret')}</MenuItem>
-                                    </Select>
-                                    {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.gender?.message}</p>) : <></>}
-                                </FormControl>
-                            </Grid>
-
-                        </Grid>
+                        <h5 className="ou-text-center ou-mt-8 ou-mb-4 ou-text-2xl">{t('patientInfo')}</h5>
+                        <PatientCard patientData={examination.patient} isSelected={true}/>
+                      
                         <Grid container>
                             <Grid item sx={{ width: "100%"}}>
                                 <Typography
@@ -291,17 +174,6 @@ const ExaminationUpdate = ({examination,handleClose, ...props}) => {
                                         >
                                         {t('common:update')}
                                     </Button>
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item sx={{ margin: "auto" }}>
-                                <Typography
-                                    variant="subtitle1"
-                                    gutterBottom
-                                    style={{ textDecoration: "inherit" }}
-                                    color="grey.700"
-                                >      
                                 </Typography>
                             </Grid>
                         </Grid>
