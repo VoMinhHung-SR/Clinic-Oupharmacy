@@ -26,10 +26,10 @@ const DoctorSchedules = () => {
             <Helmet>
                 <title>{t('doctor-schedule:doctor-schedule')}</title>
             </Helmet>
-            <Box component={Paper} className='ou-w-[60%] ou-mb-4 ou-mx-auto'>
+            <Box component={Paper} className='ou-w-[50%] ou-mb-4 ou-mx-auto'>
                 <DoctorScheduleWeeklyChart />
             </Box>
-            <Box component={Paper} className='ou-w-[80%] ou-mx-auto'>     
+            <Box component={Paper} className='ou-w-[60%] ou-mx-auto'>     
                 <DoctorScheduleForm doctor={user}/>
             </Box>
         </>
