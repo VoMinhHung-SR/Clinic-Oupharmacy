@@ -30,12 +30,15 @@ export let endpoints = {
     'get-user-location':(userId) => `/users/${userId}/location-info/`,
     'booking-list':(userId) => `/users/${userId}/booking-list/`,
     'change-password': (userId) => `/users/${userId}/change-password/`,
+
     // Doctor-Schedule
     'doctor-schedules': '/doctor-schedules/',
     'doctor-schedules-by-date': '/doctor-schedules/schedule/',
     'doctor-create-schedule-weekly': '/doctor-schedules/create-weekly-schedule/',
     'doctor-stats': '/doctor-schedules/doctor-stats/',
     'doctor-schedule-detail':(doctorScheduleID) => `/doctor-schedules/${doctorScheduleID}/`,
+    'doctor-check-weekly-schedule': '/doctor-schedules/check-weekly-schedule/',
+    'doctor-update-schedule-weekly': '/doctor-schedules/update-weekly-schedule/',
     // Time-slot
     'time-slots': '/time-slots/',
     'time-slot-detail':(timeSlotID) => `/time-slots/${timeSlotID}/`,

@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import moment from 'moment';
 import { ROLE_DOCTOR } from '../../../../lib/constants';
 import useDoctorSchedule from '../hooks/useDoctorSchedule';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import Loading from '../../../common/components/Loading';
 
 const DoctorScheduleForm = ({ doctor }) => {
-    const { onSubmit } = useDoctorSchedule();
+    const { onSubmit, setSelectedWeek, existSchedule, selectedWeek, selectedYear, isLoading } = useDoctorSchedule();
 
     const methods = useForm({
         mode: "onSubmit",
@@ -16,7 +17,7 @@ const DoctorScheduleForm = ({ doctor }) => {
             weekly_schedule: {}
         }
     });
-    const { control, handleSubmit } = methods;
+    const { control, handleSubmit, reset } = methods;
     const { t } = useTranslation(['doctor-schedule', 'common']);
     
     const days = [t('doctor-schedule:monday'), t('doctor-schedule:tuesday'),
@@ -24,20 +25,27 @@ const DoctorScheduleForm = ({ doctor }) => {
         t('doctor-schedule:friday'), t('doctor-schedule:saturday')];
     
     const sessions = ['morning', 'afternoon'];
-    // Render weeks of the year
-    const startOfWeek =  moment().clone().startOf('isoWeek');
+    
+    // Get days of selected week
+    const startOfSelectedWeek = moment().year(selectedYear).week(selectedWeek).startOf('isoWeek');
+    const daysOfSelectedWeek = Array.from({ length: 6 }, (_, i) => startOfSelectedWeek.clone().add(i, 'days').format('DD/MM/YYYY'));
 
-    // Initialize selected week and year
-    const [selectedWeek, setSelectedWeek] = useState(startOfWeek.week());
-    const [selectedYear] = useState(startOfWeek.year());
+    // Update form when existSchedule changes
+    useEffect(() => {
+        if (existSchedule && Object.keys(existSchedule).length > 0) {
+            const doctorSchedule = existSchedule[doctor.email];
+            if (doctorSchedule) {
+                reset({
+                    doctorID: doctor.id,
+                    weekly_schedule: doctorSchedule
+                });
+            }
+        }
+    }, [existSchedule, doctor, reset]);
 
     const handleWeekChange = (event) => {
         setSelectedWeek(event.target.value);
     };
-
-    // Get days of selected week
-    const startOfSelectedWeek = moment().year(selectedYear).week(selectedWeek).startOf('isoWeek');
-    const daysOfSelectedWeek = Array.from({ length: 6 }, (_, i) => startOfSelectedWeek.clone().add(i, 'days').format('DD/MM/YYYY'));
 
     return (
         <Box>
@@ -49,8 +57,12 @@ const DoctorScheduleForm = ({ doctor }) => {
                                 <TableCell>
                                     <FormControl variant="outlined" className='!ou-mr-3'>
                                         <InputLabel>{t('doctor-schedule:week')}</InputLabel>
-                                        <Select value={selectedWeek} onChange={handleWeekChange}
-                                        label={t('doctor-schedule:week')} className='ou-max-h-[200px] ou-overflow-y-auto'>
+                                        <Select 
+                                            value={selectedWeek} 
+                                            onChange={handleWeekChange}
+                                            label={t('doctor-schedule:week')} 
+                                            className='ou-max-h-[200px] ou-overflow-y-auto'
+                                        >
                                             {Array.from({ length: 52 }, (_, i) => i + 1).map((week) => (
                                                 <MenuItem key={`w-${week}`} value={week}>
                                                     {t('doctor-schedule:week')} {week}
@@ -99,19 +111,26 @@ const DoctorScheduleForm = ({ doctor }) => {
                             ))}
                         </TableBody>
                     </Table>
+                    {isLoading && <div className="ou-text-center ou-p-4"><Loading/>   </div>}
                     {
-                        doctor.role === ROLE_DOCTOR ? <>
+                        doctor.role === ROLE_DOCTOR ? (
                             <div className='ou-text-right'>
-                                <Button type="submit" variant='contained' color='success' 
-                                className='!ou-mx-3 !ou-my-2'>{t('common:submit')}</Button>
+                                <Button 
+                                    type="submit" 
+                                    variant='contained' 
+                                    color='success' 
+                                    className='!ou-mx-3 !ou-my-2'
+                                    disabled={isLoading}
+                                >
+                                    {t('common:submit')}
+                                </Button>
                             </div>
-                        </> : <>
-                            <div></div>
-                        </>
+                        ) : <div></div>
                     }
                 </TableContainer>
             </form>
         </Box>
     );
 }   
+
 export default DoctorScheduleForm;
