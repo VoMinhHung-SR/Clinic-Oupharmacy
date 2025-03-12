@@ -14,5 +14,6 @@
     "year": "Năm",
     "week": "Tuần",
     "doctorScheduleTitle": "Thống kê lịch tuần của bác sĩ",
-    "confirmCreateSchedule": "Xác nhận tạo lịch tuần này?"
+    "confirmCreateSchedule": "Xác nhận tạo lịch tuần này?",
+    "confirmUpdateSchedule": "Xác nhận cập nhật lịch tuần này?"
 }

@@ -53,13 +53,11 @@ const useDoctorSchedule = () => {
                 setIsLoading(true);
 
                 const existingSchedule = existSchedule[user.email];
-                const weekStr = `${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`;
+                const weekStr = `week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`;
                 let res;
                 if (existingSchedule) {
-                    // Nếu có lịch tồn tại, gọi API cập nhật
                     res = await fetchUpdateDoctorSchedule(data, weekStr);
                 } else {
-                    // Nếu chưa có lịch, tạo mới
                     res = await fetchCreateDoctorScheduleByWeek(data);
                 }
 

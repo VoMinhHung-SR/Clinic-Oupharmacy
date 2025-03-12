@@ -33,7 +33,7 @@ export const ConfirmAlert = (title, text, confirmButtonText = 'Okay', cancelButt
     });
 
     swalWithBootstrapButtons.fire({
-        title: title,
+        title: `<span style="font-size: 1.5em;">${title}</span>`,
         text: text,
         icon: 'warning',
         showCancelButton: true,

@@ -13,5 +13,6 @@
     "year": "Year",
     "week": "Week",
     "doctorScheduleTitle": "Doctor Weekly Schedule Statistics",
-    "confirmCreateSchedule": "Confirm to create this week schedule?"
+    "confirmCreateSchedule": "Confirm to create this week schedule?",
+    "confirmUpdateSchedule": "Confirm to update this week schedule?"
 }

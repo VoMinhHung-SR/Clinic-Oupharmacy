@@ -187,7 +187,7 @@ class DoctorScheduleViewSet(viewsets.ViewSet, generics.CreateAPIView,
     def update_weekly_schedule(self, request):
         doctor_id = request.data.get('doctorID')
         weekly_schedule = request.data.get('weekly_schedule')
-        week_str = request.query_params.get('week')  # Thêm tham số tuần
+        week_str = request.query_params.get('week')
 
         if not all([doctor_id, weekly_schedule, week_str]):
             return Response(
