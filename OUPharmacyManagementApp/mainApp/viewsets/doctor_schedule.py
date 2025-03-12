@@ -119,3 +119,128 @@ class DoctorScheduleViewSet(viewsets.ViewSet, generics.CreateAPIView,
 
         except Exception as e:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"errMsg": "Internal server error"})
+        
+    @action(methods=['get'], detail=False, url_path='check-weekly-schedule')
+    def check_weekly_schedule(self, request):
+        week_str = request.query_params.get('week')
+        doctor_id = request.query_params.get('doctor_id')
+        
+        if not week_str:
+            return Response(status=status.HTTP_400_BAD_REQUEST, 
+                          data={"errMsg": "Missing required parameter: week"})
+
+        try:
+            # Parse the week string (e.g., "2025-W11")
+            week_start = datetime.datetime.strptime(week_str + '-1', '%G-W%V-%u').date()
+        except ValueError:
+            return Response(status=status.HTTP_400_BAD_REQUEST, 
+                          data={"errMsg": "Invalid week format. Use YYYY-Www"})
+
+        try:
+            # Filter doctors based on doctor_id if provided
+            if doctor_id:
+                doctors = User.objects.filter(role__name='ROLE_DOCTOR', id=doctor_id).all()
+            else:
+                doctors = User.objects.filter(role__name='ROLE_DOCTOR').all()
+
+            weekly_schedule = {}
+
+            for doctor in doctors:
+                doctor_schedule = {}
+                for i in range(7):
+                    current_date = week_start + datetime.timedelta(days=i)
+                    date_str = current_date.strftime('%Y-%m-%d')
+                    
+                    schedules = DoctorSchedule.objects.filter(
+                        doctor=doctor,
+                        date=current_date
+                    ).all()
+
+                    day_schedule = {}
+                    for schedule in schedules:
+                        time_slots = TimeSlot.objects.filter(schedule=schedule).all()
+                        day_schedule[schedule.session] = {
+                            'session': schedule.session,
+                            'is_off': schedule.is_off,
+                            'time_slots': TimeSlotSerializer(time_slots, many=True).data
+                        }
+
+                    doctor_schedule[date_str] = day_schedule
+
+                weekly_schedule[doctor.email] = doctor_schedule
+
+            return Response(data=weekly_schedule, status=status.HTTP_200_OK)
+
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND, 
+                          data={"errMsg": "Doctor not found"})
+
+        except ValidationError as ve:
+            return Response(status=status.HTTP_400_BAD_REQUEST, 
+                          data={"errMsg": str(ve)})
+
+        except Exception as e:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                          data={"errMsg": "Internal server error"})
+
+    @action(methods=['put'], detail=False, url_path='update-weekly-schedule')
+    def update_weekly_schedule(self, request):
+        doctor_id = request.data.get('doctorID')
+        weekly_schedule = request.data.get('weekly_schedule')
+        week_str = request.query_params.get('week')
+
+        if not all([doctor_id, weekly_schedule, week_str]):
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={"errMsg": "Missing required parameters"}
+            )
+
+        try:
+            # Parse week string to get date range
+            week_start = datetime.datetime.strptime(week_str + '-1', '%G-W%V-%u').date()
+            week_end = week_start + datetime.timedelta(days=6)
+
+            # Xóa tất cả lịch cũ trong tuần được chọn
+            DoctorSchedule.objects.filter(
+                doctor_id=doctor_id,
+                date__range=[week_start, week_end]
+            ).delete()
+
+            # Tạo lịch mới
+            new_schedules = []
+            for date_str, sessions in weekly_schedule.items():
+                current_date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+                
+                for session_name, session_info in sessions.items():
+                    session = session_info.get('session')
+                    is_off = session_info.get('is_off', False)
+                    
+                    # Chỉ tạo lịch cho các buổi không off
+                    if not is_off:
+                        schedule = DoctorSchedule.objects.create(
+                            doctor_id=doctor_id,
+                            date=current_date,
+                            session=session,
+                            is_off=is_off
+                        )
+                        new_schedules.append(schedule)
+
+            return Response(
+                status=status.HTTP_200_OK,
+                data={
+                    "msg": "Weekly schedule updated successfully",
+                    "updated_schedules": len(new_schedules)
+                }
+            )
+
+        except ValueError:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={"errMsg": "Invalid week format"}
+            )
+        except Exception as error:
+            print(error)
+            return Response(
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                data={"errMsg": "Error updating weekly schedule"}
+            )

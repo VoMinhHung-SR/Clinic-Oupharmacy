@@ -1,37 +1,99 @@
-import { useEffect } from "react"
-import { fetchCreateDoctorScheduleByWeek } from "../services"
-import createToastMessage from "../../../../lib/utils/createToastMessage"
-import { TOAST_SUCCESS } from "../../../../lib/constants"
+import { useContext, useEffect, useState } from "react"
+import { fetchCheckWeeklySchedule, fetchCreateDoctorScheduleByWeek, fetchUpdateDoctorSchedule } from "../services"
 import { useTranslation } from "react-i18next"
 import SuccessfulAlert, { ConfirmAlert } from "../../../../config/sweetAlert2"
+import { useSearchParams } from "react-router-dom"
+import moment from "moment"
+import UserContext from "../../../../lib/context/UserContext"
+import { ROLE_DOCTOR } from "../../../../lib/constants"
 
 const useDoctorSchedule = () => {
 
     const {t} = useTranslation(['modal', 'doctor-schedule']);
 
-    useEffect(() => {}, [])
+    const {user} = useContext(UserContext);
+    const [selectedYear] = useState(new Date().getFullYear());
+    const [selectedWeek, setSelectedWeek] = useState(moment().isoWeek());
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [existSchedule, setExistSchedule] = useState([]);
+
+    const [q] = useSearchParams();
+
+    useEffect(() => {
+        const checkWeeklySchedule = async () => {
+            try{
+                setIsLoading(true);
+                let query = q.toString();
+                    
+                let querySample = query 
+                    ? `${query}&week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`
+                    : `week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`;
+                
+                if(user.role === ROLE_DOCTOR){
+                    querySample += `&doctor_id=${user.id}`;
+                }
+
+                const res = await fetchCheckWeeklySchedule(querySample)
+                if(res.status === 200){
+                    setExistSchedule(res.data);
+                }
+            }catch(err){
+                console.log(err)
+            }finally {
+                setIsLoading(false);
+            }
+        }
+        checkWeeklySchedule();
+    }, [selectedWeek])
 
     const onSubmit = (data) => {
         const handleOnSubmit = async () => {
             try{
-                const res = await fetchCreateDoctorScheduleByWeek(data)
-                if(res.status === 201){
-                    SuccessfulAlert(t('modal:createSuccess'), t('modal:ok'), () => {});
+                setIsLoading(true);
+
+                const existingSchedule = existSchedule[user.email];
+                const weekStr = `week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`;
+                let res;
+                if (existingSchedule) {
+                    res = await fetchUpdateDoctorSchedule(data, weekStr);
+                } else {
+                    res = await fetchCreateDoctorScheduleByWeek(data);
+                }
+
+                if(res.status === 200 || res.status === 201){
+                    SuccessfulAlert(
+                        existingSchedule 
+                            ? t('modal:updateSuccess') 
+                            : t('modal:createSuccess'), 
+                        t('modal:ok'), 
+                        () => {}
+                    );
                 }
             }catch (err) {
                 console.log(err)
+            } finally {
+                setIsLoading(false);
             }
         }
 
-        return ConfirmAlert(t('doctor-schedule:confirmCreateSchedule'), t('modal:noThrowBack'), t('modal:ok'),t('modal:cancel'), 
-        ()=> {
-            handleOnSubmit();
-        }, ()=>{})
-     
+        return ConfirmAlert(
+            existSchedule[user.email]
+                ? t('doctor-schedule:confirmUpdateSchedule')
+                : t('doctor-schedule:confirmCreateSchedule'),
+            t('modal:noThrowBack'), 
+            t('modal:ok'),
+            t('modal:cancel'), 
+            () => {
+                handleOnSubmit();
+            }, 
+            () => {}
+        );
     }
 
     return{
-        onSubmit
+        onSubmit, setSelectedWeek, existSchedule,
+        selectedWeek, selectedYear, isLoading
     }
 }
 export default useDoctorSchedule

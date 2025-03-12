@@ -4,21 +4,22 @@ import StatisticCard from "../../modules/common/components/card/StatisticCard"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-import { CURRENT_DATE, MAX_EXAM_PER_DAY } from "../../lib/constants";
+import { CURRENT_DATE, MAX_EXAM_PER_DAY, ROLE_ADMIN, ROLE_DOCTOR } from "../../lib/constants";
 import useStatistic from "../../modules/pages/DashboardComponents/hooks/useStatistic";
 import useLimitExamPerDay from "../../modules/pages/HomeComponents/hooks/useLimitExamPerDay";
 import { useTranslation } from "react-i18next";
 import Loading from "../../modules/common/components/Loading";
 import PillsIcon from "../../lib/icon/PillsIcon";
 import BookingChart from "../../modules/common/components/charts/BookingChart";
-import MedicinesChart from "../../modules/common/components/charts/MedicinesChart";
-import useMedicineChart from "../../modules/common/components/charts/hooks/useMedicineChart";
 import RevenueChart from "../../modules/common/components/charts/RevenueChart";
+import DoctorScheduleWeeklyChart from "../../modules/common/components/charts/DoctorScheduleWeeklyChart";
+import { useContext } from "react";
+import UserContext from "../../lib/context/UserContext";
 
 const DashBoard = () => {
 
     const {t, tReady} = useTranslation(['dashboard'])
-
+    const {user} = useContext(UserContext)
     const {totalPatients, totalUsers, totalMedicineUnit} = useStatistic()
     const {totalExams} = useLimitExamPerDay(CURRENT_DATE) 
 
@@ -37,7 +38,6 @@ const DashBoard = () => {
         </Helmet>
 
         <Box>
-            {/* <StatisticCard icon={"patients"} title={"patientList"} value={10} footer={"day la footer"}/> */}
             <Grid container columns={{ xs: 4, sm: 6, md: 12 }} className="ou-flex ou-mb-8">
                 <Grid item xs={3} className="ou-p-2">
                     <StatisticCard icon={<AccessibilityNewIcon className="!ou-text-[60px] ou-text-blue-700"/>} 
@@ -61,7 +61,8 @@ const DashBoard = () => {
             
             <Box className="ou-flex ou-mb-4">
                 <Box component={Paper} className="ou-w-[50%] ou-p-4 ou-mr-2">
-                    <BookingChart/>
+                    {user.role === ROLE_ADMIN || ROLE_DOCTOR ?
+                     <DoctorScheduleWeeklyChart/> : <BookingChart/>}
                 </Box>
                 <Box component={Paper} className="ou-w-[50%] ou-p-4 ou-ml-2">
                     <RevenueChart/>
