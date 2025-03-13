@@ -30,9 +30,9 @@ const useDoctorSchedule = () => {
                     ? `${query}&week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`
                     : `week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`;
                 
-                if(user.role === ROLE_DOCTOR){
-                    querySample += `&doctor_id=${user.id}`;
-                }
+                // if(user.role === ROLE_DOCTOR){
+                //     querySample += `&doctor_id=${user.id}`;
+                // }
 
                 const res = await fetchCheckWeeklySchedule(querySample)
                 if(res.status === 200){

@@ -4,7 +4,6 @@ import Loading from '../../../modules/common/components/Loading';
 import { useTranslation } from 'react-i18next';
 import DoctorScheduleForm from '../../../modules/pages/DoctorScheduleComponents/DoctorScheduleForm';
 import UserContext from '../../../lib/context/UserContext';
-import DoctorScheduleWeeklyChart from '../../../modules/common/components/charts/DoctorScheduleWeeklyChart';
 import { Helmet } from 'react-helmet';
 
 const DoctorSchedules = () => {
@@ -26,10 +25,7 @@ const DoctorSchedules = () => {
             <Helmet>
                 <title>{t('doctor-schedule:doctor-schedule')}</title>
             </Helmet>
-            <Box component={Paper} className='ou-w-[50%] ou-mb-4 ou-mx-auto'>
-                <DoctorScheduleWeeklyChart />
-            </Box>
-            <Box component={Paper} className='ou-w-[60%] ou-mx-auto'>     
+            <Box component={Paper} className='ou-w-[90%] ou-mx-auto'>     
                 <DoctorScheduleForm doctor={user}/>
             </Box>
         </>
