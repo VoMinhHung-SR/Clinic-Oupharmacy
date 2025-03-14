@@ -25,7 +25,7 @@ services:
     depends_on:
       - db
     environment:
-      DEBUG: {DEBUG}
+      DEBUG: ${DEBUG}
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       DB_NAME: ${DB_NAME}

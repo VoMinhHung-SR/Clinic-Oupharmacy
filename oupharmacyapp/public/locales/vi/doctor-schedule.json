@@ -1,4 +1,5 @@
 {
+    "doctorCalendar": "Lịch bác sĩ",
     "doctor-schedule": "Lịch bác sĩ",
     "monday": "Thứ 2",
     "tuesday": "Thứ 3",
@@ -11,6 +12,7 @@
     "morning": "Buổi sáng",
     "afternoon": "Buổi chiều",
     "appointments": "Lịch hẹn",
+    "time": "Thời gian",
     "year": "Năm",
     "week": "Tuần",
     "doctorScheduleTitle": "Thống kê lịch tuần của bác sĩ",

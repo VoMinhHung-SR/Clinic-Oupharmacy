@@ -25,8 +25,8 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 
 <!-- Latest compiled JavaScript -->
+<script src="{% static 'js/script.js' %}"></script>
 
-<script src="../../static/js/script.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
@@ -46,146 +46,6 @@
 {% block breadcrumbs %}{% endblock %}
 
 {% block nav-sidebar %}{% endblock %}
-
-{% block content %}
-<div class="container">
-    <div style="display: flex" class="pt-5">
-        <h5 class="py-3 bg-blue text-white text-center mr-2" style="width:50%; border-radius: 10px">Tổng số người dùng
-            có trong hệ thống: <span style="color:yellow; font-weight: bold">{{users}}</span></h5>
-        <h5 class="py-3 bg-green text-white text-center ml-2" style="width:50%; border-radius: 10px">Tổng số bệnh nhân
-            có trong hệ thống: <span style="color:yellow; font-weight: bold">{{patients}}</span></h5>
-    </div>
-
-    {% now "Y-m-d" as current_date %}
-
-
-    <div class="chars-stats">
-        <div class="pt-5">
-            <br/>
-            <div style="display: flex">
-                <h3>Thống kê doanh thu</h3>
-                <div class="ml-auto">Bộ lọc:
-                    <select id="revenue-quarter" onchange={handleQuarterOnchange(this.value,"revenue")}
-                            class="form-select form-select-lg  px-4 py-2" aria-label=".form-select-lg example">
-
-                        <option value="0" selected>Quý</option>
-                        <option value="1">Quý 1</option>
-                        <option value="2">Quý 2</option>
-                        <option value="3">Quý 3</option>
-                        <option value="4">Quý 4</option>
-                    </select>
-
-                    <select id="revenue-year" onchange={handleYearOnchange(this.value,"revenue")}
-                            class="form-select form-select-lg px-4 py-2 " aria-label=".form-select-lg example">
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option selected value="2023">2023</option>
-                    </select>
-                </div>
-            </div>
-
-
-            <br/>
-            <canvas style="margin: 0 auto" width="700px" height="400px" id="revenue_stats"></canvas>
-        </div>
-
-        <div class="pt-5">
-            <br/>
-
-            <div style="display: flex">
-                <h3>Thống kê tần suất đặt lịch khám</h3>
-                <div class="ml-auto">Bộ lọc:
-                    <select id="examinations-quarter" onchange={handleQuarterOnchange(this.value,"examinations")}
-                            class="form-select form-select-lg  px-4 py-2" aria-label=".form-select-lg example">
-
-                        <option value="0" selected>Quý</option>
-                        <option value="1">Quý 1</option>
-                        <option value="2">Quý 2</option>
-                        <option value="3">Quý 3</option>
-                        <option value="4">Quý 4</option>
-                    </select>
-
-                    <select id="examinations-year" onchange={handleYearOnchange(this.value,"examinations")}
-                            class="form-select form-select-lg px-4 py-2 " aria-label=".form-select-lg example">
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option  selected value="2023">2023</option>
-                    </select>
-                </div>
-            </div>
-            <br/>
-            <canvas style="margin: 0 auto" id="examinations" width="700px" height="400px"></canvas>
-            <br/>
-            <br/>
-        </div>
-
-        <div class="pt-5">
-            <br/>
-            <div style="display: flex">
-                <h3>Thống kê tần suất sử dụng thuốc</h3>
-                <div class="ml-auto">Bộ lọc:
-                    <select id="medicines-quarter" onchange={handleQuarterOnchange(this.value,"medicines")}
-                            class="form-select form-select-lg  px-4 py-2" aria-label=".form-select-lg example">
-
-                        <option value="0" selected>Quý</option>
-                        <option value="1">Quý 1</option>
-                        <option value="2">Quý 2</option>
-                        <option value="3">Quý 3</option>
-                        <option value="4">Quý 4</option>
-                    </select>
-
-                    <select id="medicines-year" onchange={handleYearOnchange(this.value,"medicines")}
-                            class="form-select form-select-lg px-4 py-2 " aria-label=".form-select-lg example">
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option selected value="2023">2023</option>
-                    </select>
-                </div>
-            </div>
-
-            <br/>
-            <canvas style="margin: 0 auto" id="medicines_type_stats" width="700px" height="400px"></canvas>
-            <br/>
-            <br/>
-        </div>
-
-        <div class="pt-5">
-            <br/>
-            <div style="display: flex">
-                <h3>Thống kê tần suất bác sĩ khám chữa bệnh cho bệnh nhân</h3>
-                <div class="ml-auto">Bộ lọc:
-                    <select id="doctor-quarter" onchange={handleQuarterOnchange(this.value,"doctor")}
-                            class="form-select form-select-lg  px-4 py-2" aria-label=".form-select-lg example">
-
-                        <option value="0" selected>Quý</option>
-                        <option value="1">Quý 1</option>
-                        <option value="2">Quý 2</option>
-                        <option value="3">Quý 3</option>
-                        <option value="4">Quý 4</option>
-                    </select>
-
-                    <select id="doctor-year" onchange={handleYearOnchange(this.value,"doctor")}
-                            class="form-select form-select-lg px-4 py-2 " aria-label=".form-select-lg example">
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option selected value="2023">2023</option>
-                    </select>
-                </div>
-            </div>
-
-            <br/>
-            <canvas style="margin: 0 auto" id="doctor_frequency_chart" width="700px" height="400px"></canvas>
-            <br/>
-            <br/>
-        </div>
-    </div>
-
-</div>
-</div>
-
-
-{% endblock %}
-
 
 {% block extrajs %}
 {{ block.super }}
@@ -333,60 +193,6 @@
 
 
     };
-
-    // function doctorStats(quarter, year) {
-    //     if (doctorsChart)
-    //         doctorsChart.destroy()
-    //     var ctx = document.getElementById('doctor_frequency_chart').getContext('2d');
-    //     fetch(`/admin/api/doctor_stats/?quarter=${quarter}&year=${year}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'X-CSRFToken': Cookies.get('csrftoken'),
-    //         }
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             const doctor_chart = {
-    //                 datasets: [{
-    //                     data: data.data_doctor_quantity,
-    //                     backgroundColor: [
-    //                         "#A6B6C9",
-    //                         "#E1E1E1",
-    //                         '#F4C29F',
-    //                         '#D5AC8B',
-    //                         '#B3A285',
-    //                         '#B2AB98',
-    //                         '#F2BE6F',
-    //                         '#DFD87E',
-    //                         '#E1A836',
-    //                     ],
-    //                     label: data.title
-    //                 }],
-    //                 labels: data.data_doctor_labels
-    //
-    //             };
-    //             doctorsChart = new Chart(ctx, {
-    //                 type: 'bar',
-    //                 data: doctor_chart,
-    //                 options: {
-    //                     responsive: false,
-    //                     maintainAspectRatio: false,
-    //                     legend: {
-    //                         position: 'top',
-    //                         labels: {
-    //                             boxWidth: 30
-    //                         }
-    //                     },
-    //                     plugins: {
-    //                         title: {
-    //                             display: false
-    //                         },
-    //                     }
-    //                 }
-    //             });
-    //         });
-    // }
    function doctorStats(quarter, year) {
     if (doctorsChart)
         doctorsChart.destroy();
@@ -615,5 +421,5 @@
     }
 
 </script>
-<!--    <script src="{% static 'js/revenue.js' %}"></script>-->
+
 {% endblock %}

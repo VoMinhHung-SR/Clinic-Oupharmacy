@@ -34,11 +34,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # DEBUG MODE ; SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
-# DEBUG=True
-
-# env_file = os.environ.get('DJANGO_ENV_FILE', '.env')
-# config = Config(RepositoryEnv(env_file))
+# DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG=True
 
 # Application definition
 
