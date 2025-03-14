@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react"
 import { fetchCheckWeeklySchedule, fetchCreateDoctorScheduleByWeek, fetchUpdateDoctorSchedule } from "../services"
 import { useTranslation } from "react-i18next"
-import SuccessfulAlert, { ConfirmAlert } from "../../../../config/sweetAlert2"
+import { ConfirmAlert } from "../../../../config/sweetAlert2"
 import { useSearchParams } from "react-router-dom"
 import moment from "moment"
 import UserContext from "../../../../lib/context/UserContext"
-import { ROLE_DOCTOR } from "../../../../lib/constants"
+import { TOAST_SUCCESS } from "../../../../lib/constants"
+import createToastMessage from "../../../../lib/utils/createToastMessage"
 
 const useDoctorSchedule = () => {
 
@@ -15,7 +16,7 @@ const useDoctorSchedule = () => {
     const [selectedYear] = useState(new Date().getFullYear());
     const [selectedWeek, setSelectedWeek] = useState(moment().isoWeek());
     const [isLoading, setIsLoading] = useState(false);
-
+    const [flag, setFlag] = useState(false);
     const [existSchedule, setExistSchedule] = useState([]);
 
     const [q] = useSearchParams();
@@ -30,10 +31,6 @@ const useDoctorSchedule = () => {
                     ? `${query}&week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`
                     : `week=${selectedYear}-W${selectedWeek.toString().padStart(2, '0')}`;
                 
-                // if(user.role === ROLE_DOCTOR){
-                //     querySample += `&doctor_id=${user.id}`;
-                // }
-
                 const res = await fetchCheckWeeklySchedule(querySample)
                 if(res.status === 200){
                     setExistSchedule(res.data);
@@ -45,7 +42,7 @@ const useDoctorSchedule = () => {
             }
         }
         checkWeeklySchedule();
-    }, [selectedWeek])
+    }, [selectedWeek, flag])
 
     const onSubmit = (data) => {
         const handleOnSubmit = async () => {
@@ -62,13 +59,10 @@ const useDoctorSchedule = () => {
                 }
 
                 if(res.status === 200 || res.status === 201){
-                    SuccessfulAlert(
-                        existingSchedule 
-                            ? t('modal:updateSuccess') 
-                            : t('modal:createSuccess'), 
-                        t('modal:ok'), 
-                        () => {}
-                    );
+                    createToastMessage({type: TOAST_SUCCESS, message: existingSchedule 
+                        ? t('modal:updateSuccess') 
+                        : t('modal:createSuccess')})
+                    setFlag(prev => !prev)
                 }
             }catch (err) {
                 console.log(err)
