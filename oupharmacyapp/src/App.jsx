@@ -49,7 +49,7 @@ import DashBoard from './pages/dashboard'
 import CategoryList from './pages/dashboard/categories'
 import MedicineList from './pages/dashboard/medicines'
 import DoctorSchedules from './pages/dashboard/doctor-schedules'
-
+import PatientManagement from './pages/profile/patient-list'
 export const userContext = createContext()
 const queryClient = new QueryClient()
 function App() {
@@ -102,6 +102,7 @@ function App() {
                                 <Route path='/profile' element={<Profile />} >
                                   <Route path='/profile/address-info' element={<ProfileAddressInfo />} />
                                   <Route path='/profile/examinations' element={<ExaminationList />} />
+                                  <Route path='/profile/patient-management' element={<PatientManagement />} />
                                 </Route>
 
                                 <Route path='/conversations'  element={<ConversationList/>} >
@@ -142,6 +143,7 @@ function App() {
                                   <Route path='/dashboard/profile' element={<DashboardProfile />} >
                                     <Route path='/dashboard/profile/address-info' element={<ProfileAddressInfo />} />
                                     <Route path='/dashboard/profile/examinations' element={<ExaminationList />} />
+                                    <Route path='/dashboard/profile/patient-management' element={<PatientManagement />} />
                                   </Route>
 
                                   <Route path='/dashboard/conversations'  element={<ConversationList/>} >

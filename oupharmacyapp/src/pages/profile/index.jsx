@@ -10,6 +10,9 @@ import { useTranslation } from "react-i18next"
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import UserContext from "../../lib/context/UserContext"
 import AvatarProfile from "../../modules/pages/ProfileComponents/AvatarProfile"
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ListIcon from '@mui/icons-material/List';
+
 const Profile = () => {
     const {user} = useContext(UserContext);
 
@@ -25,11 +28,18 @@ const Profile = () => {
         pathName: '/profile/address-info',
         itemTitle: t('addressInfo'),
         itemIcon: <LocationOnIcon/>
-    },{
+    },
+    {
+        id: 'patient-management',
+        pathName: '/profile/patient-management',
+        itemTitle: t('patientManagement'),
+        itemIcon: <ListIcon/>
+    },
+    {
         id: 'booking-list',
         pathName: '/profile/examinations',
         itemTitle: t('bookingList'),
-        itemIcon: <ListAlt/>
+        itemIcon: <AssignmentIcon/>
     }]
 
     const [flag, setFlag] = useState(false)

@@ -2,9 +2,37 @@ import { useTranslation } from "react-i18next"
 import { fetchCreateOrUpdatePatient } from "../../modules/pages/BookingComponents/FormAddExamination/services"
 import { TOAST_SUCCESS } from "../constants"
 import createToastMessage from "../utils/createToastMessage"
+import { useContext, useEffect, useState } from "react"
+import { fetchGetPatients } from "../../modules/pages/BookingComponents/services"
+import UserContext from "../context/UserContext"
 
 const usePatient = () => {
     const {t} = useTranslation(['yup-validate', 'booking'])
+    const {user} = useContext(UserContext)
+
+    const [patientList, setPatientList] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        try{
+            const getPatients = async (userID) => {
+                const res = await fetchGetPatients(userID)
+                if(res.status === 200){
+                    setPatientList(res.data)
+                }
+            }
+
+            if (user){
+                setIsLoading(true)
+                getPatients(user.id)
+            }
+        }catch (err){
+            console.log(err)
+        } finally {
+            setIsLoading(false)
+        }
+    }, [user])
+
     const createPatient = async (userID, patientData, setError, callbackSuccess) => {
         try{
             const dataSubmit = {
@@ -38,8 +66,39 @@ const usePatient = () => {
         }
     }
 
+    const updatePatient = async (patientID, patientData, setError, callbackSuccess) => {
+
+        try{
+            const dataSubmit = {
+                "first_name": patientData.firstName,
+                "last_name": patientData.lastName,
+                "phone_number": patientData.phoneNumber,
+                "email": patientData.email,
+                "gender": patientData.gender,
+                "date_of_birth": patientData.dateOfBirth,
+                "address": patientData.address,
+                "user": user.id
+            }
+            const res = await fetchCreateOrUpdatePatient(patientID,dataSubmit)
+        }catch (err){
+            if (err.response && err.response.status === 400) {
+                const errorData = err.response.data;
+                if (errorData.email) {
+                    setError("email", {
+                        type: "manual",
+                        message: errorData.email[0] 
+                    });
+                }
+            } else {
+                console.error("An unexpected error occurred:", err.message);
+            }
+        }finally{
+            setIsLoading(false)
+        }
+    }
+
     return{
-        createPatient
+        createPatient, patientList, isLoading, updatePatient
     }
 }
 

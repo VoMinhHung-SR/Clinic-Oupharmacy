@@ -1,6 +1,6 @@
 import { Avatar, Box, Paper } from "@mui/material"
 import { useContext, useEffect, useState } from "react"
-import { Image, ListAlt, Person } from "@mui/icons-material"
+import { Person } from "@mui/icons-material"
 import { Outlet, useLocation, } from "react-router"
 import { Link } from "react-router-dom"
 import clsx from 'clsx';
@@ -10,6 +10,9 @@ import { useTranslation } from "react-i18next"
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import UserContext from "../../../lib/context/UserContext"
 import AvatarProfile from "../../../modules/pages/ProfileComponents/AvatarProfile"
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ListIcon from '@mui/icons-material/List';
+
 const DashboardProfile = () => {
     const {user} = useContext(UserContext);
 
@@ -25,11 +28,18 @@ const DashboardProfile = () => {
         pathName: '/dashboard/profile/address-info',
         itemTitle: t('addressInfo'),
         itemIcon: <LocationOnIcon/>
-    },{
+    },
+    {
+        id: 'D-patient-management',
+        pathName: '/dashboard/profile/patient-management',
+        itemTitle: t('patientManagement'),
+        itemIcon: <ListIcon/>
+    },
+    {
         id: 'D-booking-list',
         pathName: '/dashboard/profile/examinations',
         itemTitle: t('bookingList'),
-        itemIcon: <ListAlt/>
+        itemIcon: <AssignmentIcon/>
     }]
 
     const [flag, setFlag] = useState(false)
