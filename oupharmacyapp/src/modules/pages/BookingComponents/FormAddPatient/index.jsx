@@ -10,22 +10,22 @@ import { useContext } from "react"
 import UserContext from "../../../../lib/context/UserContext"
 
 
-const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
+const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal'])
     const {user} = useContext(UserContext)
-    const {createPatient} = usePatient()
+    const {createOrUpdatePatient} = usePatient()
     const { addingPatientSchema } = SchemaModels()
     const methods = useForm({
         mode:"obSubmit", 
         resolver: yupResolver(addingPatientSchema),
         defaultValues:{
-            firstName:"",
-            lastName:"",
-            email:  "",
-            phoneNumber:"",
-            address:"",
-            dateOfBirth:"",
-            gender:0
+            firstName: patientData?.first_name || "",
+            lastName: patientData?.last_name || "",
+            email:  patientData?.email || "",
+            phoneNumber: patientData?.phone_number || "",
+            address: patientData?.address || "",
+            dateOfBirth: new Date(patientData?.date_of_birth) || "",
+            gender: patientData?.gender || 0
         }
     })
 
@@ -42,7 +42,7 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
         <div className="ou-base-form-outline">
             <h5 className="ou-text-center ou-text-2xl">{t('patientInfo')}</h5>
             <form onSubmit={methods.handleSubmit((data)=> 
-                createPatient(user.id, data, methods.setError, (patientData) => handleOnCallbackSuccess(patientData))
+                createOrUpdatePatient(user.id, patientData?.id, data, methods.setError, (patientData) => handleOnCallbackSuccess(patientData))
             )}>
                 <Grid container justifyContent="flex"  id={1}>
                     <Grid item xs={6}  className="!ou-mt-6 ou-pr-2" >
@@ -54,6 +54,7 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('firstName')}
                             error={methods.formState.errors.firstName}
+                            defaultValue={patientData?.firstName}
                             {...methods.register("firstName")}
                         />
                         {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.firstName?.message}</p>) : <></>}                            </Grid>
@@ -67,6 +68,7 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('lastName')}
                             error={methods.formState.errors.lastName}
+                            defaultValue={patientData?.lastName}
                             {...methods.register("lastName")}
                         />
                         {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.lastName?.message}</p>) : <></>}
@@ -83,6 +85,7 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('email')}
                             error={methods.formState.errors.email}
+                            defaultValue={patientData?.email}
                             {...methods.register("email")}
                         
                         />
@@ -99,6 +102,7 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('phoneNumber')}
                             error={methods.formState.errors.phoneNumber}
+                            defaultValue={patientData?.phoneNumber}
                             {...methods.register("phoneNumber")}
                             />
                             {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.phoneNumber?.message}</p>) : <></>}
@@ -115,6 +119,7 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('address')}
                             error={methods.formState.errors.address}
+                            defaultValue={patientData?.address}
                             {...methods.register("address")}                             
                             />
                             {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.address?.message}</p>) : <></>}
@@ -140,6 +145,7 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                                 inputProps={{
                                     max: moment(CURRENT_DATE).add(0, 'days').format('YYYY-MM-DD') ,
                                 }}
+                                defaultValue={patientData?.dateOfBirth}
                                 {...methods.register("dateOfBirth")} 
                             />
                             {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.dateOfBirth?.message}</p>) : <></>}
@@ -152,7 +158,7 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                                 name="gender"
                                 error={methods.formState.errors.gender}
                                 label={t('gender')}
-                                defaultValue={0}
+                                defaultValue={patientData?.gender}
                                 {...methods.register("gender")} 
                             >
                                 <MenuItem value={0}>{t('man')}</MenuItem>
@@ -163,13 +169,11 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                         </FormControl>
                     </Grid>
                 </Grid>
-                <Button variant="contained" 
-                    color="success" 
-                    type="submit" 
-                    style={{"padding": "6px 40px"}}
-                    >
-                    {t('submit')}
-                </Button>
+                <div className="ou-text-right">
+                    <Button variant="contained" color="success" type="submit">
+                        {patientData ? t('common:update') : t('common:submit')}
+                    </Button>
+                </div>
             </form> 
         </div>
         </>

@@ -2,26 +2,55 @@ import { useTranslation } from "react-i18next"
 import { fetchCreateOrUpdatePatient } from "../../modules/pages/BookingComponents/FormAddExamination/services"
 import { TOAST_SUCCESS } from "../constants"
 import createToastMessage from "../utils/createToastMessage"
+import { useContext, useEffect, useState } from "react"
+import { fetchGetPatients } from "../../modules/pages/BookingComponents/services"
+import UserContext from "../context/UserContext"
 
 const usePatient = () => {
     const {t} = useTranslation(['yup-validate', 'booking'])
-    const createPatient = async (userID, patientData, setError, callbackSuccess) => {
+    const {user} = useContext(UserContext)
+
+    const [patientList, setPatientList] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        try{
+            const getPatients = async (userID) => {
+                const res = await fetchGetPatients(userID)
+                if(res.status === 200){
+                    setPatientList(res.data)
+                }
+            }
+
+            if (user){
+                setIsLoading(true)
+                getPatients(user.id)
+            }
+        }catch (err){
+            console.log(err)
+        } finally {
+            setIsLoading(false)
+        }
+    }, [user])
+
+    const createOrUpdatePatient = async (userID, patientID, data, setError, callbackSuccess) => {
         try{
             const dataSubmit = {
-                "first_name": patientData.firstName,
-                "last_name": patientData.lastName,
-                "phone_number": patientData.phoneNumber,
-                "email": patientData.email,
-                "gender": patientData.gender,
-                "date_of_birth": patientData.dateOfBirth,
-                "address": patientData.address,
+                "first_name": data.firstName,
+                "last_name": data.lastName,
+                "phone_number": data.phoneNumber,
+                "email":  data.email,
+                "gender":   data.gender,
+                "date_of_birth": data.dateOfBirth,
+                "address": data.address,
                 "user": userID
             }
-            const res = await fetchCreateOrUpdatePatient(-1,dataSubmit)
+            const res = await fetchCreateOrUpdatePatient(patientID,dataSubmit)
     
-            if(res.status === 201){
+            if(res.status === 201 || res.status === 200){
                 callbackSuccess(res.data)
-                return createToastMessage({message:t('booking:patientCreatedSuccess'), type:TOAST_SUCCESS})
+                return createToastMessage({message: patientID ? t('booking:patientUpdatedSuccess') 
+                    : t('booking:patientCreatedSuccess'), type: TOAST_SUCCESS})
             }
         } catch (err) {
             if (err.response && err.response.status === 400) {
@@ -39,7 +68,7 @@ const usePatient = () => {
     }
 
     return{
-        createPatient
+        createOrUpdatePatient, patientList, isLoading
     }
 }
 
