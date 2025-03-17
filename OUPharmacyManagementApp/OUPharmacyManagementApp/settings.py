@@ -171,7 +171,8 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'mainApp.User'
 MEDIA_ROOT = '%s/mainApp/static/' % BASE_DIR
 CKEDITOR_UPLOAD_PATH = 'post/'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
+ALLOWED_HOSTS = ["*"]
+print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 INTERNAL_IPS = [
     '127.0.0.1'
 ]

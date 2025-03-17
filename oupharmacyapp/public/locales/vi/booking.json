@@ -35,6 +35,7 @@
     "errPatientNeedToCreate": "Bạn cần tạo hồ sơ bệnh nhân",
     "errPatientNeedToSelect": "Bạn cần chọn hồ sơ bệnh nhân",  
     "patientCreatedSuccess": "Tạo hồ sơ bệnh nhân thành công",
+    "patientUpdatedSuccess": "Cập nhật hồ sơ bệnh nhân thành công",
     "yearsOld": "Tuổi",
     "seeDetail": "Xem chi tiết",
     "patientProfileList": "Hồ sơ bệnh nhân",
