@@ -24,7 +24,7 @@ const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
             email:  patientData?.email || "",
             phoneNumber: patientData?.phone_number || "",
             address: patientData?.address || "",
-            dateOfBirth: new Date(patientData?.date_of_birth) || "",
+            dateOfBirth: patientData?.date_of_birth || "",
             gender: patientData?.gender || 0
         }
     })
@@ -42,7 +42,8 @@ const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
         <div className="ou-base-form-outline">
             <h5 className="ou-text-center ou-text-2xl">{t('patientInfo')}</h5>
             <form onSubmit={methods.handleSubmit((data)=> 
-                createOrUpdatePatient(user.id, patientData?.id, data, methods.setError, (patientData) => handleOnCallbackSuccess(patientData))
+                createOrUpdatePatient(user.id, patientData?.id, data, methods.setError, 
+                    (patientData) => handleOnCallbackSuccess(patientData))
             )}>
                 <Grid container justifyContent="flex"  id={1}>
                     <Grid item xs={6}  className="!ou-mt-6 ou-pr-2" >
@@ -54,7 +55,6 @@ const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('firstName')}
                             error={methods.formState.errors.firstName}
-                            defaultValue={patientData?.firstName}
                             {...methods.register("firstName")}
                         />
                         {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.firstName?.message}</p>) : <></>}                            </Grid>
@@ -68,7 +68,6 @@ const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('lastName')}
                             error={methods.formState.errors.lastName}
-                            defaultValue={patientData?.lastName}
                             {...methods.register("lastName")}
                         />
                         {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.lastName?.message}</p>) : <></>}
@@ -85,7 +84,6 @@ const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('email')}
                             error={methods.formState.errors.email}
-                            defaultValue={patientData?.email}
                             {...methods.register("email")}
                         
                         />
@@ -102,7 +100,6 @@ const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('phoneNumber')}
                             error={methods.formState.errors.phoneNumber}
-                            defaultValue={patientData?.phoneNumber}
                             {...methods.register("phoneNumber")}
                             />
                             {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.phoneNumber?.message}</p>) : <></>}
@@ -119,7 +116,6 @@ const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
                             type="text"
                             label={t('address')}
                             error={methods.formState.errors.address}
-                            defaultValue={patientData?.address}
                             {...methods.register("address")}                             
                             />
                             {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.address?.message}</p>) : <></>}
@@ -141,24 +137,24 @@ const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                style={{ "margin": "5px" }}
                                 inputProps={{
                                     max: moment(CURRENT_DATE).add(0, 'days').format('YYYY-MM-DD') ,
                                 }}
-                                defaultValue={patientData?.dateOfBirth}
+                                defaultValue={patientData && patientData.date_of_birth ? 
+                                    moment(patientData.date_of_birth).format('YYYY-MM-DD') : ""}
                                 {...methods.register("dateOfBirth")} 
                             />
                             {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.dateOfBirth?.message}</p>) : <></>}
                         </FormControl>
-                        <FormControl sx={{ width: 220 }} style={{ "margin": "5px" }}>
-                            <InputLabel id="demo-simple-select-label">{t('gender')}</InputLabel>
+                        <FormControl sx={{ width: 220 }} className="ou-text-left ou-pl-2" >
+                            <InputLabel id="gender-select-label">{t('gender')}</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
+                                labelId="gender-select-label"
+                                id="gender-select"
                                 name="gender"
                                 error={methods.formState.errors.gender}
                                 label={t('gender')}
-                                defaultValue={patientData?.gender}
+                                defaultValue={patientData && patientData.gender ? patientData.gender : 0}
                                 {...methods.register("gender")} 
                             >
                                 <MenuItem value={0}>{t('man')}</MenuItem>

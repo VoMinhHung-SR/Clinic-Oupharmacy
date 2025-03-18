@@ -20,7 +20,6 @@ const PatientManagement = () => {
     
     const {patientList, isLoading} = usePatient()
     const {t, tReady} = useTranslation(['booking', 'common'])
-    const router = useNavigate();
     const { handleCloseModal, isOpen, handleOpenModal } = useCustomModal(); 
     const [patient, setPatient] = useState(null)
     const [isAddNewPatient, setIsAddNewPatient] = useState(true)
@@ -179,6 +178,7 @@ const PatientManagement = () => {
                 onClose={handleCloseModal}
                 content={<Box>
                     <FormAddPatient patientData={patient} onCallbackSuccess={() => {
+                        setStep(1)
                         handleCloseModal()
                     }}/>
                 </Box>}
