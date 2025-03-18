@@ -10,22 +10,22 @@ import { useContext } from "react"
 import UserContext from "../../../../lib/context/UserContext"
 
 
-const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
+const FormAddPatient = ({patientData, onCallbackSuccess = () => {}}) => {
     const {t , tReady} = useTranslation(['booking', 'yup-validate', 'modal'])
     const {user} = useContext(UserContext)
-    const {createPatient} = usePatient()
+    const {createOrUpdatePatient} = usePatient()
     const { addingPatientSchema } = SchemaModels()
     const methods = useForm({
         mode:"obSubmit", 
         resolver: yupResolver(addingPatientSchema),
         defaultValues:{
-            firstName:"",
-            lastName:"",
-            email:  "",
-            phoneNumber:"",
-            address:"",
-            dateOfBirth:"",
-            gender:0
+            firstName: patientData?.first_name || "",
+            lastName: patientData?.last_name || "",
+            email:  patientData?.email || "",
+            phoneNumber: patientData?.phone_number || "",
+            address: patientData?.address || "",
+            dateOfBirth: patientData?.date_of_birth || "",
+            gender: patientData?.gender || 0
         }
     })
 
@@ -42,7 +42,8 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
         <div className="ou-base-form-outline">
             <h5 className="ou-text-center ou-text-2xl">{t('patientInfo')}</h5>
             <form onSubmit={methods.handleSubmit((data)=> 
-                createPatient(user.id, data, methods.setError, (patientData) => handleOnCallbackSuccess(patientData))
+                createOrUpdatePatient(user.id, patientData?.id, data, methods.setError, 
+                    (patientData) => handleOnCallbackSuccess(patientData))
             )}>
                 <Grid container justifyContent="flex"  id={1}>
                     <Grid item xs={6}  className="!ou-mt-6 ou-pr-2" >
@@ -136,23 +137,24 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                style={{ "margin": "5px" }}
                                 inputProps={{
                                     max: moment(CURRENT_DATE).add(0, 'days').format('YYYY-MM-DD') ,
                                 }}
+                                defaultValue={patientData && patientData.date_of_birth ? 
+                                    moment(patientData.date_of_birth).format('YYYY-MM-DD') : ""}
                                 {...methods.register("dateOfBirth")} 
                             />
                             {methods.formState.errors ? (<p className="ou-text-xs ou-text-red-600 ou-mt-1 ou-mx-[14px]">{methods.formState.errors.dateOfBirth?.message}</p>) : <></>}
                         </FormControl>
-                        <FormControl sx={{ width: 220 }} style={{ "margin": "5px" }}>
-                            <InputLabel id="demo-simple-select-label">{t('gender')}</InputLabel>
+                        <FormControl sx={{ width: 220 }} className="ou-text-left ou-pl-2" >
+                            <InputLabel id="gender-select-label">{t('gender')}</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
+                                labelId="gender-select-label"
+                                id="gender-select"
                                 name="gender"
                                 error={methods.formState.errors.gender}
                                 label={t('gender')}
-                                defaultValue={0}
+                                defaultValue={patientData && patientData.gender ? patientData.gender : 0}
                                 {...methods.register("gender")} 
                             >
                                 <MenuItem value={0}>{t('man')}</MenuItem>
@@ -163,13 +165,11 @@ const FormAddPatient = ({onCallbackSuccess = () => {}}) => {
                         </FormControl>
                     </Grid>
                 </Grid>
-                <Button variant="contained" 
-                    color="success" 
-                    type="submit" 
-                    style={{"padding": "6px 40px"}}
-                    >
-                    {t('submit')}
-                </Button>
+                <div className="ou-text-right">
+                    <Button variant="contained" color="success" type="submit">
+                        {patientData ? t('common:update') : t('common:submit')}
+                    </Button>
+                </div>
             </form> 
         </div>
         </>

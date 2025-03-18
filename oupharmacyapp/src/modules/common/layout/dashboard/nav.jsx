@@ -102,7 +102,6 @@ const NavDashboard = () => {
         setOpen(!open);
     };
     const {t, i18n}= useTranslation(['common', 'modal']);
-    const router = useNavigate()
 
     const pages = [
         {

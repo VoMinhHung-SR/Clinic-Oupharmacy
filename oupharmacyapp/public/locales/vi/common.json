@@ -15,6 +15,8 @@
     "delete": "Xóa",
     "update": "Cập nhật",
     "edit": "Chỉnh sửa",
+    "function": "Chức năng",
+
     "undefined":"Chưa xác định",
     "refresh" : "Phiên bản hết hạn vui lòng làm mới trang",
     "profile": "Trang cá nhân",
@@ -36,6 +38,7 @@
     "changePassword": "Đổi mật khẩu",
     "newPassword": "Mật khẩu mới",
     "reEnterNewPassword": "Xác nhận mật khẩu mới",
+    "patientManagement": "Quản lý hồ sơ bệnh nhân",
 
     "haveAnCount": "Bạn đã có tài khoản? Đăng nhập",
     "bookingList": "Danh sách đặt lịch",

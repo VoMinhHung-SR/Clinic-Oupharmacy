@@ -35,6 +35,7 @@
     "errPatientNeedToCreate": "You need to create a patient profile",
     "errPatientNeedToSelect": "You need to select a patient profile",    
     "patientCreatedSuccess": "Patient's profile created success",
+    "patientUpdatedSuccess": "Patient's profile updated success",
     "yearsOld": "y/o",
     "seeDetail": "See detail",
     "patientProfileList": "Patient profile list",
