@@ -35,10 +35,14 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # DEBUG MODE ; SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = os.getenv('DEBUG', 'False') == 'True'
-DEBUG=True
+DEBUG = config('DEBUG', default=True)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0').split(',')
+INTERNAL_IPS = [
+    '127.0.0.1'
+]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
-
 CSRF_TRUSTED_ORIGINS = [
     'https://oupharmacy-vominhhung.up.railway.app'
 ]
@@ -171,12 +175,7 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'mainApp.User'
 MEDIA_ROOT = '%s/mainApp/static/' % BASE_DIR
 CKEDITOR_UPLOAD_PATH = 'post/'
-ALLOWED_HOSTS = ["*"]
-print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
-INTERNAL_IPS = [
-    '127.0.0.1'
-]
-CORS_ALLOW_ALL_ORIGINS = True
+
 
 OAUTH2_INFO = {
     "client_id": "ynFBpu3oh7wJEWh1u74xrjUIFK2JswGQSidmegoH",

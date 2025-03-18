@@ -22,10 +22,8 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      DEBUG: "TRUE"
     env_file:
-      - ./.env.dev
+      - ./.env
     expose: 
       - 8000
 
@@ -34,7 +32,7 @@ services:
     networks: 
       - oupharmacy_network
     env_file: 
-      - ./.env.dev
+      - ./.env
     container_name: mysql_container
     ports:
       - "3307:3306"
